@@ -1,0 +1,47 @@
+{
+	"HomePage": {
+		"title": "Hello world!",
+		"about": "Go to about page",
+		"lastUpdated": "Last updated"
+	},
+	"AboutPage": {
+		"title": "About Us",
+		"description": "This is the about us page. This content is statically generated (SSG).",
+		"additionalInfo": "This page demonstrates the use of static generation for multilingual content."
+	},
+	"Navigation": {
+		"home": "Home",
+		"about": "About",
+		"switchTo": "Switch to",
+		"logo": "Logo"
+	},
+	"Common": {
+		"backToHome": "Back to home",
+		"language": "Language",
+		"ukrainian": "Ukrainian",
+		"english": "English",
+		"loading": "Loading..."
+	},
+	"NotFound": {
+		"title": "404 - Page Not Found",
+		"description": "Sorry, the page you are looking for does not exist.",
+		"returnHome": "Return to homepage"
+	},
+	"Error": {
+		"title": "Something went wrong!",
+		"description": "An error occurred while loading the page.",
+		"retry": "Try again"
+	},
+	"SEO": {
+		"defaultTitle": "Multilingual Website",
+		"defaultDescription": "A multilingual website built with Next.js",
+		"home": {
+			"title": "Home Page",
+			"description": "Welcome to our multilingual website"
+		},
+		"about": {
+			"title": "About Us",
+			"description": "Information about our website and team"
+		}
+	}
+}
