@@ -1,9 +1,9 @@
 import "./Navigation.scss"
 import { Link } from "@/i18n/navigation"
 
-const Navigation = () => {
+const Navigation = ({ isShowNav }) => {
 	return (
-		<nav className="Navigation">
+		<nav className={`Navigation ${isShowNav ? "show" : ""}`}>
 			<ul>
 				<li>
 					<Link>Головна</Link>

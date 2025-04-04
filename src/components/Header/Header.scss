@@ -11,4 +11,23 @@ header {
 		align-items: center;
 		justify-content: space-between;
 	}
+
+	.header__burger {
+		display: none;
+	}
+}
+
+@media all and (max-width: 900px) {
+	header {
+		padding: 15px 0;
+		.header__contact {
+			display: none;
+		}
+
+		.header__burger {
+			display: flex;
+			position: relative;
+			z-index: 10;
+		}
+	}
 }

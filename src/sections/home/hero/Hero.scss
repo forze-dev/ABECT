@@ -33,7 +33,7 @@
 		height: 86vh;
 		margin-bottom: 0;
 		aspect-ratio: 1/1.5;
-		background: url("/image/woomen.png") center 0 / contain no-repeat;
+		background: url("/image/woomen.png") center bottom / contain no-repeat;
 	}
 
 	&--text {
@@ -127,6 +127,103 @@
 			padding: 0 10px;
 			font-size: 1rem;
 			color: var(--white);
+		}
+	}
+}
+
+@media all and (max-width: 1360px) {
+	.hero {
+		&__wrapper {
+			gap: 20px;
+		}
+		&--text {
+			ul {
+				font-size: 26px;
+			}
+			li:last-child {
+				font-size: 32px;
+			}
+		}
+	}
+}
+
+@media all and (max-width: 1240px) {
+	.hero {
+		&--text {
+			ul {
+				font-size: 22px;
+			}
+			li:last-child {
+				font-size: 28px;
+			}
+		}
+	}
+}
+
+@media all and (max-width: 1024px) {
+	.hero {
+		&--text {
+			ul {
+				font-size: 18px;
+			}
+			li:last-child {
+				font-size: 24px;
+			}
+		}
+	}
+}
+
+@media all and (max-width: 900px) {
+	.hero {
+		&__wrapper {
+			justify-content: center;
+
+			&::before {
+				content: "";
+				height: 300px;
+				width: 300px;
+				left: -120px;
+				transform: translateY(0%) rotate(90deg);
+				top: 90px;
+				opacity: 0.3;
+				z-index: 1;
+			}
+		}
+
+		&--image {
+			height: 68vh;
+			z-index: 1;
+			margin-bottom: 0;
+			aspect-ratio: 1/1.5;
+			opacity: 0.5;
+			background: url("/image/woomen.png") center bottom / contain no-repeat;
+		}
+
+		&--text {
+			position: fixed;
+			top: 60px;
+			right: 15px;
+			height: 28vh;
+			margin-bottom: 0;
+			width: fit-content;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			ul {
+				font-size: 16px;
+			}
+			li:last-child {
+				font-size: 28px;
+			}
+		}
+
+		&--chat {
+			width: 100%;
+			min-width: auto;
+			max-width: 420px;
+			position: fixed;
+			padding: 15px;
+			margin-bottom: 0;
 		}
 	}
 }

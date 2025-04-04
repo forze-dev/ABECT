@@ -2,6 +2,7 @@
 :root {
 	--white: #ffffff;
 	--darkblue: #121f28;
+	--darkblue-glass: rgba(18, 31, 40, 0.85);
 	--dark-orange: #1a0b05;
 	--box-back: rgba(61, 75, 86, 0.5);
 }
@@ -49,6 +50,8 @@ a {
 
 .logo {
 	height: 38px;
+	position: relative;
+	z-index: 10;
 }
 
 .btn {
@@ -66,4 +69,17 @@ a {
 
 .btn:hover {
 	background: var(--box-back);
+}
+
+@media all and (max-width: 900px) {
+	.background {
+		height: 100vh;
+		height: 100dvh;
+		width: 100%;
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: -1;
+		background: url("/icons/linear-back-phone.svg") 0 0 / cover;
+	}
 }
