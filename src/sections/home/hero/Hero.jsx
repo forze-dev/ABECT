@@ -3,18 +3,20 @@
 import "./Hero.scss"
 import { TypeAnimation } from "react-type-animation"
 import { useState, useRef, useEffect } from "react"
+import sendMessageTG from "@/services/sendMessageTG"
 
 const Hero = () => {
 	const [messages, setMessages] = useState([])
 	const [inputValue, setInputValue] = useState("")
 	const [currentBotMessageIndex, setCurrentBotMessageIndex] = useState(0)
 	const [isTyping, setIsTyping] = useState(true)
+	const [isInputDisabled, setIsInputDisabled] = useState(false)
 	const chatContentRef = useRef(null)
 
 	const allBotMessages = [
-		["Вітаю, на звязку команда ABECT!", 2000, "Бажаєте отримати безкоштовну консультацію? Просто напишіть..."],
-		["Щоб ми могли передати Ваш запит вкажіть номер телефону"],
-		["Дякую! З вами незабаром звяжеться наш спеціаліст"],
+		["Привіт 👋 на звязку команда ABECT!", 1000, "Бажаєш отримати безкоштовну консультацію? Просто напиши..."],
+		["Щоб ми могли передати твій запит вкажи номер телефону"],
+		["Дякую! З тобою незабаром звяжеться наш менеджер"],
 	]
 
 	useEffect(() => {
@@ -27,6 +29,14 @@ const Hero = () => {
 		}
 	}, [messages])
 
+	useEffect(() => {
+		if (currentBotMessageIndex === allBotMessages.length - 1 && !isTyping) {
+			setIsInputDisabled(true)
+			const newMessage = "🔔 Нова заявка\nТип: чат на сайті\n\n" + messages.filter(msg => msg.sender === "user").map((msg, i) => `\n💬 Повідомлення ${i + 1}:\n - ${msg.content}`)
+			sendMessageTG(newMessage)
+		}
+	}, [currentBotMessageIndex, isTyping, allBotMessages.length])
+
 	const handleInputChange = (e) => {
 		setInputValue(e.target.value)
 	}
@@ -34,7 +44,7 @@ const Hero = () => {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 
-		if (inputValue.trim() === "") return
+		if (inputValue.trim() === "" || isInputDisabled) return
 
 		const newUserMessage = { sender: 'user', content: inputValue }
 
@@ -116,9 +126,9 @@ const Hero = () => {
 								value={inputValue}
 								onChange={handleInputChange}
 								placeholder="Напишіть повідомлення..."
-								disabled={isTyping}
+								disabled={isTyping || isInputDisabled}
 							/>
-							<button type="submit" disabled={isTyping || inputValue.trim() === ""}></button>
+							<button type="submit" disabled={isTyping || inputValue.trim() === "" || isInputDisabled}></button>
 						</form>
 					</div>
 				</div>

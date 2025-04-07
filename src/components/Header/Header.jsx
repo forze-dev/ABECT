@@ -18,13 +18,13 @@ const Header = () => {
 							<Image src={"/icons/logo.svg"} alt="ABECT" width={132} height={38} />
 						</Link>
 					</div>
-					<Navigation isShowNav={isShowNav} />
+					{/* <Navigation isShowNav={isShowNav} />
 					<div className="header__contact">
 						<ContactButton />
-					</div>
-					<div className="header__burger" onClick={() => setShowNav(prev => !prev)}>
+					</div> */}
+					{/* <div className="header__burger" onClick={() => setShowNav(prev => !prev)}>
 						МЕНЮ
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</header>
