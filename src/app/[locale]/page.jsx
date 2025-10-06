@@ -1,8 +1,6 @@
-import { getTranslations } from 'next-intl/server';
-import { Link } from '@/i18n/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import Hero from '@/sections/home/hero/Hero';
+import Home from '@/modules/home/Home';
 
 // Генерація статичних параметрів для локалей
 export function generateStaticParams() {
@@ -80,9 +78,5 @@ export default async function HomePage({ params }) {
 	// Увімкнення статичного рендерингу
 	setRequestLocale(locale);
 
-	return (
-		<main>
-			<Hero />
-		</main>
-	);
+	return <Home />
 }

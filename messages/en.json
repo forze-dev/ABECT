@@ -1,26 +1,227 @@
 {
 	"HomePage": {
-		"title": "Hello world!",
-		"about": "Go to about page",
-		"lastUpdated": "Last updated"
+		"Hero": {
+			"uppertitle": "#ABECT-team",
+			"title": "We'll create a modern website for your business",
+			"description": "We develop modern, fast and responsive websites that help your business grow online.",
+			"orderButton": "Order a website",
+			"portfolioButton": "Our portfolio",
+			"orderButtonAriaLabel": "Open contact form",
+			"portfolioButtonAriaLabel": "Open contact form",
+			"imageAlt": "Some Illustration"
+		},
+		"Services": {
+			"title": "Popular services and prices",
+			"timeline": "Deadline",
+			"subtitle": "Transparent pricing without hidden fees. Payment in installments after each stage",
+			"gridAriaLabel": "List of services with prices",
+			"orderButton": "Order",
+			"footerText": "Need something else?",
+			"calculateButton": "Calculate cost",
+			"calculateAriaLabel": "Open project cost calculator",
+			"weblium": "Builder",
+			"custom": "Custom code",
+			"toggleWeblium": "Switch to builder development",
+			"toggleCustom": "Switch to custom development",
+			"type": {
+				"weblium": "Weblium Development",
+				"custom": "Custom Development"
+			},
+			"landing": {
+				"title": "Landing Page",
+				"webliumPrice": "from $240",
+				"webliumPriceValue": "240",
+				"customPrice": "from $400",
+				"customPriceValue": "400",
+				"webliumTimeline": "5-7 days",
+				"customTimeline": "7-10 days",
+				"webliumDescription": "Quick creation on builder with ready-made blocks",
+				"customDescription": "Unique design and optimized code for maximum speed",
+				"listAriaLabel": "What's included in landing page",
+				"buttonAriaLabel": "Order landing page development",
+				"webliumFeatures": {
+					"0": "Up to 5 sections",
+					"1": "Visual editor",
+					"2": "Ready blocks",
+					"3": "Contact form",
+					"4": "Hosting included"
+				},
+				"customFeatures": {
+					"0": "Up to 5 sections",
+					"1": "Unique design",
+					"2": "SEO optimization",
+					"3": "Fast loading",
+					"4": "Clean code"
+				}
+			},
+			"corporate": {
+				"title": "Corporate Website",
+				"webliumPrice": "from $600",
+				"webliumPriceValue": "600",
+				"customPrice": "from $1,000",
+				"customPriceValue": "1000",
+				"webliumTimeline": "10-14 days",
+				"customTimeline": "14-21 days",
+				"webliumDescription": "Multi-page website with CMS and visual editor",
+				"customDescription": "Professional website with unique design and technical SEO",
+				"listAriaLabel": "What's included in corporate website",
+				"buttonAriaLabel": "Order corporate website",
+				"webliumFeatures": {
+					"0": "10-15 pages",
+					"1": "Weblium CMS",
+					"2": "Visual editor",
+					"3": "Forms and integrations",
+					"4": "Hosting included"
+				},
+				"customFeatures": {
+					"0": "10-15 pages",
+					"1": "Headless CMS (if needed)",
+					"2": "Technical SEO",
+					"3": "Semantic markup",
+					"4": "Maximum speed"
+				}
+			},
+			"ecommerce": {
+				"title": "E-commerce Store",
+				"webliumPrice": "from $1,000",
+				"webliumPriceValue": "1000",
+				"customPrice": "from $1,600",
+				"customPriceValue": "1600",
+				"webliumTimeline": "20-30 days",
+				"customTimeline": "30-45 days",
+				"webliumDescription": "Store with ready CMS and payment systems",
+				"customDescription": "Scalable store with custom functionality",
+				"listAriaLabel": "What's included in e-commerce",
+				"buttonAriaLabel": "Order e-commerce store",
+				"webliumFeatures": {
+					"0": "Product catalog",
+					"1": "Weblium CMS",
+					"2": "Ready payments",
+					"3": "User account",
+					"4": "Hosting included"
+				},
+				"customFeatures": {
+					"0": "Product catalog",
+					"1": "Custom functionality",
+					"2": "CRM integration",
+					"3": "Performance optimization",
+					"4": "Flexible scalability"
+				}
+			},
+			"advertising": {
+				"title": "Contextual Advertising",
+				"customPrice": "from $320",
+				"customPriceValue": "320",
+				"customTimeline": "5-7 days",
+				"customDescription": "Google Ads setup and management",
+				"listAriaLabel": "What's included in advertising",
+				"buttonAriaLabel": "Order advertising setup",
+				"customFeatures": {
+					"0": "Competitor analysis",
+					"1": "Keyword research",
+					"2": "Campaign setup",
+					"3": "A/B testing",
+					"4": "Weekly reports"
+				}
+			}
+		},
+		"Advantages": {
+			"title": "What sets us apart from other studios?",
+			"subtitle": "We don't just write code — we create tools for your business growth. No overpayments, delays or stress.",
+			"listAriaLabel": "List of our advantages",
+			"numberAriaLabel": "Advantage number {number}",
+			"cta": "Discuss the project",
+			"ctaAriaLabel": "Open form to discuss the project",
+			"advantage1": {
+				"title": "No empty promises — only real deadlines",
+				"description": "We know how tiring 'ready tomorrow' from other contractors is. We set clear deadlines before the start and stick to them. Average landing page development time is 7-10 days, complex project — up to 4 weeks.",
+				"serviceType": "Web development with deadline compliance"
+			},
+			"advantage2": {
+				"title": "Your website will find customers, not gather dust in Google",
+				"description": "Many web studios make 'pretty pictures' but forget the main thing — attracting customers. We embed SEO optimization and analytics at the development stage so your website works for results right away.",
+				"serviceType": "Website SEO optimization"
+			},
+			"advantage3": {
+				"title": "Transparency at every step",
+				"description": "No surprises with cost or functionality. You see the development process in real time, receive reports and can make changes at any stage. Telegram/WhatsApp always in touch.",
+				"serviceType": "Transparent web development"
+			},
+			"advantage4": {
+				"title": "Website that works on all devices",
+				"description": "In 2025, 70% of users come from phones. We create responsive websites that look perfect on smartphones, tablets and computers. Fast loading + convenient navigation = more sales.",
+				"serviceType": "Responsive web design"
+			},
+			"advantage5": {
+				"title": "Technologies that won't become outdated in a year",
+				"description": "We use a modern technology stack (React, Next.js, Node.js) that is easy to scale and maintain. Your website will be relevant for years, not require a complete overhaul tomorrow.",
+				"serviceType": "Modern web development"
+			},
+			"advantage6": {
+				"title": "Post-launch support — free for a month",
+				"description": "The first month after launch, technical support, minor bug fixes and consultations are free. We don't disappear after payment.",
+				"serviceType": "Website technical support"
+			}
+		}
 	},
 	"AboutPage": {
 		"title": "About Us",
 		"description": "This is the about us page. This content is statically generated (SSG).",
 		"additionalInfo": "This page demonstrates the use of static generation for multilingual content."
 	},
-	"Navigation": {
-		"home": "Home",
-		"about": "About",
-		"switchTo": "Switch to",
-		"logo": "Logo"
+	"Header": {
+		"logo": "ABECT",
+		"nav": {
+			"services": "Services",
+			"about": "About",
+			"portfolio": "Portfolio",
+			"price": "Pricing",
+			"contacts": "Contacts"
+		},
+		"navTitles": {
+			"services": "Our services and offerings",
+			"about": "Information about our company",
+			"portfolio": "Portfolio of our projects",
+			"price": "Price list and cost of services",
+			"contacts": "Company contact information"
+		},
+		"menuAriaLabel": "Main site menu",
+		"contactsAriaLabel": "Contact information",
+		"burgerAriaLabel": "Open menu"
+	},
+	"Footer": {
+		"logo": "ABECT",
+		"description": "Professional web studio ABECT: website development, web applications, Telegram bots. Launching advertising on Google and social networks. Logo and website design.",
+		"navigation": "Site navigation",
+		"navigationAriaLabel": "Footer navigation menu",
+		"nav": {
+			"services": "Services",
+			"about": "About",
+			"portfolio": "Portfolio",
+			"price": "Pricing",
+			"contacts": "Contacts"
+		},
+		"navTitles": {
+			"services": "Our services and offerings",
+			"about": "Information about our company",
+			"portfolio": "Portfolio of our projects",
+			"price": "Price list and cost of services",
+			"contacts": "Company contact information"
+		},
+		"workingHours": "Working hours:",
+		"weekdays": "Mon - Fri:",
+		"workingTime": "9:00 AM - 6:00 PM",
+		"contacts": "Contacts",
+		"rights": "All rights reserved.",
+		"privacyPolicy": "Privacy Policy"
 	},
 	"Common": {
 		"backToHome": "Back to home",
 		"language": "Language",
 		"ukrainian": "Ukrainian",
 		"english": "English",
-		"loading": "Loading..."
+		"loading": "Loading...",
+		"cta": "Contact Us"
 	},
 	"NotFound": {
 		"title": "404 - Page Not Found",

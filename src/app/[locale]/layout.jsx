@@ -4,6 +4,7 @@ import { routing } from '@/i18n/routing';
 import { setRequestLocale } from 'next-intl/server';
 import { Victor_Mono } from 'next/font/google';
 import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
 
 import './globals.scss';
 
@@ -11,7 +12,6 @@ const victorMono = Victor_Mono({
 	variable: "--font-victor-mono",
 	subsets: ["cyrillic", "latin"]
 });
-
 
 // Генерація статичних параметрів для локалей
 export function generateStaticParams() {
@@ -43,14 +43,8 @@ export default async function LocaleLayout({
 				<NextIntlClientProvider locale={locale} messages={messages}>
 					<Header />
 					{children}
+					<Footer />
 				</NextIntlClientProvider>
-
-				<div className="background">
-					<div className="background--light"></div>
-					<div className="background--orange background__left"></div>
-					<div className="background--orange background__right"></div>
-					<div className="background--image"></div>
-				</div>
 			</body>
 		</html>
 	);

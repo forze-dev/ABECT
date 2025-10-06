@@ -1,0 +1,175 @@
+/* Entry Section */
+.entry {
+	min-height: calc(100vh - 80px);
+	display: flex;
+	align-items: center;
+	padding: 120px 0;
+	position: relative;
+	overflow: hidden;
+	margin: 0;
+	margin-top: 80px;
+
+	&__wrapper {
+		display: grid;
+		grid-template-columns: 1.3fr 0.7fr;
+		gap: 80px;
+		align-items: center;
+		width: 100%;
+	}
+
+	/* Left Content */
+	&__left {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+	}
+
+	&__uppertitle {
+		display: inline-block;
+		padding: 8px 16px;
+		background: var(--accent-alpha-10);
+		color: var(--accent);
+		font-size: 14px;
+		font-weight: 600;
+		border-radius: 24px;
+		border: 1px solid var(--accent-alpha-10);
+		width: fit-content;
+		letter-spacing: 0.02em;
+	}
+
+	h1 {
+		font-size: 48px;
+		font-weight: 700;
+		line-height: 1.1;
+		color: var(--white);
+		margin: 0;
+		letter-spacing: -0.02em;
+	}
+
+	p {
+		font-size: 18px;
+		line-height: 1.6;
+		color: var(--nav-text);
+		margin: 0;
+		max-width: 500px;
+	}
+
+	&__btns {
+		display: flex;
+		gap: 16px;
+		margin-top: 16px;
+	}
+
+	/* Right Content */
+	&__right {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		img {
+			width: 100%;
+			height: auto;
+			border-radius: 20px;
+			transition: transform 0.3s ease;
+			transform: scale(1.5);
+
+			&:hover {
+				transform: scale(1.6);
+			}
+		}
+	}
+
+	/* Tablet styles - до 1024px */
+	@media (max-width: 1024px) {
+		margin-top: 0;
+
+		&__wrapper {
+			display: flex;
+			flex-direction: column-reverse;
+			gap: 60px;
+			text-align: center;
+		}
+
+		&__left {
+			order: 1;
+			align-items: center;
+		}
+
+		&__right {
+			order: 2;
+
+			img {
+				width: 100%;
+				height: auto;
+				border-radius: 20px;
+				box-shadow:
+					0 20px 60px var(--shadow-dark),
+					0 8px 24px var(--shadow-dark-hover);
+				transition: transform 0.3s ease;
+				transform: scale(1);
+
+				&:hover {
+					transform: scale(1);
+				}
+			}
+		}
+
+		h1 {
+			font-size: 42px;
+		}
+
+		p {
+			max-width: 600px;
+		}
+
+		&__btns {
+			justify-content: center;
+			align-items: center;
+		}
+	}
+
+	/* Mobile styles */
+	@media (max-width: 768px) {
+		padding: 80px 0 100px 0;
+		min-height: auto;
+
+		&__wrapper {
+			gap: 20px;
+		}
+
+		h1 {
+			font-size: 36px;
+		}
+
+		p {
+			font-size: 16px;
+		}
+
+		&__btns {
+			flex-direction: column;
+			gap: 12px;
+			width: 100%;
+
+			.cta {
+				width: 100%;
+				max-width: 300px;
+			}
+		}
+	}
+
+	@media (max-width: 480px) {
+		h1 {
+			font-size: 28px;
+			line-height: 1.2;
+		}
+
+		&__uppertitle {
+			font-size: 12px;
+			padding: 6px 12px;
+		}
+
+		p {
+			font-size: 15px;
+		}
+	}
+}
