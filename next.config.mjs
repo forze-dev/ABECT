@@ -1,10 +1,22 @@
-// next.config.mjs
-import createNextIntlPlugin from 'next-intl/plugin';
+import { withPayload } from '@payloadcms/next/withPayload'
+import createNextIntlPlugin from 'next-intl/plugin'
 
-// Явно вказуємо шлях до файлу конфігурації
-const withNextIntl = createNextIntlPlugin('./src/i18n/request.js');
+const withNextIntl = createNextIntlPlugin('./src/client/i18n/request.ts')
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  webpack: (webpackConfig) => {
+    webpackConfig.resolve.extensionAlias = {
+      '.cjs': ['.cts', '.cjs'],
+      '.js': ['.ts', '.tsx', '.js', '.jsx'],
+      '.mjs': ['.mts', '.mjs'],
+    }
+    return webpackConfig
+  },
+}
 
-export default withNextIntl(nextConfig);
+// Оборачиваем оба плагина (в правильном порядке)
+export default withPayload(
+  withNextIntl(nextConfig),
+  { devBundleServerPackages: false }
+)

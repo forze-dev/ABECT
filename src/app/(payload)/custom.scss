@@ -1,0 +1,29 @@
+.abect-cms{
+    main {
+        max-width: 1024px;
+        margin: 0 auto;
+    }
+
+    .rich-text-lexical{
+        .ContentEditable__root{
+            padding: 15px !important;
+            background: var(--theme-input-bg);
+            border: 1px solid var(--theme-elevation-150);
+        }
+    
+        .insert-paragraph-at-end{
+            display: none !important;
+        }
+    
+        .add-block-menu{
+            display: none !important;
+        }
+    
+        .LexicalEditorTheme__placeholder{
+            left: 15px;
+            top: 15px;
+        }
+    }
+}
+
+
