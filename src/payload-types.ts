@@ -67,11 +67,12 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    portfolio: Portfolio;
     posts: Post;
     categories: Category;
     media: Media;
     comments: Comment;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -79,11 +80,12 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     comments: CommentsSelect<false> | CommentsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -123,33 +125,99 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "portfolio".
  */
-export interface User {
+export interface Portfolio {
   id: number;
-  firstName: string;
-  lastName: string;
+  title: string;
   /**
-   * Визначає рівень доступу користувача
+   * Опис для картки проекту
    */
-  role: 'superadmin' | 'admin' | 'moderator';
+  shortDescription: string;
+  client: string;
+  service: 'design' | 'website' | 'promotion';
+  /**
+   * Заповнюється тільки якщо service = "Сайт"
+   */
+  type?: ('custom' | 'builder') | null;
+  /**
+   * URL проекту (якщо є)
+   */
+  projectUrl?: string | null;
+  /**
+   * Дата публікації проекту
+   */
+  projectDate: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * URL-friendly назва для посилань
+   */
+  slug: string;
+  seo: {
+    metaTitle: string;
+    metaDescription: string;
+    metaKeywords: string;
+    /**
+     * Зображення для соціальних мереж
+     */
+    ogImage?: (number | null) | Media;
+  };
+  viewCount?: number | null;
+  status: 'draft' | 'published' | 'archived';
+  /**
+   * Показувати на головній сторінці
+   */
+  featured?: boolean | null;
+  /**
+   * Порядок відображення на сайті (менше число = вище)
+   */
+  order?: number | null;
   updatedAt: string;
   createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Опис зображення для SEO та доступності
+   */
+  alt: string;
+  /**
+   * Підпис до зображення
+   */
+  caption?: string | null;
+  /**
+   * Організація файлів по папках
+   */
+  folder?: ('posts' | 'categories' | 'general') | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -211,6 +279,36 @@ export interface Post {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+  /**
+   * Визначає рівень доступу користувача
+   */
+  role: 'superadmin' | 'admin' | 'moderator';
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "categories".
  */
 export interface Category {
@@ -233,36 +331,6 @@ export interface Category {
   };
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Опис зображення для SEO та доступності
-   */
-  alt: string;
-  /**
-   * Підпис до зображення
-   */
-  caption?: string | null;
-  /**
-   * Організація файлів по папках
-   */
-  folder?: ('posts' | 'categories' | 'general') | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -312,8 +380,8 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'portfolio';
+        value: number | Portfolio;
       } | null)
     | ({
         relationTo: 'posts';
@@ -330,6 +398,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'comments';
         value: number | Comment;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -375,28 +447,32 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "portfolio_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  firstName?: T;
-  lastName?: T;
-  role?: T;
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
+export interface PortfolioSelect<T extends boolean = true> {
+  title?: T;
+  shortDescription?: T;
+  client?: T;
+  service?: T;
+  type?: T;
+  projectUrl?: T;
+  projectDate?: T;
+  content?: T;
+  slug?: T;
+  seo?:
     | T
     | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
+        metaTitle?: T;
+        metaDescription?: T;
+        metaKeywords?: T;
+        ogImage?: T;
       };
+  viewCount?: T;
+  status?: T;
+  featured?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -483,6 +559,31 @@ export interface CommentsSelect<T extends boolean = true> {
   parent?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
+  role?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

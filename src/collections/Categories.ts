@@ -21,7 +21,7 @@ export const Categories: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
-      label: 'URL (slug)',
+      label: 'URL (slug) - відображення на нашому сайті',
       admin: {
         description: 'URL-friendly назва для посилань',
       },

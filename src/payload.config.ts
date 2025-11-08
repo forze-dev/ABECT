@@ -10,6 +10,8 @@ import { Posts } from './collections/Posts'
 import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Comments } from './collections/Comments'
+import { Portfolio } from './collections/Portfolio'
+
 import { fullRichEditor } from './utils/editor';
 
 const filename = fileURLToPath(import.meta.url)
@@ -23,11 +25,12 @@ export default buildConfig({
     },
   },
   collections: [
-    Users,
+    Portfolio,
     Posts,
     Categories,
     Media,
     Comments,
+    Users
   ],
   editor: fullRichEditor,
   secret: process.env.PAYLOAD_SECRET || '',
