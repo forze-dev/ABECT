@@ -221,7 +221,25 @@
 		"ukrainian": "Ukrainian",
 		"english": "English",
 		"loading": "Loading...",
-		"cta": "Contact Us"
+		"cta": "Contact Us",
+		"PortfolioCard": {
+			"viewCase": "View case",
+			"client": "Client",
+			"service": "Service",
+			"type": "Type",
+			"date": "Date",
+			"projectUrl": "Visit website",
+			"badges": {
+				"website": "Website",
+				"design": "Design",
+				"promotion": "Marketing"
+			},
+			"types": {
+				"custom": "Custom development",
+				"builder": "Builder-based"
+			},
+			"featured": "Featured project"
+		}
 	},
 	"NotFound": {
 		"title": "404 - Page Not Found",
@@ -243,6 +261,30 @@
 		"about": {
 			"title": "About Us",
 			"description": "Information about our website and team"
+		}
+	},
+	"PortfolioPage": {
+		"title": "Our Portfolio",
+		"subtitle": "Over 50 successful web development, design and marketing projects for businesses",
+		"breadcrumbHome": "Home",
+		"breadcrumbPortfolio": "Portfolio",
+		"filter": {
+			"title": "Project Filter",
+			"ariaLabel": "Filter portfolio by project type",
+			"selectAriaLabel": "Select project type to filter",
+			"all": "All Works",
+			"design": "Design",
+			"website": "Websites",
+			"promotion": "Marketing"
+		},
+		"showingResults": "Showing projects: {count}",
+		"noResults": "No results found for your query",
+		"noResultsDescription": "Try changing the filter or view all works",
+		"viewAllButton": "Show All",
+		"seo": {
+			"title": "ABECT Web Studio Portfolio | Our Works and Cases",
+			"description": "ABECT web development portfolio: completed websites, designs and marketing cases. Over 50 successful projects for Ukrainian and European businesses.",
+			"keywords": "web studio portfolio, website development cases, website examples, design portfolio, web development examples, ABECT works, completed websites"
 		}
 	}
 }
