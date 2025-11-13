@@ -171,6 +171,7 @@ export const Portfolio: CollectionConfig = {
       name: 'order',
       type: 'number',
       label: 'Порядковий номер',
+      defaultValue: 999, 
       admin: {
         description: 'Порядок відображення на сайті (менше число = вище)',
       },

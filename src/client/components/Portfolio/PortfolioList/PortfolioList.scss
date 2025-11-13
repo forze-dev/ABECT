@@ -1,0 +1,19 @@
+/* Portfolio List */
+.portfolio-list {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 32px;
+	width: 100%;
+
+	/* Tablet (2 колонки) */
+	@media (max-width: 1024px) {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 24px;
+	}
+
+	/* Mobile (1 колонка) */
+	@media (max-width: 768px) {
+		grid-template-columns: 1fr;
+		gap: 20px;
+	}
+}

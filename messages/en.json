@@ -125,6 +125,13 @@
 				}
 			}
 		},
+		"Portfolio": {
+			"sectionLabel": "#Our_works",
+			"title": "Portfolio of Real Projects",
+			"subtitle": "Case studies of website development for Ukrainian and European businesses",
+			"viewAllButton": "View all works",
+			"orderButton": "Order a project"
+		},
 		"Advantages": {
 			"title": "What sets us apart from other studios?",
 			"subtitle": "We don't just write code — we create tools for your business growth. No overpayments, delays or stress.",
