@@ -206,7 +206,7 @@ export interface Media {
   /**
    * Організація файлів по папках
    */
-  folder?: ('posts' | 'categories' | 'general') | null;
+  folder?: ('posts' | 'categories' | 'portfolio' | 'general') | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;

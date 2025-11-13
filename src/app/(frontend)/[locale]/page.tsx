@@ -81,5 +81,5 @@ export default async function HomePage({ params }: Params) {
 	
 	setRequestLocale(locale);
 
-	return <Home />;
+	return <Home locale={locale}/>;
 }

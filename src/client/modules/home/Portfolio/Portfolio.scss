@@ -1,0 +1,89 @@
+/* Portfolio Section */
+.portfolio {
+	/* Секція без фону - видно body background */
+
+	&__header {
+		text-align: center;
+		margin-bottom: 60px;
+	}
+
+	&__label {
+		display: inline-block;
+		font-size: 14px;
+		font-weight: 700;
+		color: var(--accent);
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		margin-bottom: 16px;
+	}
+
+	&__title {
+		font-size: 48px;
+		font-weight: 700;
+		color: var(--white);
+		margin-bottom: 16px;
+		letter-spacing: -0.02em;
+	}
+
+	&__subtitle {
+		font-size: 18px;
+		color: var(--nav-text);
+		max-width: 700px;
+		margin: 0 auto;
+		line-height: 1.6;
+	}
+
+	&__footer {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 16px;
+		margin-top: 60px;
+	}
+
+	/* Адаптивність */
+	@media (max-width: 1024px) {
+		&__title {
+			font-size: 36px;
+		}
+
+		&__subtitle {
+			font-size: 17px;
+		}
+
+		&__footer {
+			margin-top: 50px;
+		}
+	}
+
+	@media (max-width: 768px) {
+		&__header {
+			margin-bottom: 40px;
+		}
+
+		&__label {
+			font-size: 13px;
+			margin-bottom: 12px;
+		}
+
+		&__title {
+			font-size: 28px;
+			margin-bottom: 12px;
+		}
+
+		&__subtitle {
+			font-size: 16px;
+		}
+
+		&__footer {
+			flex-direction: column;
+			gap: 12px;
+			margin-top: 40px;
+
+			.cta {
+				width: 100%;
+				max-width: 320px;
+			}
+		}
+	}
+}

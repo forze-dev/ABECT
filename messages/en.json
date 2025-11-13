@@ -125,6 +125,13 @@
 				}
 			}
 		},
+		"Portfolio": {
+			"sectionLabel": "#Our_works",
+			"title": "Portfolio of Real Projects",
+			"subtitle": "Case studies of website development for Ukrainian and European businesses",
+			"viewAllButton": "View all works",
+			"orderButton": "Order a project"
+		},
 		"Advantages": {
 			"title": "What sets us apart from other studios?",
 			"subtitle": "We don't just write code — we create tools for your business growth. No overpayments, delays or stress.",
@@ -221,7 +228,25 @@
 		"ukrainian": "Ukrainian",
 		"english": "English",
 		"loading": "Loading...",
-		"cta": "Contact Us"
+		"cta": "Contact Us",
+		"PortfolioCard": {
+			"viewCase": "Дивитись кейс",
+			"client": "Клієнт",
+			"service": "Послуга",
+			"type": "Тип",
+			"date": "Дата",
+			"projectUrl": "Перейти на сайт",
+			"badges": {
+				"website": "Веб-сайт",
+				"design": "Дизайн",
+				"promotion": "Просування"
+			},
+			"types": {
+				"custom": "Кастомна розробка",
+				"builder": "На конструкторі"
+			},
+			"featured": "Виділений проєкт"
+		}
 	},
 	"NotFound": {
 		"title": "404 - Page Not Found",

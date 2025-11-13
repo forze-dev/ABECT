@@ -37,6 +37,7 @@ export const Media: CollectionConfig = {
       options: [
         { label: 'Пости', value: 'posts' },
         { label: 'Категорії', value: 'categories' },
+        { label: 'Портфоліо', value: 'portfolio' },
         { label: 'Загальне', value: 'general' },
       ],
       defaultValue: 'general',
