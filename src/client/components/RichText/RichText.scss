@@ -1,0 +1,325 @@
+.RichText {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--nav-text);
+
+    /* Заголовки */
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        color: var(--white);
+        font-weight: 700;
+        line-height: 1.3;
+        letter-spacing: -0.01em;
+        scroll-margin-top: 100px; // Для якорів
+    }
+
+    h2 {
+        font-size: 32px;
+        padding-bottom: 12px;
+        border-bottom: 2px solid var(--border-subtle);
+        margin-top: 48px;
+        margin-bottom: 20px;
+    }
+
+    h3 {
+        font-size: 24px;
+        margin-top: 38px;
+        margin-bottom: 16px;
+    }
+
+    h4 {
+        font-size: 20px;
+        margin-top: 28px;
+        margin-bottom: 12px;
+    }
+
+    h5,
+    h6 {
+        font-size: 18px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+
+    /* Параграфи */
+    p {
+        margin-bottom: 20px;
+        color: var(--nav-text);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    /* Списки */
+    ul,
+    ol {
+        margin: 20px 0;
+        padding-left: 24px;
+        color: var(--nav-text);
+
+        li {
+            margin-bottom: 12px;
+            line-height: 1.7;
+
+            &::marker {
+                color: var(--accent);
+            }
+        }
+
+        ul,
+        ol {
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+    }
+
+    ul {
+        list-style-type: disc;
+    }
+
+    ol {
+        list-style-type: decimal;
+    }
+
+    /* Посилання */
+    a {
+        color: var(--accent);
+        text-decoration: none;
+        border-bottom: 1px solid var(--accent-alpha-10);
+        transition: all 0.2s ease;
+
+        &:hover {
+            border-bottom-color: var(--accent);
+            color: var(--accentLight);
+        }
+    }
+
+    /* Жирний і курсив */
+    strong,
+    b {
+        color: var(--white);
+        font-weight: 700;
+    }
+
+    em,
+    i {
+        font-style: italic;
+        color: var(--white);
+    }
+
+    /* Код */
+    code {
+        font-family: var(--font-victor-mono), 'Courier New', monospace;
+        font-size: 0.9em;
+        background: var(--accent-alpha-10);
+        color: var(--accentLight);
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid var(--accent-alpha-10);
+    }
+
+    pre {
+        background: var(--backLight);
+        border: 1px solid var(--border-subtle);
+        border-radius: 12px;
+        padding: 20px;
+        overflow-x: auto;
+        margin: 24px 0;
+        box-shadow: 0 4px 16px var(--shadow-dark);
+
+        code {
+            background: none;
+            border: none;
+            padding: 0;
+            color: var(--white);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    }
+
+    /* Blockquote */
+    blockquote {
+        margin: 32px 0;
+        padding: 20px 24px;
+        background: var(--accent-alpha-05);
+        border-left: 4px solid var(--accent);
+        border-radius: 0 12px 12px 0;
+        font-style: italic;
+        color: var(--white);
+        box-shadow: 0 2px 12px var(--shadow-dark);
+
+        p {
+            margin-bottom: 12px;
+            color: var(--white);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        cite {
+            display: block;
+            margin-top: 12px;
+            font-size: 14px;
+            font-style: normal;
+            color: var(--accent);
+            font-weight: 600;
+        }
+    }
+
+    /* Горизонтальна лінія */
+    hr {
+        margin: 40px 0;
+        border: none;
+        border-top: 1px solid var(--border-subtle);
+    }
+
+    /* Зображення */
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 24px 0;
+        box-shadow: 0 4px 16px var(--shadow-dark);
+    }
+
+    figure {
+        margin: 32px 0;
+
+        img {
+            margin: 0;
+        }
+
+        figcaption {
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--nav-text);
+            text-align: center;
+            font-style: italic;
+        }
+    }
+
+    /* Таблиці */
+    table {
+        width: 100%;
+        margin: 32px 0;
+        border-collapse: collapse;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px var(--shadow-dark);
+        background: var(--backLight);
+
+        thead {
+            background: var(--accent-alpha-10);
+
+            th {
+                color: var(--white);
+                font-weight: 700;
+                padding: 16px;
+                text-align: left;
+                border-bottom: 2px solid var(--accent);
+            }
+        }
+
+        tbody {
+            tr {
+                border-bottom: 1px solid var(--border-subtle);
+
+                &:last-child {
+                    border-bottom: none;
+                }
+
+                &:hover {
+                    background: var(--accent-alpha-05);
+                }
+            }
+
+            td {
+                padding: 16px;
+                color: var(--nav-text);
+            }
+        }
+    }
+
+    /* Відео / iframe */
+    iframe {
+        max-width: 100%;
+        margin: 32px 0;
+        border-radius: 12px;
+        box-shadow: 0 4px 16px var(--shadow-dark);
+    }
+
+    /* Адаптивність */
+    @media (max-width: 1024px) {
+        font-size: 16px;
+
+        h2 {
+            margin-top: 40px;
+        }
+
+        h3 {
+            margin-top: 32px;
+        }
+
+        h4 {
+            margin-top: 24px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        font-size: 15px;
+
+        p {
+            margin-bottom: 14px;
+        }
+
+        ul,
+        ol {
+            margin-top: 14px;
+            margin-bottom: 22px;
+        }
+
+        h2 {
+            margin-top: 32px;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            margin-top: 26px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            margin-top: 20px;
+        }
+
+        blockquote {
+            padding: 16px 20px;
+            margin: 24px 0;
+        }
+
+        pre {
+            padding: 16px;
+            margin: 20px -12px;
+            border-radius: 8px;
+        }
+
+        table {
+            font-size: 14px;
+            overflow-x: auto;
+            display: block;
+
+            thead,
+            tbody {
+
+                th,
+                td {
+                    padding: 12px;
+                }
+            }
+        }
+    }
+}

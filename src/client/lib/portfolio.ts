@@ -120,3 +120,67 @@ export async function getPortfolioBySlug(slug: string, locale: string = 'uk'): P
     return null;
   }
 }
+
+/**
+ * Отримує схожі проєкти для сторінки /portfolio/[slug]
+ * Логіка: той самий service → featured → order → createdAt
+ */
+export async function getRelatedProjects(
+  currentProjectId: number,
+  service: Portfolio['service'],
+  locale: string = 'uk',
+  limit: number = 3
+): Promise<Portfolio[]> {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
+    const apiUrl = `${baseUrl}/api/portfolio?where[status][equals]=published&where[service][equals]=${service}&locale=${locale}&limit=100`;
+
+    const response = await fetch(apiUrl, {
+      next: { revalidate: 3600, tags: ['portfolio'] },
+      cache: 'force-cache',
+    });
+
+    if (!response.ok) {
+      console.error('Failed to fetch related projects:', response.statusText);
+      return [];
+    }
+
+    const data: PayloadResponse<Portfolio> = await response.json();
+    let projects = data.docs ?? [];
+
+    // Виключити поточний проєкт
+    projects = projects.filter(p => p.id !== currentProjectId);
+
+    // Якщо менше ніж потрібно, додати проєкти з інших категорій
+    if (projects.length < limit) {
+      const otherApiUrl = `${baseUrl}/api/portfolio?where[status][equals]=published&where[service][not_equals]=${service}&locale=${locale}&limit=100`;
+
+      const otherResponse = await fetch(otherApiUrl, {
+        next: { revalidate: 3600, tags: ['portfolio'] },
+        cache: 'force-cache',
+      });
+
+      if (otherResponse.ok) {
+        const otherData: PayloadResponse<Portfolio> = await otherResponse.json();
+        const otherProjects = otherData.docs ?? [];
+
+        // Виключити поточний проєкт з інших категорій теж
+        const filteredOtherProjects = otherProjects.filter(p => p.id !== currentProjectId);
+
+        projects = [...projects, ...filteredOtherProjects];
+      }
+    }
+
+    // Сортування: featured → order → createdAt
+    const sorted = projects.sort((a, b) => {
+      if (a.featured && !b.featured) return -1;
+      if (!a.featured && b.featured) return 1;
+      return sortByOrderAndDate(a, b);
+    });
+
+    return sorted.slice(0, limit);
+  } catch (error) {
+    console.error('Error fetching related projects:', error);
+    return [];
+  }
+}

@@ -6,6 +6,7 @@ import { setRequestLocale } from "next-intl/server";
 import { Victor_Mono } from "next/font/google";
 import Header from "@/client/components/Header/Header";
 import Footer from "@/client/components/Footer/Footer";
+import StarsBackground from "@/client/components/StarsBackground/StarsBackground";
 
 import "./globals.scss";
 
@@ -45,6 +46,7 @@ export default async function LocaleLayout({
           <Header />
           {children}
           <Footer />
+          <StarsBackground />
         </NextIntlClientProvider>
       </body>
     </html>

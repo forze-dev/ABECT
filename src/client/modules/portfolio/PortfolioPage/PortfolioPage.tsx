@@ -4,7 +4,8 @@ import { JSX, useState, useMemo } from 'react';
 import { useTranslations } from 'next-intl';
 import type { Portfolio } from '@/payload-types';
 import PortfolioFilter, { FilterType } from '../PortfolioFilter/PortfolioFilter';
-import PortfolioList from '@/client/components/Portfolio/PortfolioList/PortfolioList';
+import PortfolioList from '@/client/components/PortfolioList/PortfolioList';
+import Breadcrumbs from '@/client/components/Breadcrumbs/Breadcrumbs';
 import './PortfolioPage.scss';
 
 interface PortfolioPageProps {
@@ -53,33 +54,7 @@ export default function PortfolioPage({
 					</p>
 				</header>
 
-				{/* Breadcrumbs */}
-				<nav
-					className="portfolio-page__breadcrumbs"
-					itemScope
-					itemType="https://schema.org/BreadcrumbList"
-				>
-					<ol>
-						<li
-							itemProp="itemListElement"
-							itemScope
-							itemType="https://schema.org/ListItem"
-						>
-							<a itemProp="item" href={`/${locale === 'ua' ? '' : locale}`}>
-								<span itemProp="name">{t('breadcrumbHome')}</span>
-							</a>
-							<meta itemProp="position" content="1" />
-						</li>
-						<li
-							itemProp="itemListElement"
-							itemScope
-							itemType="https://schema.org/ListItem"
-						>
-							<span itemProp="name">{t('breadcrumbPortfolio')}</span>
-							<meta itemProp="position" content="2" />
-						</li>
-					</ol>
-				</nav>
+				<Breadcrumbs chapter='portfolio' />
 
 				{/* Main Layout: Фильтр (1fr) + Контент (3fr) */}
 				<div className="portfolio-page__layout">
@@ -95,7 +70,7 @@ export default function PortfolioPage({
 						{/* Если есть проекты */}
 						{filteredProjects.length > 0 ? (
 							<>
-								<PortfolioList projects={filteredProjects} locale={locale} />
+								<PortfolioList projects={filteredProjects} locale={locale} startRows={2} />
 
 								{/* Stats Footer */}
 								<footer className="portfolio-page__stats">

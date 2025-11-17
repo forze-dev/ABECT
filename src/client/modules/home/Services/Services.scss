@@ -1,6 +1,10 @@
 /* Services */
 .services {
-	background: linear-gradient(to right, var(--back), var(--backLight));
+	background: var(--back);
+	border: 1px solid var(--border-subtle);
+	box-shadow:
+		0 8px 32px var(--shadow-dark),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
 	padding: 120px 0;
 	position: relative;
 	overflow: hidden;
@@ -108,14 +112,12 @@
 		left: 0;
 		right: 0;
 		height: 1px;
-		background: linear-gradient(
-			90deg,
-			transparent 0%,
-			rgba(255, 255, 255, 0.4) 30%,
-			rgba(255, 255, 255, 0.6) 50%,
-			rgba(255, 255, 255, 0.4) 70%,
-			transparent 100%
-		);
+		background: linear-gradient(90deg,
+				transparent 0%,
+				rgba(255, 255, 255, 0.4) 30%,
+				rgba(255, 255, 255, 0.6) 50%,
+				rgba(255, 255, 255, 0.4) 70%,
+				transparent 100%);
 	}
 
 	&::after {

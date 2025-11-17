@@ -2,7 +2,7 @@ import { JSX } from 'react';
 import { Link } from '@/client/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getFeaturedPortfolio } from '@/client/lib/portfolio';
-import PortfolioList from '@/client/components/Portfolio/PortfolioList/PortfolioList';
+import PortfolioList from '../../../components/PortfolioList/PortfolioList';
 import './Portfolio.scss';
 
 interface PortfolioProps {

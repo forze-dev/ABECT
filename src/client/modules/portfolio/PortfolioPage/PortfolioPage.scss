@@ -1,7 +1,7 @@
 /* Portfolio Page */
 .portfolio-page {
-	padding: 60px 0 120px;
 	min-height: calc(100vh - 80px);
+	padding-top: 30px;
 
 	&__header {
 		text-align: center;
@@ -22,50 +22,6 @@
 		max-width: 800px;
 		margin: 0 auto;
 		line-height: 1.6;
-	}
-
-	/* Breadcrumbs */
-	&__breadcrumbs {
-		margin-bottom: 40px;
-
-		ol {
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			list-style: none;
-			flex-wrap: wrap;
-		}
-
-		li {
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			font-size: 14px;
-			color: var(--nav-text);
-
-			&::after {
-				content: '/';
-				color: var(--border-subtle);
-			}
-
-			&:last-child::after {
-				display: none;
-			}
-
-			&:last-child {
-				color: var(--white);
-			}
-		}
-
-		a {
-			color: var(--nav-text);
-			text-decoration: none;
-			transition: color 0.3s ease;
-
-			&:hover {
-				color: var(--accent);
-			}
-		}
 	}
 
 	/* Main Layout: 1fr (filter) + 3fr (content) */
@@ -146,7 +102,7 @@
 
 	/* Адаптивность */
 	@media (max-width: 1024px) {
-		padding: 40px 0 100px;
+		padding-top: 0px;
 
 		&__title {
 			font-size: 36px;
@@ -167,8 +123,6 @@
 	}
 
 	@media (max-width: 768px) {
-		padding: 30px 0 80px;
-
 		&__header {
 			margin-bottom: 30px;
 		}
@@ -180,14 +134,6 @@
 
 		&__subtitle {
 			font-size: 16px;
-		}
-
-		&__breadcrumbs {
-			margin-bottom: 30px;
-
-			li {
-				font-size: 13px;
-			}
 		}
 
 		&__layout {

@@ -293,5 +293,44 @@
 			"description": "ABECT web development portfolio: completed websites, designs and marketing cases. Over 50 successful projects for Ukrainian and European businesses.",
 			"keywords": "web studio portfolio, website development cases, website examples, design portfolio, web development examples, ABECT works, completed websites"
 		}
+	},
+	"ProjectDetail": {
+		"badges": {
+			"website": "Website",
+			"design": "Design",
+			"promotion": "Marketing"
+		},
+		"featured": "Featured",
+		"client": "Client",
+		"views": "views",
+		"visitWebsite": "Visit Website",
+		"sidebar": {
+			"projectInfo": "Project Information",
+			"client": "Client",
+			"date": "Launch Date",
+			"service": "Service",
+			"type": "Development Type",
+			"visitWebsite": "Visit Website",
+			"tableOfContents": "Table of Contents",
+			"types": {
+				"custom": "Custom development",
+				"builder": "Builder-based"
+			}
+		},
+		"contact": {
+			"title": "Want a similar project?",
+			"description": "Fill out the form and we'll contact you within an hour",
+			"formPlaceholder": "Contact Form (Coming Soon)"
+		},
+		"related": {
+			"title": "Related Projects",
+			"subtitle": "Other works that might interest you",
+			"viewAll": "View All Projects"
+		}
+	},
+	"Breadcrumbs": {
+		"home": "Home",
+		"portfolio": "Portfolio",
+		"blog": "Blog"
 	}
 }

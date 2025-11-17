@@ -8,13 +8,14 @@ import './PortfolioList.scss';
 interface PortfolioListProps {
 	projects: Portfolio[];
 	locale: string;
+	startRows?: number
 }
 
-export default function PortfolioList({ projects, locale }: PortfolioListProps):JSX.Element | null {
-    if (!projects?.length) return null;
+export default function PortfolioList({ projects, locale, startRows = 3 }: PortfolioListProps): JSX.Element | null {
+	if (!projects?.length) return null;
 
 	return (
-		<div className="portfolio-list" role="list" aria-label="Список проєктів портфоліо">
+		<div className={`portfolio-list portfolio-list__rows--${startRows}`} role="list" aria-label="Список проєктів портфоліо">
 			{projects.map((project) => (
 				<div key={project.id} role="listitem">
 					<PortfolioCard project={project} locale={locale} />
