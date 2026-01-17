@@ -1,0 +1,13 @@
+/* About Page */
+.about-page {
+	min-height: calc(100vh - 80px);
+	padding-top: 30px;
+	color: var(--white);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+	.about-page {
+		padding-top: 0px;
+	}
+}

@@ -1,0 +1,35 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Дозволяє запускати вручну
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚀 Deploy to VPS
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script: |
+            cd /var/www/abect
+            ./cicd.sh
+
+      - name: ✅ Deployment Status
+        if: success()
+        run: |
+          echo "::notice::Deployment to production completed successfully!"
+
+      - name: ❌ Deployment Failed
+        if: failure()
+        run: |
+          echo "::error::Deployment to production failed! Check logs on VPS."
+          exit 1

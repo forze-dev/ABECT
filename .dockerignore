@@ -1,0 +1,69 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Next.js
+.next
+out
+build
+
+# Environment variables
+.env
+.env*.local
+.env.production
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Testing
+coverage
+.nyc_output
+test-results
+playwright-report
+blob-report
+playwright/.cache
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Media (if storing locally)
+media/*
+!media/.gitkeep
+
+# Docker
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# PostgreSQL data
+postgres_data
+
+# Backups
+backups
+
+# Documentation
+*.md
+!README.md
+
+# Scripts
+deploy.sh
+scripts
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+*.log
+logs

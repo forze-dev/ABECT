@@ -67,6 +67,7 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    services: Service;
     portfolio: Portfolio;
     posts: Post;
     categories: Category;
@@ -80,6 +81,7 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    services: ServicesSelect<false> | ServicesSelect<true>;
     portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
@@ -122,6 +124,252 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  /**
+   * Наприклад: "Розробка Landing Page"
+   */
+  title: string;
+  /**
+   * URL-friendly назва, наприклад: "landing-page"
+   */
+  slug: string;
+  /**
+   * Короткий опис для картки на сторінці /services
+   */
+  shortDescription: string;
+  /**
+   * Іконка для картки послуги
+   */
+  icon?: (number | null) | Media;
+  /**
+   * Головне зображення для сторінки послуги
+   */
+  heroImage?: (number | null) | Media;
+  /**
+   * Категорія для фільтрації та групування
+   */
+  category: 'web-development' | 'marketing' | 'design';
+  /**
+   * Порядок відображення (менше число = вище)
+   */
+  order?: number | null;
+  /**
+   * Показувати на головній сторінці
+   */
+  featured?: boolean | null;
+  /**
+   * Чи доступний варіант на конструкторі Weblium
+   */
+  hasWebliumOption?: boolean | null;
+  /**
+   * Вартість варіанту на Weblium
+   */
+  webliumPrice?: number | null;
+  webliumPriceCurrency?: ('UAH' | 'USD' | 'EUR') | null;
+  /**
+   * Наприклад: "5-7 днів"
+   */
+  webliumTimeline?: string | null;
+  webliumFeatures?:
+    | {
+        feature?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Короткий опис переваг Weblium варіанту
+   */
+  webliumDescription?: string | null;
+  /**
+   * Вартість кастомної розробки
+   */
+  customPrice: number;
+  customPriceCurrency: 'UAH' | 'USD' | 'EUR';
+  /**
+   * Наприклад: "2-3 тижні"
+   */
+  customTimeline: string;
+  customFeatures: {
+    feature?: string | null;
+    id?: string | null;
+  }[];
+  /**
+   * Короткий опис переваг кастомної розробки
+   */
+  customDescription: string;
+  /**
+   * Що таке, для кого, які завдання вирішує
+   */
+  detailedDescription: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Детальний список що входить в послугу
+   */
+  whatIncluded?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  process?:
+    | {
+        /**
+         * Наприклад: "01", "02"
+         */
+        stepNumber?: string | null;
+        /**
+         * Наприклад: "Аналіз і планування"
+         */
+        stepTitle?: string | null;
+        stepDescription?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Порівняння Weblium vs Custom
+   */
+  comparisonTable?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Проекти з портфоліо для цієї послуги
+   */
+  relatedPortfolioProjects?: (number | Portfolio)[] | null;
+  /**
+   * Інші послуги які можуть зацікавити клієнта
+   */
+  relatedServices?: (number | Service)[] | null;
+  faq?:
+    | {
+        question?: string | null;
+        answer?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Технології які використовуються в послузі
+   */
+  technologies?:
+    | {
+        tech?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  benefits?:
+    | {
+        title?: string | null;
+        description?: string | null;
+        /**
+         * Назва іконки або emoji
+         */
+        icon?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  seo: {
+    metaTitle: string;
+    metaDescription: string;
+    metaKeywords: string;
+    /**
+     * Зображення для соціальних мереж
+     */
+    ogImage?: (number | null) | Media;
+  };
+  /**
+   * Лічильник переглядів сторінки послуги
+   */
+  viewCount?: number | null;
+  status: 'draft' | 'published' | 'archived';
+  /**
+   * Дата публікації послуги
+   */
+  publishedDate?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Опис зображення для SEO та доступності
+   */
+  alt: string;
+  /**
+   * Підпис до зображення
+   */
+  caption?: string | null;
+  /**
+   * Організація файлів по папках
+   */
+  folder?: ('posts' | 'categories' | 'portfolio' | 'general') | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -188,36 +436,6 @@ export interface Portfolio {
   order?: number | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Опис зображення для SEO та доступності
-   */
-  alt: string;
-  /**
-   * Підпис до зображення
-   */
-  caption?: string | null;
-  /**
-   * Організація файлів по папках
-   */
-  folder?: ('posts' | 'categories' | 'portfolio' | 'general') | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -380,6 +598,10 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
         relationTo: 'portfolio';
         value: number | Portfolio;
       } | null)
@@ -444,6 +666,88 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  shortDescription?: T;
+  icon?: T;
+  heroImage?: T;
+  category?: T;
+  order?: T;
+  featured?: T;
+  hasWebliumOption?: T;
+  webliumPrice?: T;
+  webliumPriceCurrency?: T;
+  webliumTimeline?: T;
+  webliumFeatures?:
+    | T
+    | {
+        feature?: T;
+        id?: T;
+      };
+  webliumDescription?: T;
+  customPrice?: T;
+  customPriceCurrency?: T;
+  customTimeline?: T;
+  customFeatures?:
+    | T
+    | {
+        feature?: T;
+        id?: T;
+      };
+  customDescription?: T;
+  detailedDescription?: T;
+  whatIncluded?: T;
+  process?:
+    | T
+    | {
+        stepNumber?: T;
+        stepTitle?: T;
+        stepDescription?: T;
+        id?: T;
+      };
+  comparisonTable?: T;
+  relatedPortfolioProjects?: T;
+  relatedServices?: T;
+  faq?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  technologies?:
+    | T
+    | {
+        tech?: T;
+        id?: T;
+      };
+  benefits?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        metaKeywords?: T;
+        ogImage?: T;
+      };
+  viewCount?: T;
+  status?: T;
+  publishedDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

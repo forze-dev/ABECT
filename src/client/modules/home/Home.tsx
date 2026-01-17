@@ -13,7 +13,7 @@ function Home({ locale }: HomeProps): JSX.Element {
 	return (
 		<main>
 			<Hero />
-			<Services />
+			<Services locale={locale} />
 			<Portfolio locale={locale}/>
 			<Advantages />
 		</main>

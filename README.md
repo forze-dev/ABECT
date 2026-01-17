@@ -1,67 +1,224 @@
-# Payload Blank Template
+# ABECT CMS
 
-This template comes configured with the bare minimum to get started on anything you need.
+Content Management System для ABECT на базі Payload CMS 3 + Next.js 15.
 
-## Quick start
+## 🚀 Стек технологій
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+- **Next.js 15.4.10** - React фреймворк
+- **Payload CMS 3.62.1** - Headless CMS
+- **React 19.1.4** - UI бібліотека
+- **PostgreSQL 17** - База даних
+- **Docker** - Контейнеризація
+- **Nginx** - Reverse proxy
+- **TypeScript** - Мова програмування
 
-## Quick Start - local setup
+## 📋 Колекції
 
-To spin up this template locally, follow these steps:
+- **Services** - Послуги (з підтримкою Weblium/Custom pricing)
+- **Portfolio** - Портфоліо проектів
+- **Posts** - Блог пости
+- **Categories** - Категорії
+- **Media** - Медіа файли
+- **Comments** - Коментарі
+- **Users** - Користувачі
 
-### Clone
+## 🌍 Локалізація
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+Підтримка мов:
+- 🇺🇦 Українська (за замовчуванням)
+- 🇬🇧 English
 
-### Development
+## 💻 Локальний розробка
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URI` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+### Вимоги
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+- Node.js 18.20.2+ або 20.9.0+
+- pnpm 9+
+- PostgreSQL 17 (локально або через Docker)
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+### Встановлення
 
-#### Docker (Optional)
+```bash
+# Встановлення залежностей
+pnpm install
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+# Копіювання .env
+cp .env.example .env
 
-To do so, follow these steps:
+# Налаштування DATABASE_URI в .env
+# DATABASE_URI=postgresql://user:password@localhost:5432/payload
 
-- Modify the `MONGODB_URI` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URI` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+# Генерація типів Payload
+pnpm generate:types
 
-## How it works
+# Запуск dev сервера
+pnpm dev
+```
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+Відкрийте http://localhost:3000
 
-### Collections
+### Корисні команди
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+```bash
+# Розробка
+pnpm dev                    # Запуск dev сервера
+pnpm build                  # Збірка для production
+pnpm start                  # Запуск production сервера
 
-- #### Users (Authentication)
+# Генерація
+pnpm generate:types         # Генерація TypeScript типів
+pnpm generate:importmap     # Генерація import map
 
-  Users are auth-enabled collections that have access to the admin panel.
+# Тестування
+pnpm test                   # Всі тести
+pnpm test:int               # Інтеграційні тести
+pnpm test:e2e               # E2E тести
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+# Лінтинг
+pnpm lint                   # ESLint
 
-- #### Media
+# Payload CLI
+pnpm pl                     # Payload CLI команди
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+# Seed дані
+pnpm seed:services          # Seed базових послуг
+pnpm seed:services:extra    # Seed додаткових послуг
+```
 
-### Docker
+## 🚀 Production Deployment
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+### Швидкий старт
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+Дивіться [QUICK_START.md](./QUICK_START.md) для швидкого deployment (5 хвилин).
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+### Детальна інструкція
 
-## Questions
+Дивіться [DEPLOYMENT.md](./DEPLOYMENT.md) для повної інструкції з deployment на VPS Ubuntu 24.04.
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+### Основні кроки
+
+1. Оновіть залежності: `pnpm install`
+2. Налаштуйте VPS з Docker, Nginx
+3. Налаштуйте DNS для домену
+4. Створіть `.env` з production налаштуваннями
+5. Отримайте SSL сертифікат
+6. Запустіть: `docker compose up -d`
+
+## 🔄 CI/CD
+
+### Автоматичний deployment
+
+Налаштуйте CI/CD для автоматичного deployment при кожному push:
+
+**Швидке налаштування (10 хвилин):**
+- [docs/QUICK-CICD.md](./docs/QUICK-CICD.md)
+
+**Детальна документація:**
+- [docs/CI-CD-SETUP.md](./docs/CI-CD-SETUP.md)
+
+**Як це працює:**
+```bash
+git push origin main
+     ↓
+GitHub Actions запускається
+     ↓
+Підключення до VPS через SSH
+     ↓
+Виконання cicd.sh
+     ↓
+✅ Сайт автоматично оновлено!
+```
+
+### Документація
+
+Повна документація доступна в папці [docs/](./docs/):
+- [Архітектура системи](./docs/ARCHITECTURE.md)
+- [CI/CD Setup](./docs/CI-CD-SETUP.md)
+- [Quick CI/CD](./docs/QUICK-CICD.md)
+
+## 🔒 Безпека
+
+### Оновлення безпеки
+
+Проект включає виправлення критичних уразливостей:
+- ✅ **CVE-2025-55182** - React RCE (CVSS 10.0)
+- ✅ **CVE-2025-66478** - Next.js RCE (CVSS 10.0)
+- ✅ **CVE-2025-55184** - React DoS (CVSS 7.5)
+- ✅ **CVE-2025-67779** - React DoS (CVSS 7.5)
+- ✅ **CVE-2025-55183** - Source Code Exposure
+
+### Рекомендації
+
+1. Використовуйте сильні паролі в `.env`
+2. Налаштуйте firewall (UFW)
+3. Регулярно оновлюйте залежності
+4. Налаштуйте автоматичні backups бази даних
+5. Використовуйте SSL/TLS (Let's Encrypt)
+
+## 📦 Docker
+
+### Запуск через Docker
+
+```bash
+# Створення необхідних директорій
+mkdir -p postgres_data backups media
+
+# Копіювання та налаштування .env
+cp .env.production .env
+nano .env
+
+# Запуск
+docker compose up -d
+
+# Логи
+docker compose logs -f
+
+# Зупинка
+docker compose down
+```
+
+### Backup бази даних
+
+```bash
+# Створення backup
+docker exec abect-postgres pg_dump -U payload payload > backups/backup_$(date +%Y%m%d).sql
+
+# Стиснутий backup
+docker exec abect-postgres pg_dump -U payload payload | gzip > backups/backup_$(date +%Y%m%d).sql.gz
+
+# Відновлення
+docker exec -i abect-postgres psql -U payload payload < backups/backup.sql
+```
+
+## 🏗️ Структура проекту
+
+```
+cms/
+├── src/
+│   ├── app/                    # Next.js App Router
+│   │   ├── (frontend)/         # Frontend сторінки
+│   │   └── (payload)/          # Payload адмін панель
+│   ├── client/                 # Клієнтські компоненти
+│   │   ├── components/         # Переиспользуємі компоненти
+│   │   ├── modules/            # Модулі сторінок
+│   │   └── lib/                # Утиліти
+│   ├── collections/            # Payload колекції
+│   ├── scripts/                # Скрипти (seed, міграції)
+│   └── payload.config.ts       # Payload конфігурація
+├── messages/                   # i18n переклади
+├── nginx/                      # Nginx конфігурація
+├── backups/                    # Backup бази даних
+├── media/                      # Медіа файли (uploads)
+├── docker-compose.yml          # Docker конфігурація
+├── Dockerfile                  # Docker образ
+├── .env.production             # Production env шаблон
+└── deploy.sh                   # Deployment скрипт
+```
+
+## 📝 Ліцензія
+
+MIT
+
+## 🤝 Підтримка
+
+Для питань та підтримки звертайтесь до команди ABECT.

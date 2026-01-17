@@ -47,7 +47,10 @@ body {
 	min-height: 100dvh;
 	display: flex;
 	flex-direction: column;
-	// background: url("/icons/pattern.svg");
+}
+
+body.fixed-body {
+	overflow: hidden;
 }
 
 /* стилі для всіх секцій крім .entry */

@@ -1,0 +1,126 @@
+/* Service Content */
+.service-content {
+
+	&__description,
+	&__included,
+	&__comparison,
+	&__technologies,
+	&__benefits {
+		max-width: 900px;
+		margin: 0 auto;
+		margin-bottom: 80px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&__title {
+		font-size: 32px;
+		font-weight: 700;
+		color: var(--white);
+		margin-bottom: 32px;
+		letter-spacing: -0.01em;
+	}
+
+	/* Technologies */
+	&__tech-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		list-style: none;
+	}
+
+	&__tech-item {
+		padding: 10px 20px;
+		background: rgba(255, 255, 255, 0.05);
+		border: 1px solid var(--border-subtle);
+		border-radius: 12px;
+		color: var(--white);
+		font-size: 15px;
+		font-weight: 500;
+		transition: all 0.3s ease;
+
+		&:hover {
+			background: var(--accent-alpha-10);
+			border-color: var(--accent);
+			transform: translateY(-2px);
+		}
+	}
+
+	/* Benefits Grid */
+	&__benefits-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 24px;
+	}
+
+	&__benefit-card {
+		padding: 24px;
+		background: rgba(255, 255, 255, 0.03);
+		backdrop-filter: blur(10px);
+		border-radius: 16px;
+		border: 1px solid var(--border-subtle);
+		transition: all 0.3s ease;
+
+		&:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 8px 24px var(--shadow-dark);
+			border-color: var(--accent);
+		}
+	}
+
+	&__benefit-icon {
+		font-size: 32px;
+		margin-bottom: 16px;
+	}
+
+	&__benefit-title {
+		font-size: 18px;
+		font-weight: 600;
+		color: var(--white);
+		margin-bottom: 8px;
+	}
+
+	&__benefit-description {
+		font-size: 15px;
+		color: var(--nav-text);
+		line-height: 1.6;
+	}
+
+	/* Responsive */
+	@media (max-width: 1024px) {
+
+		&__description,
+		&__included,
+		&__comparison,
+		&__technologies,
+		&__benefits {
+			margin-bottom: 60px;
+		}
+
+		&__title {
+			font-size: 28px;
+		}
+	}
+
+	@media (max-width: 768px) {
+
+		&__description,
+		&__included,
+		&__comparison,
+		&__technologies,
+		&__benefits {
+			margin-bottom: 50px;
+		}
+
+		&__title {
+			font-size: 24px;
+			margin-bottom: 24px;
+		}
+
+		&__benefits-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+}

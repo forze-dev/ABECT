@@ -1,43 +1,98 @@
-version: '3'
+version: '3.8'
 
 services:
-  payload:
-    image: node:18-alpine
-    ports:
-      - '3000:3000'
+  # PostgreSQL 17 Database
+  postgres:
+    image: postgres:17-alpine
+    restart: always
+    container_name: abect-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-payload}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-payload}
+      # PostgreSQL оптимізації для production
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
     volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
+      - postgres_data:/var/lib/postgresql/data
+      # Бекапи (опціонально)
+      - ./backups:/backups
+    ports:
+      # Закоментуйте цей порт у production, якщо не потрібен зовнішній доступ
+      - "5432:5432"
+    networks:
+      - abect-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-payload} -d ${POSTGRES_DB:-payload}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    # Обмеження ресурсів (налаштуйте під ваш VPS)
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  # Next.js + Payload CMS Application
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: production
+    restart: always
+    container_name: abect-app
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      # Database
+      DATABASE_URI: postgresql://${POSTGRES_USER:-payload}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-payload}
+      # Payload
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET}
+      # Next.js
+      NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://abect.com}
+      NEXT_TELEMETRY_DISABLED: 1
+      # Додаткові налаштування для production
+      PORT: 3000
+      HOSTNAME: "0.0.0.0"
     depends_on:
-      - mongo
-      # - postgres
-    env_file:
-      - .env
-
-  # Ensure your DATABASE_URI uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
-  mongo:
-    image: mongo:latest
-    ports:
-      - '27017:27017'
-    command:
-      - --storageEngine=wiredTiger
+      postgres:
+        condition: service_healthy
+    networks:
+      - abect-network
     volumes:
-      - data:/data/db
-    logging:
-      driver: none
-
-  # Uncomment the following to use postgres
-  # postgres:
-  #   restart: always
-  #   image: postgres:latest
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
+      # Media files (якщо зберігаєте локально, а не в S3)
+      - ./media:/app/media
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+    # Обмеження ресурсів
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
 
 volumes:
-  data:
-  # pgdata:
-  node_modules:
+  postgres_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ${PWD}/postgres_data
+
+networks:
+  abect-network:
+    driver: bridge
+    name: abect-network

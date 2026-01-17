@@ -10,7 +10,7 @@ export default function LanguageSwitcher() {
 	const locale = useLocale();
 	const router = useRouter();
 	const pathname = usePathname();
-	const dropdownRef = useRef(null);
+	const dropdownRef = useRef<HTMLDivElement>(null);
 
 	const languages = [
 		{ code: 'ua', label: 'UA' },
@@ -19,8 +19,8 @@ export default function LanguageSwitcher() {
 
 	// Close dropdown when clicking outside
 	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
 				setIsOpen(false);
 			}
 		};
@@ -34,7 +34,7 @@ export default function LanguageSwitcher() {
 		};
 	}, [isOpen]);
 
-	const handleLanguageChange = (newLocale) => {
+	const handleLanguageChange = (newLocale: string) => {
 		setIsOpen(false);
 		router.push(pathname, { locale: newLocale });
 	};

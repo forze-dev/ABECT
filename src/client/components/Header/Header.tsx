@@ -1,7 +1,7 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import Image from 'next/image';
-import { Link } from '@/client/i18n/navigation';
+import { Link, usePathname } from '@/client/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import './Header.scss';
@@ -10,15 +10,17 @@ import { Send, Facebook, Instagram } from 'lucide-react';
 export default function Header() {
 	const t = useTranslations('Header');
 	const tCC = useTranslations('Common');
+	const pathname = usePathname();
 
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
-	const [activeSection, setActiveSection] = useState('services');
-	const [indicatorStyle, setIndicatorStyle] = useState({});
+	const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0 });
+	const [showIndicator, setShowIndicator] = useState(false);
 
-	const headerRef = useRef(null);
-	const navRef = useRef(null);
-	const menuRef = useRef(null);
+	const headerRef = useRef<HTMLElement>(null);
+	const navRef = useRef<HTMLElement>(null);
+	const menuRef = useRef<HTMLDivElement>(null);
+	const navItemsRef = useRef<(HTMLElement | null)[]>([]);
 
 	// Touch handling for swipe to close
 	const touchStartX = useRef(0);
@@ -26,6 +28,27 @@ export default function Header() {
 	const touchEndX = useRef(0);
 	const touchEndY = useRef(0);
 	const isSwiping = useRef(false);
+
+	// Navigation items - memoized to prevent unnecessary re-renders
+	const navItems = useMemo(
+		() => [
+			{ href: '/services', section: 'services' },
+			{ href: '/about', section: 'about' },
+			{ href: '/portfolio', section: 'portfolio' },
+			{ href: '/blog', section: 'blog' },
+			{ href: '/contacts', section: 'contacts' }
+		],
+		[]
+	);
+
+	const contactLinks = useMemo(
+		() => [
+			{ href: 'https://t.me/+380980275819', icon: <Send /> },
+			{ href: 'https://wa.me/380934638024', icon: <Facebook /> },
+			{ href: 'viber://chat/?number=%2B380980275819', icon: <Instagram /> }
+		],
+		[]
+	);
 
 	// Toggle menu
 	const toggleMenu = () => {
@@ -61,76 +84,54 @@ export default function Header() {
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
 
-	// Handle intersection observer for active sections
+	// Update indicator position based on active route
 	useEffect(() => {
-		const sections = document.querySelectorAll('section[id]');
+		const updateIndicator = () => {
+			const activeIndex = navItems.findIndex((item) => pathname === item.href);
 
-		const options = {
-			root: null,
-			rootMargin: '-20% 0px -70% 0px',
-			threshold: 0
+			if (activeIndex !== -1 && navItemsRef.current[activeIndex]) {
+				const liElement = navItemsRef.current[activeIndex];
+				const navElement = navRef.current;
+
+				if (liElement && navElement) {
+					// Get the actual Link element inside the li
+					const linkElement = liElement.querySelector('a');
+
+					if (linkElement) {
+						const navRect = navElement.getBoundingClientRect();
+						const linkRect = linkElement.getBoundingClientRect();
+
+						setIndicatorStyle({
+							left: linkRect.left - navRect.left,
+							width: linkRect.width
+						});
+						setShowIndicator(true);
+					}
+				}
+			} else {
+				// Hide indicator if no active item found (e.g., on home page)
+				setShowIndicator(false);
+			}
 		};
 
-		const observer = new IntersectionObserver((entries) => {
-			entries.forEach(entry => {
-				if (entry.isIntersecting) {
-					setActiveSection(entry.target.id);
-				}
-			});
-		}, options);
-
-		sections.forEach(section => observer.observe(section));
+		// Small delay to ensure DOM is ready
+		const timer = setTimeout(updateIndicator, 0);
+		window.addEventListener('resize', updateIndicator);
 
 		return () => {
-			sections.forEach(section => observer.unobserve(section));
+			clearTimeout(timer);
+			window.removeEventListener('resize', updateIndicator);
 		};
-	}, []);
-
-	// Update indicator position
-	useEffect(() => {
-		if (!navRef.current) return;
-
-		const activeLink = navRef.current.querySelector(`[data-section="${activeSection}"]`);
-		if (!activeLink) return;
-
-		const linkRect = activeLink.getBoundingClientRect();
-		const navRect = navRef.current.getBoundingClientRect();
-
-		const leftPosition = linkRect.left - navRect.left;
-		const width = linkRect.width;
-
-		setIndicatorStyle({
-			left: `${leftPosition}px`,
-			width: `${width}px`
-		});
-	}, [activeSection]);
-
-	// Handle smooth scroll
-	const handleNavClick = (e, targetId) => {
-		e.preventDefault();
-		const targetSection = document.getElementById(targetId);
-
-		if (targetSection && headerRef.current) {
-			const headerHeight = headerRef.current.offsetHeight;
-			const targetPosition = targetSection.offsetTop - headerHeight - 50;
-
-			window.scrollTo({
-				top: targetPosition,
-				behavior: 'smooth'
-			});
-		}
-
-		closeMenu();
-	};
+	}, [pathname]);
 
 	// Handle touch events for swipe
-	const handleTouchStart = (e) => {
+	const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
 		touchStartX.current = e.changedTouches[0].screenX;
 		touchStartY.current = e.changedTouches[0].screenY;
 		isSwiping.current = false;
 	};
 
-	const handleTouchMove = (e) => {
+	const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
 		isSwiping.current = true;
 		touchEndX.current = e.changedTouches[0].screenX;
 		touchEndY.current = e.changedTouches[0].screenY;
@@ -147,20 +148,6 @@ export default function Header() {
 		}
 		isSwiping.current = false;
 	};
-
-	const navItems = [
-		{ href: '#services', section: 'services' },
-		{ href: '#about', section: 'about' },
-		{ href: '#portfolio', section: 'portfolio' },
-		{ href: '#price', section: 'price' },
-		{ href: '#contacts', section: 'contacts' }
-	];
-
-	const contactLinks = [
-		{ href: 'https://t.me/+380980275819', icon: <Send /> },
-		{ href: 'https://wa.me/380934638024', icon: <Facebook /> },
-		{ href: 'viber://chat/?number=%2B380980275819', icon: <Instagram /> }
-	];
 
 	return (
 		<header ref={headerRef} className={`header ${isScrolled ? 'scrolled' : ''}`}>
@@ -185,30 +172,36 @@ export default function Header() {
 							aria-label={t('menuAriaLabel')}
 						>
 							<ul itemScope itemType="https://schema.org/ItemList">
-								{navItems.map((item) => (
+								{navItems.map((item, index) => (
 									<li
 										key={item.section}
 										itemProp="itemListElement"
 										itemScope
 										itemType="https://schema.org/ListItem"
+										ref={(el) => {
+											navItemsRef.current[index] = el;
+										}}
 									>
-										<a
+										<Link
 											href={item.href}
 											title={t(`navTitles.${item.section}`)}
 											itemProp="url"
 											data-section={item.section}
-											className={activeSection === item.section ? 'active' : ''}
-											onClick={(e) => handleNavClick(e, item.section)}
+											className={pathname === item.href ? 'active' : ''}
+											onClick={closeMenu}
 										>
 											<span itemProp="name">{t(`nav.${item.section}`)}</span>
-										</a>
+										</Link>
 									</li>
 								))}
 							</ul>
 							<div
-								className={`nav-indicator ${activeSection ? 'active' : ''}`}
-								style={indicatorStyle}
-							></div>
+								className={`nav-indicator ${showIndicator ? 'active' : ''}`}
+								style={{
+									left: `${indicatorStyle.left}px`,
+									width: `${indicatorStyle.width}px`
+								}}
+							/>
 						</nav>
 
 						<div className="header__menu-contacts" aria-label={t('contactsAriaLabel')}>

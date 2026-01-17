@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link, usePathname } from '@/client/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import { Send, Facebook, Instagram, Smartphone, Mail } from 'lucide-react';
 import './Footer.scss';
 
 export default function Footer() {
 	const t = useTranslations('Footer');
+	const pathname = usePathname();
 	const [currentYear, setCurrentYear] = useState(2025);
 
 	useEffect(() => {
@@ -16,11 +17,11 @@ export default function Footer() {
 	}, []);
 
 	const navItems = [
-		{ href: '/#services', section: 'services' },
-		{ href: '/#about', section: 'about' },
-		{ href: '/#portfolio', section: 'portfolio' },
-		{ href: '/#price', section: 'price' },
-		{ href: '/#contacts', section: 'contacts' }
+		{ href: '/services', section: 'services' },
+		{ href: '/about', section: 'about' },
+		{ href: '/portfolio', section: 'portfolio' },
+		{ href: '/blog', section: 'blog' },
+		{ href: '/contacts', section: 'contacts' }
 	];
 
 	const contactLinks = [
@@ -83,13 +84,14 @@ export default function Footer() {
 											itemScope
 											itemType="https://schema.org/ListItem"
 										>
-											<a
+											<Link
 												href={item.href}
 												title={t(`navTitles.${item.section}`)}
 												itemProp="url"
+												className={pathname === item.href ? 'active' : ''}
 											>
 												<span itemProp="name">{t(`nav.${item.section}`)}</span>
-											</a>
+											</Link>
 										</li>
 									))}
 								</ul>

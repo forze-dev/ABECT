@@ -172,9 +172,82 @@
 		}
 	},
 	"AboutPage": {
-		"title": "About Us",
-		"description": "This is the about us page. This content is statically generated (SSG).",
-		"additionalInfo": "This page demonstrates the use of static generation for multilingual content."
+		"seo": {
+			"title": "About Us — ABECT | Ukrainian Web Studio",
+			"description": "ABECT is a Ukrainian web studio that creates quality web solutions for business. Learn about our team, work approach, and values.",
+			"keywords": "about us, web studio, development team, ABECT, about company"
+		},
+		"hero": {
+			"title": "We create digital products that work",
+			"subtitle": "ABECT is a Ukrainian web studio that transforms ideas into functional websites and applications for business",
+			"button": "Discuss Project"
+		},
+		"story": {
+			"title": "Who We Are",
+			"paragraph1": "ABECT started as an idea to create quality web solutions for the Ukrainian and European markets. Over time, we've grown from simple landing pages to complex fintech platforms and banking integrations. Today, we are a team of professionals who combine technical expertise, creative design, and effective marketing.",
+			"paragraph2": "We believe in a practical approach: no excessive theory, only working solutions that deliver results. Our team combines development, design, and marketing under one roof, allowing us to quickly implement projects of any complexity. We don't just execute technical tasks — we delve into the client's business, understand their goals, and offer solutions that actually work.",
+			"paragraph3": "Every project for us is an opportunity to create something valuable. We work with businesses of all sizes: from startups just launching to established companies needing modernization or scaling. Our goal is not just to make a website, but to create a tool that will help your business grow and thrive in the digital environment."
+		},
+		"stats": {
+			"years": "2.5+",
+			"yearsLabel": "years in business",
+			"projects": "40+",
+			"projectsLabel": "successful projects",
+			"geography": "Ukraine, Europe",
+			"geographyLabel": "geography"
+		},
+		"team": {
+			"title": "Team",
+			"subtitle": "Professionals who make your ideas a reality",
+			"member1": {
+				"name": "Roman Popovych",
+				"position": "Full-Stack Developer & Co-Founder",
+				"description": "Specializing in Node.js, React, and fintech integrations. I love complex technical challenges and build systems that scale."
+			},
+			"member2": {
+				"name": "Dayana Melai",
+				"position": "UI/UX Designer & Co-Founder",
+				"description": "I create interfaces that not only look good but are also user-friendly. I work to make every project intuitive and visually appealing. I believe design should solve problems, not create them."
+			},
+			"member3": {
+				"name": "Nadiia Lopushanska",
+				"position": "SMM Manager",
+				"description": "I help brands find their audience on social media. I develop content strategies, automate publications, and analyze campaign effectiveness. I make your social media work for your business."
+			},
+			"member4": {
+				"name": "Ivan Lopushanskyi",
+				"position": "Project Manager",
+				"description": "I ensure all projects are delivered on time and meet client expectations. I coordinate the team, maintain communication with clients, and make the development process transparent and predictable."
+			}
+		},
+		"approach": {
+			"title": "How We Work",
+			"principle1": {
+				"title": "Direct client dialogue",
+				"description": "No intermediaries or unnecessary bureaucracy. You communicate directly with those who are working on your project."
+			},
+			"principle2": {
+				"title": "Practical solutions",
+				"description": "We choose technologies and approaches that actually work, not just trendy ones. We focus on results."
+			},
+			"principle3": {
+				"title": "Code and design quality",
+				"description": "We make sure the product is easy to maintain and scales well. Your site won't break in a month."
+			},
+			"principle4": {
+				"title": "Process transparency",
+				"description": "You always know what stage the project is at, how much it will cost, and when it will be ready. No surprises."
+			}
+		},
+		"clients": {
+			"title": "Who We Work With",
+			"description": "We are suitable for businesses that value:\n\n→ Technical expertise in complex projects\n→ Development speed without quality loss\n→ Individual approach and flexibility\n→ Long-term product support\n→ Honest answers instead of promises\n\nIf you need not just a contractor, but a team that will understand your business and offer the best solution — we're your choice."
+		},
+		"cta": {
+			"title": "Ready to start a project?",
+			"text": "Write to us about your idea — we'll discuss the details and offer the best solution. We respond within a day.",
+			"button": "Contact Us"
+		}
 	},
 	"Header": {
 		"logo": "ABECT",
@@ -182,14 +255,14 @@
 			"services": "Services",
 			"about": "About",
 			"portfolio": "Portfolio",
-			"price": "Pricing",
+			"blog": "Blog",
 			"contacts": "Contacts"
 		},
 		"navTitles": {
 			"services": "Our services and offerings",
 			"about": "Information about our company",
 			"portfolio": "Portfolio of our projects",
-			"price": "Price list and cost of services",
+			"blog": "Our blog",
 			"contacts": "Company contact information"
 		},
 		"menuAriaLabel": "Main site menu",
@@ -205,14 +278,14 @@
 			"services": "Services",
 			"about": "About",
 			"portfolio": "Portfolio",
-			"price": "Pricing",
+			"blog": "Blog",
 			"contacts": "Contacts"
 		},
 		"navTitles": {
 			"services": "Our services and offerings",
 			"about": "Information about our company",
 			"portfolio": "Portfolio of our projects",
-			"price": "Price list and cost of services",
+			"blog": "Our blog",
 			"contacts": "Company contact information"
 		},
 		"workingHours": "Working hours:",
@@ -294,6 +367,28 @@
 			"keywords": "web studio portfolio, website development cases, website examples, design portfolio, web development examples, ABECT works, completed websites"
 		}
 	},
+	"ServicesPage": {
+		"title": "Our Services",
+		"subtitle": "Comprehensive solutions for your business growth online",
+		"filter": {
+			"title": "Services Filter",
+			"ariaLabel": "Filter services by category",
+			"selectAriaLabel": "Select category to filter",
+			"all": "All Services",
+			"webDevelopment": "Web Development",
+			"marketing": "Marketing",
+			"design": "Design"
+		},
+		"showingResults": "Showing services: {count}",
+		"noResults": "No results found for your query",
+		"noResultsDescription": "Try changing the filter or view all services",
+		"viewAllButton": "Show All",
+		"seo": {
+			"title": "ABECT Web Studio Services | Website Development, Design, Marketing",
+			"description": "Professional ABECT services: Next.js and WordPress website development, web design, SEO promotion, contextual advertising. Full cycle from idea to result.",
+			"keywords": "web studio services, website development, web design, SEO promotion, contextual advertising, landing page creation, online store, corporate website"
+		}
+	},
 	"ProjectDetail": {
 		"badges": {
 			"website": "Website",
@@ -328,9 +423,58 @@
 			"viewAll": "View All Projects"
 		}
 	},
+	"ServiceDetail": {
+		"featured": "Recommended",
+		"timeline": "Timeline",
+		"price": "Price",
+		"included": "What's included",
+		"orderButton": "Order Service",
+		"pricing": {
+			"title": "Weblium vs Custom Comparison",
+			"subtitle": "Choose the optimal option for your business",
+			"timeline": "Timeline",
+			"recommended": "Recommended",
+			"orderWeblium": "Order Weblium",
+			"orderCustom": "Order Custom"
+		},
+		"content": {
+			"aboutTitle": "About the Service",
+			"includedTitle": "What's Included",
+			"comparisonTitle": "Options Comparison",
+			"technologiesTitle": "Technologies",
+			"benefitsTitle": "Benefits"
+		},
+		"process": {
+			"title": "Work Process",
+			"subtitle": "How we work on your project"
+		},
+		"faq": {
+			"title": "Frequently Asked Questions",
+			"subtitle": "Answers to the most popular questions about the service"
+		},
+		"portfolio": {
+			"title": "Work Examples",
+			"subtitle": "Projects we've completed for our clients",
+			"viewAll": "View All Projects"
+		},
+		"related": {
+			"title": "Related Services",
+			"subtitle": "Other services that might interest you",
+			"viewAll": "View All Services"
+		},
+		"cta": {
+			"title": "Ready to Order {service}?",
+			"subtitle": "Leave a request and we'll contact you within an hour",
+			"orderButton": "Leave Request",
+			"consultButton": "Free Consultation"
+		}
+	},
 	"Breadcrumbs": {
 		"home": "Home",
 		"portfolio": "Portfolio",
-		"blog": "Blog"
+		"services": "Services",
+		"blog": "Blog",
+		"contacts": "Contacts",
+		"about": "About"
 	}
 }

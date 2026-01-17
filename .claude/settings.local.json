@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run generate:types:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm run seed:services:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run seed:services:extra:*)",
+      "Bash(npx tsc:*)",
+      "WebSearch",
+      "Bash(chmod:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl"
 import { JSX } from "react"
 
 interface BreadcrumbsProps {
-    chapter: "portfolio" | "blog";
+    chapter: "portfolio" | "services" | "blog" | "contacts" | "about";
     slug?: string;
 }
 

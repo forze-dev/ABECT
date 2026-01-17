@@ -11,6 +11,7 @@ import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
 import { Comments } from './collections/Comments'
 import { Portfolio } from './collections/Portfolio'
+import { Services } from './collections/Services'
 
 import { fullRichEditor } from './utils/editor';
 
@@ -25,6 +26,7 @@ export default buildConfig({
     },
   },
   collections: [
+    Services,
     Portfolio,
     Posts,
     Categories,
