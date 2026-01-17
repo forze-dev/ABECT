@@ -9,10 +9,13 @@
 !/.idea/runConfigurations
 /docs
 /docs/*
-
+.claude
+/.claude
+.vscode
 # testing
 /coverage
-
+/tests
+/.vscode
 # next.js
 /.next/
 /out/
