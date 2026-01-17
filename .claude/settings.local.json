@@ -8,7 +8,15 @@
       "Bash(npm run seed:services:extra:*)",
       "Bash(npx tsc:*)",
       "WebSearch",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(git fetch:*)",
+      "Bash(npm ls:*)",
+      "Bash(npm:*)",
+      "Bash(node:*)",
+      "WebFetch(domain:www.npmjs.com)"
     ],
     "deny": [],
     "ask": []
