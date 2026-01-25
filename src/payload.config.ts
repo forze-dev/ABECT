@@ -51,7 +51,10 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
-    }
+    },
+    // Автоматично синхронізувати схему БД при старті (як в development)
+    // Це безпечно для production якщо зміни тільки додають нові поля/таблиці
+    push: true,
   }),
   // Локалізація для українська/англійська
   localization: {
