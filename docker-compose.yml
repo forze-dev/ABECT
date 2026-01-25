@@ -1,41 +1,21 @@
 version: '3.8'
 
 services:
-  # PostgreSQL 17 Database
-  postgres:
-    image: postgres:17-alpine
+  # MongoDB Database
+  mongo:
+    image: mongo:7.0
     restart: always
-    container_name: abect-postgres
+    container_name: abect-mongo
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-payload}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB:-payload}
-      # PostgreSQL оптимізації для production
-      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-payload}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE:-payload}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      # Бекапи (опціонально)
-      - ./backups:/backups
+      - mongo_data:/data/db
     ports:
-      # Закоментуйте цей порт у production, якщо не потрібен зовнішній доступ
-      - "5432:5432"
+      - "27017:27017"
     networks:
       - abect-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-payload} -d ${POSTGRES_DB:-payload}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    # Обмеження ресурсів (налаштуйте під ваш VPS)
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 1G
-        reservations:
-          cpus: '0.5'
-          memory: 512M
 
   # Next.js + Payload CMS Application
   app:
@@ -50,23 +30,19 @@ services:
       - "3333:3000"
     environment:
       NODE_ENV: production
-      # Database
-      DATABASE_URI: postgresql://${POSTGRES_USER:-payload}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-payload}
-      # Payload
+      # Database (MongoDB URI)
+      DATABASE_URI: mongodb://${MONGO_INITDB_ROOT_USERNAME:-payload}:${MONGO_INITDB_ROOT_PASSWORD}@mongo:27017/${MONGO_INITDB_DATABASE:-payload}?authSource=admin
       PAYLOAD_SECRET: ${PAYLOAD_SECRET}
-      # Next.js
       NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-https://abect.com}
       NEXT_TELEMETRY_DISABLED: 1
-      # Додаткові налаштування для production
       PORT: 3000
       HOSTNAME: "0.0.0.0"
     depends_on:
-      postgres:
+      mongo:
         condition: service_healthy
     networks:
       - abect-network
     volumes:
-      # Media files (якщо зберігаєте локально, а не в S3)
       - ./media:/app/media
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health || exit 1"]
@@ -74,7 +50,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 90s
-    # Обмеження ресурсів
     deploy:
       resources:
         limits:
@@ -85,12 +60,8 @@ services:
           memory: 1G
 
 volumes:
-  postgres_data:
+  mongo_data:
     driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${PWD}/postgres_data
 
 networks:
   abect-network:
