@@ -4,9 +4,9 @@ import Home from '@/client/modules/home/Home';
 import { Metadata } from 'next';
 
 type Params = {
-  params: Promise<{
-    locale: string;
-  }>;
+	params: Promise<{
+		locale: string;
+	}>;
 };
 // ISR - оновлення кожні 5 хвилин
 export const revalidate = 300;
@@ -17,12 +17,12 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-	const {locale} = await params;
+	const { locale } = await params;
 	const isUa = locale === 'ua';
 
 	const title = isUa
 		? 'Розробка сайтів. Запуск реклами | ABECT'
-		: 'Website Development. Marketing Launch | ABECT';
+		: 'Website Development. Marketing Launch - ABECT';
 
 	const description = isUa
 		? 'ABECT професійна розробка сайтів для бізнесу. Ми створюємо адаптивні, швидкі та SEO-оптимізовані сайти для вашого успіху в інтернеті. З нами Ваш бізнес вийде на новий рівень!'
@@ -80,9 +80,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function HomePage({ params }: Params) {
-	const {locale} = await params;
-	
+	const { locale } = await params;
+
 	setRequestLocale(locale);
 
-	return <Home locale={locale}/>;
+	return <Home locale={locale} />;
 }
