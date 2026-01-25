@@ -1,11 +1,13 @@
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { routing } from '@/client/i18n/routing';
 import { getAllServices, getAllServiceTypes, getServiceTypeBySlug, getServicesByType } from '@/client/lib/services';
-import type { Service } from '@/payload-types';
 import ServicesPage from '@/client/modules/services/ServicesPage/ServicesPage';
 import type { Metadata } from 'next';
 import type { Media } from '@/payload-types';
+
+// ISR - сторінки генеруються динамічно і кешуються
+export const dynamicParams = true;
+export const revalidate = 3600; // Оновлення кешу кожну годину
 
 type Params = {
 	params: Promise<{
@@ -13,24 +15,6 @@ type Params = {
 		type: string;
 	}>;
 };
-
-// Generate static params for all service types
-export async function generateStaticParams() {
-	const serviceTypes = await getAllServiceTypes('uk');
-
-	const params: Array<{ locale: string; type: string }> = [];
-
-	for (const locale of routing.locales) {
-		for (const type of serviceTypes) {
-			params.push({
-				locale,
-				type: type.slug
-			});
-		}
-	}
-
-	return params;
-}
 
 // SEO Metadata
 export async function generateMetadata({ params }: Params): Promise<Metadata> {

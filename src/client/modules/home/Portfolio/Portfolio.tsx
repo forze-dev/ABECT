@@ -15,8 +15,6 @@ export default async function Portfolio({ locale }: PortfolioProps): Promise<JSX
 	// Отримуємо featured проєкти через ISR
 	const projects = await getFeaturedPortfolio(locale);
 
-	console.log(projects)
-
 	// Empty state - не показуємо секцію якщо немає проєктів
 	if (projects.length === 0) {
 		return null;

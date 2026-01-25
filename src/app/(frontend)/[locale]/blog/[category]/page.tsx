@@ -1,11 +1,13 @@
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { routing } from '@/client/i18n/routing';
 import { getAllPosts, getAllCategories, getCategoryBySlug, getPostsByCategory } from '@/client/lib/blog';
-import type { Post } from '@/payload-types';
 import BlogPage from '@/client/modules/blog/BlogPage/BlogPage';
 import type { Metadata } from 'next';
 import type { Media } from '@/payload-types';
+
+// ISR - сторінки генеруються динамічно і кешуються
+export const dynamicParams = true;
+export const revalidate = 3600; // Оновлення кешу кожну годину
 
 type Params = {
 	params: Promise<{
@@ -13,24 +15,6 @@ type Params = {
 		category: string;
 	}>;
 };
-
-// Генерація статичних параметрів для всіх категорій
-export async function generateStaticParams() {
-	const categories = await getAllCategories('uk');
-
-	const params: Array<{ locale: string; category: string }> = [];
-
-	for (const locale of routing.locales) {
-		for (const cat of categories) {
-			params.push({
-				locale,
-				category: cat.slug
-			});
-		}
-	}
-
-	return params;
-}
 
 // SEO Metadata
 export async function generateMetadata({ params }: Params): Promise<Metadata> {

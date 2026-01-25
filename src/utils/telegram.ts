@@ -112,6 +112,7 @@ function escapeMarkdown(text: string): string {
 export async function sendTelegramNotification(lead: Lead): Promise<boolean> {
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
+  const threadId = process.env.TELEGRAM_THREAD_ID
 
   if (!botToken || !chatId) {
     console.error('Telegram credentials not configured');
@@ -132,6 +133,7 @@ export async function sendTelegramNotification(lead: Lead): Promise<boolean> {
         },
         body: JSON.stringify({
           chat_id: chatId,
+          message_thread_id: threadId,
           text: message,
           parse_mode: 'MarkdownV2',
         }),

@@ -12,9 +12,6 @@ interface ProjectProps {
 }
 
 function Project({ locale, relatedProjects, project }: ProjectProps): JSX.Element {
-
-    console.log(project)
-
     return (
         <main>
             <ProjectHero project={project} locale={locale} />

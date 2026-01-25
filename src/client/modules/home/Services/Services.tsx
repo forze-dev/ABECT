@@ -14,8 +14,6 @@ export default async function Services({ locale }: ServicesProps): Promise<JSX.E
 	// Отримуємо featured сервіси через ISR
 	const services = await getFeaturedServices(locale);
 
-	console.log('Featured services:', services);
-
 	// Empty state - не показуємо секцію якщо немає сервісів
 	if (services.length === 0) {
 		return null;

@@ -1,9 +1,13 @@
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getServiceBySlug, getRelatedServices, getAllServices, getAllServiceTypes } from '@/client/lib/services';
+import { getServiceBySlug, getRelatedServices } from '@/client/lib/services';
 import ServiceDetail from '@/client/modules/service/ServiceDetail';
 import type { Media, ServiceType } from '@/payload-types';
+
+// ISR - сторінки генеруються динамічно і кешуються
+export const dynamicParams = true;
+export const revalidate = 3600; // Оновлення кешу кожну годину
 
 type Params = {
 	params: Promise<{
@@ -12,56 +16,6 @@ type Params = {
 		slug: string;
 	}>;
 };
-
-// Generate static params for all services
-export async function generateStaticParams() {
-	const services = await getAllServices('uk');
-	const servicesEn = await getAllServices('en');
-
-	const allServices = [...services, ...servicesEn];
-	const params: Array<{ locale: string; type: string; slug: string }> = [];
-
-	for (const service of allServices) {
-		const serviceType = service.serviceType as ServiceType | null;
-		if (serviceType?.slug) {
-			params.push({
-				locale: service.id <= services.length ? 'ua' : 'en',
-				type: serviceType.slug,
-				slug: service.slug
-			});
-		}
-	}
-
-	// Dedupe and fix locale assignment
-	const servicesUk = await getAllServices('uk');
-	const servicesEnOnly = await getAllServices('en');
-
-	const finalParams: Array<{ locale: string; type: string; slug: string }> = [];
-
-	for (const service of servicesUk) {
-		const serviceType = service.serviceType as ServiceType | null;
-		if (serviceType?.slug) {
-			finalParams.push({
-				locale: 'ua',
-				type: serviceType.slug,
-				slug: service.slug
-			});
-		}
-	}
-
-	for (const service of servicesEnOnly) {
-		const serviceType = service.serviceType as ServiceType | null;
-		if (serviceType?.slug) {
-			finalParams.push({
-				locale: 'en',
-				type: serviceType.slug,
-				slug: service.slug
-			});
-		}
-	}
-
-	return finalParams;
-}
 
 // SEO Metadata
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
