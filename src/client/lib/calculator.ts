@@ -9,7 +9,7 @@ export async function getCalculatorConfig(locale: string = 'uk'): Promise<Calcul
     const apiUrl = `${baseUrl}/api/globals/calculator-config?locale=${locale}&depth=1`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: ['calculator-config'] },
+      next: { revalidate: 300, tags: ['calculator-config'] },
       cache: 'force-cache',
     });
 

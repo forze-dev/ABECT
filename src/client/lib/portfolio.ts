@@ -28,7 +28,7 @@ export async function getFeaturedPortfolio(locale: string = 'uk'): Promise<Portf
     const apiUrl = `${baseUrl}/api/portfolio?where[status][equals]=published&locale=${locale}&limit=100`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: ['portfolio'] },
+      next: { revalidate: 300, tags: ['portfolio'] },
       cache: 'force-cache',
     });
 
@@ -70,7 +70,7 @@ export async function getAllPortfolio(locale: string = 'uk'): Promise<Portfolio[
     const apiUrl = `${baseUrl}/api/portfolio?where[status][equals]=published&locale=${locale}&limit=100`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: ['portfolio'] },
+      next: { revalidate: 300, tags: ['portfolio'] },
       cache: 'force-cache',
     });
 
@@ -102,7 +102,7 @@ export async function getPortfolioBySlug(slug: string, locale: string = 'uk'): P
     const apiUrl = `${baseUrl}/api/portfolio?where[slug][equals]=${slug}&where[status][equals]=published&locale=${locale}&limit=1`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: [`portfolio-${slug}`] },
+      next: { revalidate: 300, tags: [`portfolio-${slug}`] },
       cache: 'force-cache',
     });
 
@@ -136,7 +136,7 @@ export async function getRelatedProjects(
     const apiUrl = `${baseUrl}/api/portfolio?where[status][equals]=published&where[service][equals]=${service}&locale=${locale}&limit=100`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: ['portfolio'] },
+      next: { revalidate: 300, tags: ['portfolio'] },
       cache: 'force-cache',
     });
 
@@ -156,7 +156,7 @@ export async function getRelatedProjects(
       const otherApiUrl = `${baseUrl}/api/portfolio?where[status][equals]=published&where[service][not_equals]=${service}&locale=${locale}&limit=100`;
 
       const otherResponse = await fetch(otherApiUrl, {
-        next: { revalidate: 3600, tags: ['portfolio'] },
+        next: { revalidate: 300, tags: ['portfolio'] },
         cache: 'force-cache',
       });
 

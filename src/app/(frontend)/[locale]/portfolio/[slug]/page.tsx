@@ -5,6 +5,9 @@ import { getPortfolioBySlug, getRelatedProjects, getAllPortfolio } from '@/clien
 import Project from '@/client/modules/project/Project';
 import type { Media } from '@/payload-types';
 
+// ISR - оновлення кожні 5 хвилин
+export const revalidate = 300;
+
 type Params = {
 	params: Promise<{
 		locale: string;

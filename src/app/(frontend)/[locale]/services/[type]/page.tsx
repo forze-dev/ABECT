@@ -7,7 +7,7 @@ import type { Media } from '@/payload-types';
 
 // ISR - сторінки генеруються динамічно і кешуються
 export const dynamicParams = true;
-export const revalidate = 3600; // Оновлення кешу кожну годину
+export const revalidate = 300; // Оновлення кешу кожні 5 хвилин
 
 type Params = {
 	params: Promise<{

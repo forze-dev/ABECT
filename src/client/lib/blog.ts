@@ -29,7 +29,7 @@ export async function getAllPosts(locale: string = 'uk'): Promise<Post[]> {
 		const apiUrl = `${baseUrl}/api/posts?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 3600, tags: ['posts'] },
+			next: { revalidate: 300, tags: ['posts'] },
 			cache: 'force-cache',
 		});
 
@@ -57,7 +57,7 @@ export async function getFeaturedPosts(locale: string = 'uk'): Promise<Post[]> {
 		const apiUrl = `${baseUrl}/api/posts?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 3600, tags: ['posts'] },
+			next: { revalidate: 300, tags: ['posts'] },
 			cache: 'force-cache',
 		});
 
@@ -98,7 +98,7 @@ export async function getPostBySlug(slug: string, locale: string = 'uk'): Promis
 		const apiUrl = `${baseUrl}/api/posts?where[slug][equals]=${slug}&where[status][equals]=published&locale=${locale}&limit=1&depth=2`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 3600, tags: [`post-${slug}`] },
+			next: { revalidate: 300, tags: [`post-${slug}`] },
 			cache: 'force-cache',
 		});
 
@@ -132,7 +132,7 @@ export async function getRelatedPosts(
 		const apiUrl = `${baseUrl}/api/posts?where[status][equals]=published&where[category][equals]=${categoryId}&locale=${locale}&limit=100&depth=2`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 3600, tags: ['posts'] },
+			next: { revalidate: 300, tags: ['posts'] },
 			cache: 'force-cache',
 		});
 
@@ -152,7 +152,7 @@ export async function getRelatedPosts(
 			const otherApiUrl = `${baseUrl}/api/posts?where[status][equals]=published&where[category][not_equals]=${categoryId}&locale=${locale}&limit=100&depth=2`;
 
 			const otherResponse = await fetch(otherApiUrl, {
-				next: { revalidate: 3600, tags: ['posts'] },
+				next: { revalidate: 300, tags: ['posts'] },
 				cache: 'force-cache',
 			});
 
@@ -186,7 +186,7 @@ export async function getAllCategories(locale: string = 'uk'): Promise<Category[
 		const apiUrl = `${baseUrl}/api/categories?locale=${locale}&limit=100`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 3600, tags: ['categories'] },
+			next: { revalidate: 300, tags: ['categories'] },
 			cache: 'force-cache',
 		});
 
@@ -212,7 +212,7 @@ export async function getCategoryBySlug(slug: string, locale: string = 'uk'): Pr
 		const apiUrl = `${baseUrl}/api/categories?where[slug][equals]=${slug}&locale=${locale}&limit=1`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 3600, tags: [`category-${slug}`] },
+			next: { revalidate: 300, tags: [`category-${slug}`] },
 			cache: 'force-cache',
 		});
 
@@ -242,7 +242,7 @@ export async function getPostsByCategory(categorySlug: string, locale: string = 
 		const apiUrl = `${baseUrl}/api/posts?where[status][equals]=published&where[category][equals]=${category.id}&locale=${locale}&limit=100&depth=2`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 3600, tags: ['posts', `category-${categorySlug}`] },
+			next: { revalidate: 300, tags: ['posts', `category-${categorySlug}`] },
 			cache: 'force-cache',
 		});
 

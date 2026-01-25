@@ -8,6 +8,9 @@ type Params = {
     locale: string;
   }>;
 };
+// ISR - оновлення кожні 5 хвилин
+export const revalidate = 300;
+
 // Генерація статичних параметрів для локалей
 export function generateStaticParams() {
 	return routing.locales.map((locale) => ({ locale }));

@@ -32,7 +32,7 @@ export async function getFeaturedServices(locale: string = 'uk'): Promise<Servic
     const apiUrl = `${baseUrl}/api/services?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: ['services'] },
+      next: { revalidate: 300, tags: ['services'] },
       cache: 'force-cache',
     });
 
@@ -73,7 +73,7 @@ export async function getAllServices(locale: string = 'uk'): Promise<Service[]> 
     const apiUrl = `${baseUrl}/api/services?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: ['services'] },
+      next: { revalidate: 300, tags: ['services'] },
       cache: 'force-cache',
     });
 
@@ -105,7 +105,7 @@ export async function getServiceBySlug(slug: string, locale: string = 'uk'): Pro
     const apiUrl = `${baseUrl}/api/services?where[slug][equals]=${slug}&where[status][equals]=published&locale=${locale}&limit=1&depth=2`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: [`service-${slug}`] },
+      next: { revalidate: 300, tags: [`service-${slug}`] },
       cache: 'force-cache',
     });
 
@@ -139,7 +139,7 @@ export async function getRelatedServices(
     const apiUrl = `${baseUrl}/api/services?where[status][equals]=published&where[serviceType][equals]=${serviceTypeId}&locale=${locale}&limit=100&depth=2`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: ['services'] },
+      next: { revalidate: 300, tags: ['services'] },
       cache: 'force-cache',
     });
 
@@ -159,7 +159,7 @@ export async function getRelatedServices(
       const otherApiUrl = `${baseUrl}/api/services?where[status][equals]=published&where[serviceType][not_equals]=${serviceTypeId}&locale=${locale}&limit=100&depth=2`;
 
       const otherResponse = await fetch(otherApiUrl, {
-        next: { revalidate: 3600, tags: ['services'] },
+        next: { revalidate: 300, tags: ['services'] },
         cache: 'force-cache',
       });
 
@@ -197,7 +197,7 @@ export async function getAllServiceTypes(locale: string = 'uk'): Promise<Service
     const apiUrl = `${baseUrl}/api/service-types?locale=${locale}&limit=100&sort=order`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: ['service-types'] },
+      next: { revalidate: 300, tags: ['service-types'] },
       cache: 'force-cache',
     });
 
@@ -223,7 +223,7 @@ export async function getServiceTypeBySlug(slug: string, locale: string = 'uk'):
     const apiUrl = `${baseUrl}/api/service-types?where[slug][equals]=${slug}&locale=${locale}&limit=1`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: [`service-type-${slug}`] },
+      next: { revalidate: 300, tags: [`service-type-${slug}`] },
       cache: 'force-cache',
     });
 
@@ -253,7 +253,7 @@ export async function getServicesByType(typeSlug: string, locale: string = 'uk')
     const apiUrl = `${baseUrl}/api/services?where[status][equals]=published&where[serviceType][equals]=${serviceType.id}&locale=${locale}&limit=100&depth=2`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 3600, tags: ['services', `service-type-${typeSlug}`] },
+      next: { revalidate: 300, tags: ['services', `service-type-${typeSlug}`] },
       cache: 'force-cache',
     });
 
