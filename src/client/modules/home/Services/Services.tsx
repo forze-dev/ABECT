@@ -1,5 +1,4 @@
 import { JSX } from 'react';
-import { Link } from '@/client/i18n/navigation';
 import { getTranslations } from 'next-intl/server';
 import { getFeaturedServices } from '@/client/lib/services';
 import ServicesList from '../../../components/ServicesList/ServicesList';

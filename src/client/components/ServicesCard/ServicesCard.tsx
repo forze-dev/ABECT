@@ -2,11 +2,11 @@
 
 import { JSX, useEffect, useRef, useState, MouseEvent } from 'react';
 import { Blocks, Code } from 'lucide-react';
-import type { Service } from '@/payload-types';
+import type { Service, ServiceType as ServiceTypeModel } from '@/payload-types';
 import { Link } from '@/client/i18n/navigation';
 import './ServicesCard.scss';
 
-type ServiceType = 'weblium' | 'custom';
+type PricingType = 'weblium' | 'custom';
 
 interface ServicesCardProps {
 	service: Service;
@@ -15,9 +15,13 @@ interface ServicesCardProps {
 
 export default function ServicesCard({ service, locale }: ServicesCardProps): JSX.Element {
 	const cardRef = useRef<HTMLElement | null>(null);
-	const [serviceType, setServiceType] = useState<ServiceType>(
+	const [pricingType, setPricingType] = useState<PricingType>(
 		service.hasWebliumOption ? 'weblium' : 'custom'
 	);
+
+	// Get service type for URL
+	const serviceTypeObj = service.serviceType as ServiceTypeModel | null;
+	const serviceTypeSlug = serviceTypeObj?.slug || 'other';
 
 	useEffect(() => {
 		if (window.innerWidth < 1024 || !cardRef.current) return;
@@ -63,16 +67,16 @@ export default function ServicesCard({ service, locale }: ServicesCardProps): JS
 		};
 	}, []);
 
-	const toggleServiceType = () => {
-		setServiceType(prev => prev === 'weblium' ? 'custom' : 'weblium');
+	const togglePricingType = () => {
+		setPricingType(prev => prev === 'weblium' ? 'custom' : 'weblium');
 	};
 
 	const hasToggle = service.hasWebliumOption;
-	const currentPrice = serviceType === 'weblium' ? service.webliumPrice : service.customPrice;
-	const currentCurrency = serviceType === 'weblium' ? service.webliumPriceCurrency : service.customPriceCurrency;
-	const currentTimeline = serviceType === 'weblium' ? service.webliumTimeline : service.customTimeline;
-	const currentDescription = serviceType === 'weblium' ? service.webliumDescription : service.customDescription;
-	const currentFeatures = serviceType === 'weblium' ? service.webliumFeatures : service.customFeatures;
+	const currentPrice = pricingType === 'weblium' ? service.webliumPrice : service.customPrice;
+	const currentCurrency = pricingType === 'weblium' ? service.webliumPriceCurrency : service.customPriceCurrency;
+	const currentTimeline = pricingType === 'weblium' ? service.webliumTimeline : service.customTimeline;
+	const currentDescription = pricingType === 'weblium' ? service.webliumDescription : service.customDescription;
+	const currentFeatures = pricingType === 'weblium' ? service.webliumFeatures : service.customFeatures;
 
 	return (
 		<article
@@ -85,7 +89,7 @@ export default function ServicesCard({ service, locale }: ServicesCardProps): JS
 			aria-labelledby={`service-${service.slug}`}
 		>
 			<div className="service-card__content">
-				<Link className='service-card__link' href={"/services/" + service.slug}>
+				<Link className='service-card__link' href={`/services/${serviceTypeSlug}/${service.slug}`}>
 					<div className="service-card__header">
 						<h3 className="service-card__title" id={`service-${service.slug}`} itemProp="name">
 							{service.title}
@@ -93,7 +97,7 @@ export default function ServicesCard({ service, locale }: ServicesCardProps): JS
 					</div>
 
 					<div className="service-card__subtitle">
-						{hasToggle ? (serviceType === 'weblium' ? 'Weblium' : 'Custom') : 'Custom'}
+						{hasToggle ? (pricingType === 'weblium' ? 'Weblium' : 'Custom') : 'Custom'}
 					</div>
 
 					<div className="service-card__pricing">
@@ -101,7 +105,7 @@ export default function ServicesCard({ service, locale }: ServicesCardProps): JS
 							<span className="price-amount">
 								{currentPrice} {currentCurrency}
 							</span>
-							{hasToggle && serviceType === 'weblium' && (
+							{hasToggle && pricingType === 'weblium' && (
 								<span className="price-old">{service.customPrice} {service.customPriceCurrency}</span>
 							)}
 							<meta itemProp="price" content={String(currentPrice)} />
@@ -130,8 +134,8 @@ export default function ServicesCard({ service, locale }: ServicesCardProps): JS
 						<div className="service-card__toggle">
 							<button
 								type="button"
-								className={`toggle-btn ${serviceType === 'weblium' ? 'active' : ''}`}
-								onClick={toggleServiceType}
+								className={`toggle-btn ${pricingType === 'weblium' ? 'active' : ''}`}
+								onClick={togglePricingType}
 								aria-label="Toggle Weblium"
 								title="Weblium"
 							>
@@ -139,8 +143,8 @@ export default function ServicesCard({ service, locale }: ServicesCardProps): JS
 							</button>
 							<button
 								type="button"
-								className={`toggle-btn ${serviceType === 'custom' ? 'active' : ''}`}
-								onClick={toggleServiceType}
+								className={`toggle-btn ${pricingType === 'custom' ? 'active' : ''}`}
+								onClick={togglePricingType}
 								aria-label="Toggle Custom"
 								title="Custom"
 							>

@@ -302,6 +302,11 @@
 		"english": "English",
 		"loading": "Loading...",
 		"cta": "Contact Us",
+		"BlogCard": {
+			"readArticle": "Read article",
+			"featured": "Featured",
+			"min": "min"
+		},
 		"PortfolioCard": {
 			"viewCase": "View case",
 			"client": "Client",
@@ -475,6 +480,132 @@
 		"services": "Services",
 		"blog": "Blog",
 		"contacts": "Contacts",
-		"about": "About"
+		"about": "About",
+		"calculator": "Calculator"
+	},
+	"BlogPage": {
+		"title": "Blog",
+		"subtitle": "Useful articles about web development, design and marketing",
+		"showingResults": "Showing articles: {count}",
+		"viewAllButton": "View all",
+		"noResults": "No articles found",
+		"noResultsDescription": "Try selecting a different category",
+		"filter": {
+			"title": "Categories",
+			"all": "All articles",
+			"ariaLabel": "Filter by category",
+			"selectAriaLabel": "Select category"
+		},
+		"seo": {
+			"title": "ABECT Blog | Articles about Web Development and Marketing",
+			"description": "Read our articles about web development, design and digital marketing. Useful tips and case studies from the ABECT team.",
+			"keywords": "blog, articles, web development, design, marketing, SEO, Next.js, React"
+		}
+	},
+	"ArticleDetail": {
+		"featured": "Featured",
+		"minRead": "min read",
+		"views": "views",
+		"related": {
+			"title": "Related Articles",
+			"subtitle": "Read more useful content",
+			"viewAll": "All articles"
+		}
+	},
+	"ContactForm": {
+		"title": "Contact Us",
+		"subtitle": "Leave your contacts and we will get back to you shortly",
+		"nameLabel": "Full Name",
+		"namePlaceholder": "Enter your name",
+		"contactLabel": "Phone or Email",
+		"contactPlaceholder": "+380... or email@example.com",
+		"messageLabel": "Comment (optional)",
+		"messagePlaceholder": "Describe your project or leave a question...",
+		"submitButton": "Submit Request",
+		"loadingButton": "Submitting...",
+		"closeButton": "Close",
+		"successTitle": "Thank you!",
+		"successMessage": "Your request has been successfully submitted. We will contact you shortly.",
+		"errorMessage": "Something went wrong. Please try again.",
+		"privacyNote": "By clicking the button, you agree to the processing of personal data",
+		"validation": {
+			"nameRequired": "Enter your name (at least 2 characters)",
+			"contactRequired": "Enter phone or email",
+			"contactInvalid": "Enter a valid phone or email"
+		}
+	},
+	"Calculator": {
+		"title": "Cost Calculator",
+		"subtitle": "Calculate the approximate cost of your project in a few steps",
+		"step": "Step",
+		"of": "of",
+		"nextButton": "Next",
+		"backButton": "Back",
+		"submitButton": "Get Quote",
+		"resetButton": "Start Over",
+		"priceLabel": "Estimated Cost",
+		"priceFrom": "from",
+		"currency": "UAH",
+		"timelineLabel": "Estimated Timeline",
+		"steps": {
+			"projectType": {
+				"title": "What type of website do you need?",
+				"subtitle": "Choose the project type that best fits your needs"
+			},
+			"platform": {
+				"title": "Which technology shall we use?",
+				"subtitle": "Weblium — fast and affordable, Custom — unique and limitless",
+				"weblium": {
+					"title": "Weblium",
+					"description": "Fast development on a builder with ready-made blocks"
+				},
+				"custom": {
+					"title": "Custom",
+					"description": "Unique design and code without limitations"
+				}
+			},
+			"pages": {
+				"title": "How many pages are planned?",
+				"subtitle": "Move the slider to select the number of pages",
+				"pagesLabel": "pages"
+			},
+			"addons": {
+				"title": "What else do you need for the project?",
+				"subtitle": "Select additional services (optional)"
+			},
+			"urgency": {
+				"title": "When do you need the website ready?",
+				"subtitle": "Urgency affects the project cost"
+			},
+			"contact": {
+				"title": "How can we contact you?",
+				"subtitle": "Leave your contacts to receive a detailed quote"
+			}
+		},
+		"seo": {
+			"title": "Website Cost Calculator | ABECT",
+			"description": "Calculate your website cost online. Landing page from $200, corporate website from $500, online store from $800.",
+			"keywords": "website cost calculator, calculate website price, web development cost, landing page price, online store cost"
+		}
+	},
+	"ContactsPage": {
+		"title": "Contacts",
+		"subtitle": "Contact us in any way convenient for you. We are always happy to answer your questions!",
+		"contactInfo": "Contact Information",
+		"email": "Email",
+		"phone": "Phone",
+		"phoneAlt": "Alternative Phone",
+		"workingHours": "Working Hours",
+		"weekdays": "Monday - Friday",
+		"workingTime": "9:00 AM - 6:00 PM",
+		"socialMedia": "Social Media",
+		"ctaTitle": "Ready to start a project?",
+		"ctaText": "Leave a request and we will contact you within an hour to discuss the details of your project",
+		"ctaButton": "Leave Request",
+		"seo": {
+			"title": "ABECT Contacts | Contact the Web Studio",
+			"description": "ABECT web studio contact information. Phones, email, social media. Contact us to discuss your project!",
+			"keywords": "ABECT contacts, contact web studio, web studio phone, ABECT email, write to web studio"
+		}
 	}
 }

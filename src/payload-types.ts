@@ -68,11 +68,13 @@ export interface Config {
   blocks: {};
   collections: {
     services: Service;
+    'service-types': ServiceType;
     portfolio: Portfolio;
     posts: Post;
     categories: Category;
     media: Media;
     comments: Comment;
+    leads: Lead;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -82,11 +84,13 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     services: ServicesSelect<false> | ServicesSelect<true>;
+    'service-types': ServiceTypesSelect<false> | ServiceTypesSelect<true>;
     portfolio: PortfolioSelect<false> | PortfolioSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     comments: CommentsSelect<false> | CommentsSelect<true>;
+    leads: LeadsSelect<false> | LeadsSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -97,8 +101,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('uk' | 'en') | ('uk' | 'en')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'calculator-config': CalculatorConfig;
+  };
+  globalsSelect: {
+    'calculator-config': CalculatorConfigSelect<false> | CalculatorConfigSelect<true>;
+  };
   locale: 'uk' | 'en';
   user: User & {
     collection: 'users';
@@ -153,9 +161,9 @@ export interface Service {
    */
   heroImage?: (number | null) | Media;
   /**
-   * Категорія для фільтрації та групування
+   * Тип послуги для фільтрації та групування
    */
-  category: 'web-development' | 'marketing' | 'design';
+  serviceType: number | ServiceType;
   /**
    * Порядок відображення (менше число = вище)
    */
@@ -374,6 +382,48 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-types".
+ */
+export interface ServiceType {
+  id: number;
+  /**
+   * Наприклад: "Веб-розробка", "Маркетинг", "Дизайн"
+   */
+  name: string;
+  /**
+   * URL-friendly назва, наприклад: "web-development"
+   */
+  slug: string;
+  /**
+   * Опис для сторінки /services/[type]
+   */
+  description: string;
+  /**
+   * Іконка для відображення в фільтрі
+   */
+  icon?: (number | null) | Media;
+  /**
+   * Зображення для OG та заголовка сторінки
+   */
+  cover?: (number | null) | Media;
+  /**
+   * Акцентний колір для категорії, наприклад: #3B82F6
+   */
+  color?: string | null;
+  /**
+   * Порядок відображення в фільтрі (менше число = вище)
+   */
+  order?: number | null;
+  seo: {
+    metaTitle: string;
+    metaDescription: string;
+    metaKeywords: string;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "portfolio".
  */
 export interface Portfolio {
@@ -576,6 +626,44 @@ export interface Comment {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leads".
+ */
+export interface Lead {
+  id: number;
+  name: string;
+  contact: string;
+  message?: string | null;
+  type: 'simple' | 'calculator';
+  calculatorData?: {
+    projectType?: string | null;
+    platform?: ('weblium' | 'custom') | null;
+    pagesCount?: number | null;
+    additionalServices?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+    urgency?: string | null;
+    estimatedPrice?: number | null;
+    estimatedTimeline?: string | null;
+  };
+  source?: string | null;
+  utm?: {
+    source?: string | null;
+    medium?: string | null;
+    campaign?: string | null;
+  };
+  status: 'new' | 'processing' | 'completed' | 'rejected';
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -603,6 +691,10 @@ export interface PayloadLockedDocument {
         value: number | Service;
       } | null)
     | ({
+        relationTo: 'service-types';
+        value: number | ServiceType;
+      } | null)
+    | ({
         relationTo: 'portfolio';
         value: number | Portfolio;
       } | null)
@@ -621,6 +713,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'comments';
         value: number | Comment;
+      } | null)
+    | ({
+        relationTo: 'leads';
+        value: number | Lead;
       } | null)
     | ({
         relationTo: 'users';
@@ -678,7 +774,7 @@ export interface ServicesSelect<T extends boolean = true> {
   shortDescription?: T;
   icon?: T;
   heroImage?: T;
-  category?: T;
+  serviceType?: T;
   order?: T;
   featured?: T;
   hasWebliumOption?: T;
@@ -747,6 +843,28 @@ export interface ServicesSelect<T extends boolean = true> {
   viewCount?: T;
   status?: T;
   publishedDate?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "service-types_select".
+ */
+export interface ServiceTypesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  icon?: T;
+  cover?: T;
+  color?: T;
+  order?: T;
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        metaKeywords?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -867,6 +985,39 @@ export interface CommentsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "leads_select".
+ */
+export interface LeadsSelect<T extends boolean = true> {
+  name?: T;
+  contact?: T;
+  message?: T;
+  type?: T;
+  calculatorData?:
+    | T
+    | {
+        projectType?: T;
+        platform?: T;
+        pagesCount?: T;
+        additionalServices?: T;
+        urgency?: T;
+        estimatedPrice?: T;
+        estimatedTimeline?: T;
+      };
+  source?: T;
+  utm?:
+    | T
+    | {
+        source?: T;
+        medium?: T;
+        campaign?: T;
+      };
+  status?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -929,6 +1080,149 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "calculator-config".
+ */
+export interface CalculatorConfig {
+  id: number;
+  projectTypes?:
+    | {
+        /**
+         * Наприклад: "Landing Page"
+         */
+        name: string;
+        /**
+         * Унікальний ідентифікатор: "landing"
+         */
+        slug: string;
+        description?: string | null;
+        /**
+         * Назва іконки з Lucide: "layout", "store", "globe"
+         */
+        icon?: string | null;
+        hasWebliumOption?: boolean | null;
+        webliumBasePrice?: number | null;
+        customBasePrice: number;
+        order?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  pagesConfig: {
+    webliumPricePerPage: number;
+    customPricePerPage: number;
+    minPages: number;
+    maxPages: number;
+    defaultPages: number;
+  };
+  additionalServices?:
+    | {
+        name: string;
+        slug: string;
+        description?: string | null;
+        price: number;
+        icon?: string | null;
+        order?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  urgencyOptions?:
+    | {
+        name: string;
+        slug: string;
+        description?: string | null;
+        /**
+         * 1.0 = стандарт, 1.5 = терміново (+50%), 0.9 = не поспішаємо (-10%)
+         */
+        coefficient: number;
+        /**
+         * Наприклад: "до 2 тижнів", "2-4 тижні"
+         */
+        timelineText?: string | null;
+        order?: number | null;
+        id?: string | null;
+      }[]
+    | null;
+  generalSettings: {
+    currency: 'UAH' | 'USD' | 'EUR';
+    showPriceFrom?: boolean | null;
+    minimumOrderPrice?: number | null;
+  };
+  seo: {
+    metaTitle: string;
+    metaDescription: string;
+    metaKeywords?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "calculator-config_select".
+ */
+export interface CalculatorConfigSelect<T extends boolean = true> {
+  projectTypes?:
+    | T
+    | {
+        name?: T;
+        slug?: T;
+        description?: T;
+        icon?: T;
+        hasWebliumOption?: T;
+        webliumBasePrice?: T;
+        customBasePrice?: T;
+        order?: T;
+        id?: T;
+      };
+  pagesConfig?:
+    | T
+    | {
+        webliumPricePerPage?: T;
+        customPricePerPage?: T;
+        minPages?: T;
+        maxPages?: T;
+        defaultPages?: T;
+      };
+  additionalServices?:
+    | T
+    | {
+        name?: T;
+        slug?: T;
+        description?: T;
+        price?: T;
+        icon?: T;
+        order?: T;
+        id?: T;
+      };
+  urgencyOptions?:
+    | T
+    | {
+        name?: T;
+        slug?: T;
+        description?: T;
+        coefficient?: T;
+        timelineText?: T;
+        order?: T;
+        id?: T;
+      };
+  generalSettings?:
+    | T
+    | {
+        currency?: T;
+        showPriceFrom?: T;
+        minimumOrderPrice?: T;
+      };
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        metaKeywords?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

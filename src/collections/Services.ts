@@ -4,7 +4,7 @@ export const Services: CollectionConfig = {
   slug: 'services',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'category', 'featured', 'order', 'createdAt'],
+    defaultColumns: ['title', 'serviceType', 'featured', 'order', 'createdAt'],
   },
   access: {
     read: () => true,
@@ -61,17 +61,13 @@ export const Services: CollectionConfig = {
       },
     },
     {
-      name: 'category',
-      type: 'select',
+      name: 'serviceType',
+      type: 'relationship',
+      relationTo: 'service-types',
       required: true,
-      label: 'Категорія',
-      options: [
-        { label: 'Веб-розробка', value: 'web-development' },
-        { label: 'Маркетинг', value: 'marketing' },
-        { label: 'Дизайн', value: 'design' },
-      ],
+      label: 'Тип послуги',
       admin: {
-        description: 'Категорія для фільтрації та групування',
+        description: 'Тип послуги для фільтрації та групування',
       },
     },
     {

@@ -7,6 +7,7 @@ import { Victor_Mono } from "next/font/google";
 import Header from "@/client/components/Header/Header";
 import Footer from "@/client/components/Footer/Footer";
 import StarsBackground from "@/client/components/StarsBackground/StarsBackground";
+import { ModalProvider } from "@/client/providers/ModalProvider";
 
 import "./globals.scss";
 
@@ -43,10 +44,12 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={victorMono.variable}>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Header />
-          {children}
-          <Footer />
-          <StarsBackground />
+          <ModalProvider>
+            <Header />
+            {children}
+            <Footer />
+            <StarsBackground />
+          </ModalProvider>
         </NextIntlClientProvider>
       </body>
     </html>

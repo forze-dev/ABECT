@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/client/i18n/routing';
-import { getAllServices } from '@/client/lib/services';
+import { getAllServices, getAllServiceTypes } from '@/client/lib/services';
 import ServicesPage from '@/client/modules/services/ServicesPage/ServicesPage';
 import type { Metadata } from 'next';
 
@@ -11,7 +11,7 @@ type Params = {
 	}>;
 };
 
-// Генерация статичних параметров для локалей
+// Generate static params for locales
 export function generateStaticParams() {
 	return routing.locales.map((locale) => ({ locale }));
 }
@@ -88,8 +88,43 @@ export default async function ServicesServerPage({ params }: Params) {
 
 	setRequestLocale(locale);
 
-	// Получаем все сервисы через ISR
-	const services = await getAllServices(locale);
+	// Fetch all services and service types
+	const [services, serviceTypes] = await Promise.all([
+		getAllServices(locale),
+		getAllServiceTypes(locale)
+	]);
 
-	return <ServicesPage locale={locale} initialServices={services} />;
+	return (
+		<>
+			{/* JSON-LD Schema.org CollectionPage */}
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify({
+						'@context': 'https://schema.org',
+						'@type': 'CollectionPage',
+						name: locale === 'ua' ? 'Послуги' : 'Services',
+						description: locale === 'ua'
+							? 'Повний перелік послуг веб-студії ABECT'
+							: 'Full list of ABECT web studio services',
+						url: locale === 'ua'
+							? 'https://abect.com/services'
+							: `https://abect.com/${locale}/services`,
+						isPartOf: {
+							'@type': 'WebSite',
+							name: 'ABECT',
+							url: 'https://abect.com'
+						},
+						numberOfItems: services.length
+					})
+				}}
+			/>
+
+			<ServicesPage
+				locale={locale}
+				services={services}
+				serviceTypes={serviceTypes}
+			/>
+		</>
+	);
 }

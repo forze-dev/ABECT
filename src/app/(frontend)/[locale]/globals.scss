@@ -26,6 +26,49 @@
 	--nav-text-hover: var(--white);
 	--nav-text-active: var(--accent);
 	--border-subtle: rgba(255, 255, 255, 0.1);
+
+	/* Color system for components */
+	--color-primary: #375dfb;
+	--color-primary-rgb: 55, 93, 251;
+	--color-primary-hover: #234fff;
+	--color-primary-light: #5073ff;
+	--color-background: #0d0d1b;
+	--color-surface: #1a1a2e;
+	--color-surface-alt: #16162a;
+	--color-text: #ffffff;
+	--color-text-secondary: rgba(255, 255, 255, 0.7);
+	--color-text-tertiary: rgba(255, 255, 255, 0.5);
+	--color-border: rgba(255, 255, 255, 0.1);
+	--color-border-hover: rgba(255, 255, 255, 0.2);
+
+	/* Spacing scale */
+	--spacing-xs: 4px;
+	--spacing-sm: 8px;
+	--spacing-md: 16px;
+	--spacing-lg: 24px;
+	--spacing-xl: 32px;
+	--spacing-2xl: 48px;
+
+	/* Font sizes */
+	--font-size-xs: 12px;
+	--font-size-sm: 14px;
+	--font-size-base: 16px;
+	--font-size-lg: 18px;
+	--font-size-xl: 20px;
+	--font-size-2xl: 24px;
+	--font-size-3xl: 32px;
+
+	/* Border radius */
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--radius-lg: 12px;
+	--radius-xl: 16px;
+	--radius-full: 9999px;
+
+	/* Shadows */
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+	--shadow-md: 0 4px 6px rgba(0, 0, 0, 0.15);
+	--shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.2);
 }
 
 * {

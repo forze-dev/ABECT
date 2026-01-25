@@ -12,6 +12,10 @@ import { Media } from './collections/Media'
 import { Comments } from './collections/Comments'
 import { Portfolio } from './collections/Portfolio'
 import { Services } from './collections/Services'
+import { ServiceTypes } from './collections/ServiceTypes'
+import { Leads } from './collections/Leads'
+
+import { CalculatorConfig } from './globals/CalculatorConfig'
 
 import { fullRichEditor } from './utils/editor';
 
@@ -27,12 +31,17 @@ export default buildConfig({
   },
   collections: [
     Services,
+    ServiceTypes,
     Portfolio,
     Posts,
     Categories,
     Media,
     Comments,
+    Leads,
     Users
+  ],
+  globals: [
+    CalculatorConfig,
   ],
   editor: fullRichEditor,
   secret: process.env.PAYLOAD_SECRET || '',

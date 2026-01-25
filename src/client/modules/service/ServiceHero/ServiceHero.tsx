@@ -5,32 +5,31 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Clock, CheckCircle } from 'lucide-react';
 import Breadcrumbs from '@/client/components/Breadcrumbs/Breadcrumbs';
-import type { Service, Media } from '@/payload-types';
+import type { Service, Media, ServiceType } from '@/payload-types';
 import './ServiceHero.scss';
 
 interface ServiceHeroProps {
 	service: Service;
 	locale: string;
+	serviceType?: ServiceType;
 }
 
-export default function ServiceHero({ service, locale }: ServiceHeroProps): JSX.Element {
+export default function ServiceHero({ service, locale, serviceType }: ServiceHeroProps): JSX.Element {
 	const t = useTranslations('ServiceDetail');
 	const [activeTab, setActiveTab] = useState<'weblium' | 'custom'>(
 		service.hasWebliumOption ? 'weblium' : 'custom'
 	);
 
-	// Отримуємо URL зображення
+	// Get image URL
 	const heroImage = service.heroImage as Media | null;
 	const imageUrl = heroImage?.url;
 
-	// Категорія для badge
-	const categoryMap = {
-		'web-development': locale === 'uk' ? 'Веб-розробка' : 'Web Development',
-		'marketing': locale === 'uk' ? 'Маркетинг' : 'Marketing',
-		'design': locale === 'uk' ? 'Дизайн' : 'Design'
-	};
+	// Get service type from prop or from service relationship
+	const type = serviceType || (service.serviceType as ServiceType | null);
+	const typeName = type?.name || '';
+	const typeSlug = type?.slug || '';
 
-	// Активні дані залежно від вибраної вкладки
+	// Active data based on selected tab
 	const activePrice = activeTab === 'weblium' ? service.webliumPrice : service.customPrice;
 	const activeCurrency = activeTab === 'weblium' ? service.webliumPriceCurrency : service.customPriceCurrency;
 	const activeTimeline = activeTab === 'weblium' ? service.webliumTimeline : service.customTimeline;
@@ -40,7 +39,12 @@ export default function ServiceHero({ service, locale }: ServiceHeroProps): JSX.
 		<section className="service-hero">
 			<div className="container">
 				<div className="service-hero__wrapper">
-					<Breadcrumbs chapter='services' slug={service.title} />
+					<Breadcrumbs
+						chapter='services'
+						slug={service.title}
+						categorySlug={typeSlug}
+						categoryName={typeName}
+					/>
 
 					{/* Hero Content */}
 					<div className="service-hero__content">
@@ -48,9 +52,11 @@ export default function ServiceHero({ service, locale }: ServiceHeroProps): JSX.
 						<div className="service-hero__info">
 							{/* Badge */}
 							<div className="service-hero__meta">
-								<span className={`service-hero__badge service-hero__badge--${service.category}`}>
-									{categoryMap[service.category]}
-								</span>
+								{typeName && (
+									<span className="service-hero__badge">
+										{typeName}
+									</span>
+								)}
 								{service.featured && (
 									<span className="service-hero__featured">
 										★ {t('featured')}
@@ -120,7 +126,7 @@ export default function ServiceHero({ service, locale }: ServiceHeroProps): JSX.
 							</div>
 
 							{/* CTA Button */}
-							<button type="button" className="service-hero__cta cta">
+							<button type="button" data-open-modal className="service-hero__cta cta">
 								{t('orderButton')}
 							</button>
 						</div>

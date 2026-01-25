@@ -92,7 +92,7 @@ export default function PricingComparison({ service, locale }: PricingComparison
 							</div>
 
 							<div className="pricing-comparison__card-footer">
-								<button type="button" className="cta">
+								<button type="button" data-open-modal className="cta">
 									{t('orderCustom')}
 								</button>
 							</div>

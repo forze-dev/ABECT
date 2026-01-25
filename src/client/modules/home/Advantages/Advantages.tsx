@@ -55,7 +55,7 @@ export default function Advantages(): JSX.Element {
 				</div>
 
 				<footer className="advantages__footer">
-					<button type="button" className="cta" aria-label={t('ctaAriaLabel')}>
+					<button type="button" data-open-modal className="cta" aria-label={t('ctaAriaLabel')}>
 						{t('cta')}
 					</button>
 				</footer>

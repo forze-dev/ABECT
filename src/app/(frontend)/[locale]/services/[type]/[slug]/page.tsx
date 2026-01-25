@@ -1,39 +1,71 @@
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getServiceBySlug, getRelatedServices, getAllServices } from '@/client/lib/services';
+import { getServiceBySlug, getRelatedServices, getAllServices, getAllServiceTypes } from '@/client/lib/services';
 import ServiceDetail from '@/client/modules/service/ServiceDetail';
-import type { Media } from '@/payload-types';
+import type { Media, ServiceType } from '@/payload-types';
 
 type Params = {
 	params: Promise<{
 		locale: string;
+		type: string;
 		slug: string;
 	}>;
 };
 
-// Generate static params для всіх сервісів
+// Generate static params for all services
 export async function generateStaticParams() {
 	const services = await getAllServices('uk');
 	const servicesEn = await getAllServices('en');
 
-	const params = [
-		...services.map((service) => ({
-			locale: 'ua',
-			slug: service.slug
-		})),
-		...servicesEn.map((service) => ({
-			locale: 'en',
-			slug: service.slug
-		}))
-	];
+	const allServices = [...services, ...servicesEn];
+	const params: Array<{ locale: string; type: string; slug: string }> = [];
 
-	return params;
+	for (const service of allServices) {
+		const serviceType = service.serviceType as ServiceType | null;
+		if (serviceType?.slug) {
+			params.push({
+				locale: service.id <= services.length ? 'ua' : 'en',
+				type: serviceType.slug,
+				slug: service.slug
+			});
+		}
+	}
+
+	// Dedupe and fix locale assignment
+	const servicesUk = await getAllServices('uk');
+	const servicesEnOnly = await getAllServices('en');
+
+	const finalParams: Array<{ locale: string; type: string; slug: string }> = [];
+
+	for (const service of servicesUk) {
+		const serviceType = service.serviceType as ServiceType | null;
+		if (serviceType?.slug) {
+			finalParams.push({
+				locale: 'ua',
+				type: serviceType.slug,
+				slug: service.slug
+			});
+		}
+	}
+
+	for (const service of servicesEnOnly) {
+		const serviceType = service.serviceType as ServiceType | null;
+		if (serviceType?.slug) {
+			finalParams.push({
+				locale: 'en',
+				type: serviceType.slug,
+				slug: service.slug
+			});
+		}
+	}
+
+	return finalParams;
 }
 
 // SEO Metadata
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-	const { locale, slug } = await params;
+	const { locale, type: typeSlug, slug } = await params;
 	const service = await getServiceBySlug(slug, locale);
 
 	if (!service) {
@@ -48,8 +80,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 	const fullUrl =
 		locale === 'ua'
-			? `https://abect.com/services/${slug}`
-			: `https://abect.com/${locale}/services/${slug}`;
+			? `https://abect.com/services/${typeSlug}/${slug}`
+			: `https://abect.com/${locale}/services/${typeSlug}/${slug}`;
 
 	return {
 		title: service.seo.metaTitle,
@@ -59,8 +91,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 		alternates: {
 			canonical: fullUrl,
 			languages: {
-				'uk-UA': `https://abect.com/services/${slug}`,
-				'en-US': `https://abect.com/en/services/${slug}`
+				'uk-UA': `https://abect.com/services/${typeSlug}/${slug}`,
+				'en-US': `https://abect.com/en/services/${typeSlug}/${slug}`
 			}
 		},
 		authors: [{ name: 'ABECT', url: 'https://abect.com' }],
@@ -108,19 +140,25 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 // Server Component
 export default async function ServicePage({ params }: Params) {
-	const { locale, slug } = await params;
+	const { locale, type: typeSlug, slug } = await params;
 
 	setRequestLocale(locale);
 
-	// Отримуємо сервіс
+	// Get service
 	const service = await getServiceBySlug(slug, locale);
 
 	if (!service) {
 		notFound();
 	}
 
-	// Отримуємо схожі сервіси
-	const relatedServices = await getRelatedServices(service.id, service.category, locale, 3);
+	// Verify the service belongs to this type
+	const serviceType = service.serviceType as ServiceType | null;
+	if (!serviceType || serviceType.slug !== typeSlug) {
+		notFound();
+	}
+
+	// Get related services
+	const relatedServices = await getRelatedServices(service.id, serviceType.id, locale, 3);
 
 	return (
 		<>
@@ -153,10 +191,10 @@ export default async function ServicePage({ params }: Params) {
 								priceCurrency: service.customPriceCurrency
 							}
 						].filter(Boolean),
-						category: service.category,
+						category: serviceType.name,
 						url: locale === 'ua'
-							? `https://abect.com/services/${slug}`
-							: `https://abect.com/${locale}/services/${slug}`
+							? `https://abect.com/services/${typeSlug}/${slug}`
+							: `https://abect.com/${locale}/services/${typeSlug}/${slug}`
 					})
 				}}
 			/>
@@ -186,17 +224,30 @@ export default async function ServicePage({ params }: Params) {
 							{
 								'@type': 'ListItem',
 								position: 3,
+								name: serviceType.name,
+								item: locale === 'ua'
+									? `https://abect.com/services/${typeSlug}`
+									: `https://abect.com/${locale}/services/${typeSlug}`
+							},
+							{
+								'@type': 'ListItem',
+								position: 4,
 								name: service.title,
 								item: locale === 'ua'
-									? `https://abect.com/services/${slug}`
-									: `https://abect.com/${locale}/services/${slug}`
+									? `https://abect.com/services/${typeSlug}/${slug}`
+									: `https://abect.com/${locale}/services/${typeSlug}/${slug}`
 							}
 						]
 					})
 				}}
 			/>
 
-			<ServiceDetail service={service} relatedServices={relatedServices} locale={locale} />
+			<ServiceDetail
+				service={service}
+				relatedServices={relatedServices}
+				locale={locale}
+				serviceType={serviceType}
+			/>
 		</>
 	);
 }

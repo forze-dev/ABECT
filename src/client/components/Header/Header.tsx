@@ -222,7 +222,7 @@ export default function Header() {
 
 					<button
 						type="button"
-						id="open-modal"
+						data-open-modal
 						className="header__cta cta cta-secondary"
 					>
 						{tCC('cta')}

@@ -20,7 +20,7 @@ export default function Hero(): JSX.Element {
 						<div className="entry__btns">
 							<button
 								type="button"
-								id="open-modal"
+								data-open-modal
 								className="cta"
 								aria-label={t('orderButtonAriaLabel')}
 							>
@@ -28,7 +28,6 @@ export default function Hero(): JSX.Element {
 							</button>
 							<button
 								type="button"
-								id="open-modal"
 								className="cta cta-secondary"
 								aria-label={t('portfolioButtonAriaLabel')}
 							>

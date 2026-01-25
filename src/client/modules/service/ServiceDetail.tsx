@@ -1,5 +1,5 @@
 import React, { JSX } from 'react';
-import type { Service } from '@/payload-types';
+import type { Service, ServiceType } from '@/payload-types';
 
 import ServiceHero from './ServiceHero/ServiceHero';
 import PricingComparison from './PricingComparison/PricingComparison';
@@ -12,12 +12,13 @@ interface ServiceDetailProps {
 	service: Service;
 	relatedServices: Service[];
 	locale: string;
+	serviceType?: ServiceType;
 }
 
-function ServiceDetail({ service, relatedServices, locale }: ServiceDetailProps): JSX.Element {
+function ServiceDetail({ service, relatedServices, locale, serviceType }: ServiceDetailProps): JSX.Element {
 	return (
 		<main>
-			<ServiceHero service={service} locale={locale} />
+			<ServiceHero service={service} locale={locale} serviceType={serviceType} />
 
 
 			{service.hasWebliumOption && (

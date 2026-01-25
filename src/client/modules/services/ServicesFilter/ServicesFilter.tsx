@@ -2,36 +2,22 @@
 
 import { JSX } from 'react';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/client/i18n/navigation';
+import type { ServiceType } from '@/payload-types';
 import './ServicesFilter.scss';
 
-export type FilterType = 'all' | 'web-development' | 'marketing' | 'design';
-
-interface FilterCounts {
-	all: number;
-	'web-development': number;
-	marketing: number;
-	design: number;
-}
-
 interface ServicesFilterProps {
-	activeFilter: FilterType;
-	onFilterChange: (filter: FilterType) => void;
-	counts: FilterCounts;
+	activeType?: string; // slug of active type (undefined = all)
+	serviceTypes: ServiceType[];
+	counts: Record<string, number>;
 }
 
 export default function ServicesFilter({
-	activeFilter,
-	onFilterChange,
+	activeType,
+	serviceTypes,
 	counts
 }: ServicesFilterProps): JSX.Element {
 	const t = useTranslations('ServicesPage.filter');
-
-	const filters: Array<{ value: FilterType; label: string }> = [
-		{ value: 'all', label: t('all') },
-		{ value: 'web-development', label: t('webDevelopment') },
-		{ value: 'marketing', label: t('marketing') },
-		{ value: 'design', label: t('design') }
-	];
 
 	return (
 		<aside className="services-filter" aria-label={t('ariaLabel')}>
@@ -39,35 +25,60 @@ export default function ServicesFilter({
 
 			{/* Desktop & Tablet - Список */}
 			<ul className="services-filter__list" role="list">
-				{filters.map((filter) => (
-					<li key={filter.value} role="listitem">
-						<button
-							type="button"
+				{/* "All" filter */}
+				<li role="listitem">
+					<Link
+						href="/services"
+						className={`services-filter__item ${
+							!activeType ? 'services-filter__item--active' : ''
+						}`}
+						aria-current={!activeType ? 'page' : undefined}
+						aria-label={`${t('all')} (${counts.all || 0})`}
+					>
+						<span className="services-filter__label">{t('all')}</span>
+						<span className="services-filter__count">{counts.all || 0}</span>
+					</Link>
+				</li>
+
+				{/* Service types */}
+				{serviceTypes.map((type) => (
+					<li key={type.slug} role="listitem">
+						<Link
+							href={`/services/${type.slug}`}
 							className={`services-filter__item ${
-								activeFilter === filter.value ? 'services-filter__item--active' : ''
+								activeType === type.slug ? 'services-filter__item--active' : ''
 							}`}
-							onClick={() => onFilterChange(filter.value)}
-							aria-pressed={activeFilter === filter.value}
-							aria-label={`${filter.label} (${counts[filter.value]})`}
+							aria-current={activeType === type.slug ? 'page' : undefined}
+							aria-label={`${type.name} (${counts[type.slug] || 0})`}
 						>
-							<span className="services-filter__label">{filter.label}</span>
-							<span className="services-filter__count">{counts[filter.value]}</span>
-						</button>
+							<span className="services-filter__label">{type.name}</span>
+							<span className="services-filter__count">{counts[type.slug] || 0}</span>
+						</Link>
 					</li>
 				))}
 			</ul>
 
-			{/* Mobile - Select */}
+			{/* Mobile - Select (for JS navigation) */}
 			<div className="services-filter__select-wrapper">
 				<select
 					className="services-filter__select"
-					value={activeFilter}
-					onChange={(e) => onFilterChange(e.target.value as FilterType)}
+					value={activeType || 'all'}
+					onChange={(e) => {
+						const value = e.target.value;
+						if (value === 'all') {
+							window.location.href = '/services';
+						} else {
+							window.location.href = `/services/${value}`;
+						}
+					}}
 					aria-label={t('selectAriaLabel')}
 				>
-					{filters.map((filter) => (
-						<option key={filter.value} value={filter.value}>
-							{filter.label} ({counts[filter.value]})
+					<option value="all">
+						{t('all')} ({counts.all || 0})
+					</option>
+					{serviceTypes.map((type) => (
+						<option key={type.slug} value={type.slug}>
+							{type.name} ({counts[type.slug] || 0})
 						</option>
 					))}
 				</select>

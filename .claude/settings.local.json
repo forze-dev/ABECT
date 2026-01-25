@@ -16,7 +16,8 @@
       "Bash(npm ls:*)",
       "Bash(npm:*)",
       "Bash(node:*)",
-      "WebFetch(domain:www.npmjs.com)"
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
