@@ -1,5 +1,5 @@
+import Link from 'next/link'
 import { getLocale } from 'next-intl/server'
-import { Link } from '@/client/i18n/navigation'
 import './not-found.scss'
 
 const messages = {
@@ -8,14 +8,14 @@ const messages = {
     title: 'Сторінку не знайдено',
     description: 'Можливо, вона була переміщена або видалена. Перевірте адресу або поверніться на головну.',
     home: 'На головну',
-    back: 'Назад',
+    services: 'Наші послуги',
   },
   en: {
     badge: 'Error 404',
     title: 'Page not found',
     description: 'It may have been moved or deleted. Check the URL or go back to the homepage.',
     home: 'Go home',
-    back: 'Go back',
+    services: 'Our services',
   },
 }
 
@@ -25,10 +25,11 @@ export default async function NotFound() {
     const detected = await getLocale()
     if (detected === 'en') locale = 'en'
   } catch {
-    // layout not yet set locale, use default
+    // fallback to default locale
   }
 
   const t = messages[locale]
+  const prefix = locale === 'en' ? '/en' : ''
 
   return (
     <section className="not-found">
@@ -39,11 +40,11 @@ export default async function NotFound() {
           <h1 className="not-found__title">{t.title}</h1>
           <p className="not-found__description">{t.description}</p>
           <div className="not-found__actions">
-            <Link href="/" className="cta">
+            <Link href={`${prefix}/`} className="cta">
               {t.home}
             </Link>
-            <Link href="/services" className="cta cta-secondary">
-              {locale === 'ua' ? 'Наші послуги' : 'Our services'}
+            <Link href={`${prefix}/services`} className="cta cta-secondary">
+              {t.services}
             </Link>
           </div>
         </div>
