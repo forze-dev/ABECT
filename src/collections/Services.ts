@@ -1,7 +1,14 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateTag } from 'next/cache'
+
+const revalidateAll = async () => { revalidateTag('all') }
 
 export const Services: CollectionConfig = {
   slug: 'services',
+  hooks: {
+    afterChange: [revalidateAll],
+    afterDelete: [revalidateAll],
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'serviceType', 'featured', 'order', 'createdAt'],
@@ -103,6 +110,7 @@ export const Services: CollectionConfig = {
       name: 'webliumPrice',
       type: 'number',
       label: 'Ціна Weblium',
+      min: 0,
       admin: {
         condition: (data) => data.hasWebliumOption === true,
         description: 'Вартість варіанту на Weblium',
@@ -165,6 +173,7 @@ export const Services: CollectionConfig = {
       type: 'number',
       required: true,
       label: 'Ціна Custom',
+      min: 0,
       admin: {
         description: 'Вартість кастомної розробки',
       },

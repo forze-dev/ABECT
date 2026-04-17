@@ -36,10 +36,28 @@ const jsxConverters: JSXConvertersFunction<DefaultNodeTypes> = ({ defaultConvert
     },
 });
 
+class RichTextErrorBoundary extends React.Component<
+    { children: React.ReactNode },
+    { hasError: boolean }
+> {
+    constructor(props: { children: React.ReactNode }) {
+        super(props);
+        this.state = { hasError: false };
+    }
+    static getDerivedStateFromError() { return { hasError: true }; }
+    componentDidCatch(error: Error) { console.error('[RichText] render error:', error); }
+    render() {
+        if (this.state.hasError) return <div className="RichText RichText--error" />;
+        return this.props.children;
+    }
+}
+
 export default function RichTextWithAnchors({ data }: RichTextWithAnchorsProps) {
     return (
-        <div className="RichText">
-            <RichText data={data} converters={jsxConverters} />
-        </div>
+        <RichTextErrorBoundary>
+            <div className="RichText">
+                <RichText data={data} converters={jsxConverters} />
+            </div>
+        </RichTextErrorBoundary>
     )
 }

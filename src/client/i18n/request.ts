@@ -9,8 +9,12 @@ export default getRequestConfig(async ({ requestLocale }) => {
 		? requested
 		: routing.defaultLocale;
 
-	return {
-		locale,
-		messages: (await import(`../../../messages/${locale}.json`)).default
-	};
+	let messages = {};
+	try {
+		messages = (await import(`../../../messages/${locale}.json`)).default;
+	} catch {
+		console.error(`[i18n/request] Missing messages for locale: ${locale}`);
+	}
+
+	return { locale, messages };
 });

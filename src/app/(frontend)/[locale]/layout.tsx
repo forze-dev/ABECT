@@ -37,8 +37,12 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
-  const messages = (await import(`../../../../messages/${locale}.json`))
-    .default as Record<string, string>;
+  let messages: Record<string, string> = {};
+  try {
+    messages = (await import(`../../../../messages/${locale}.json`)).default as Record<string, string>;
+  } catch {
+    console.error(`[layout] Missing messages for locale: ${locale}, falling back to empty`);
+  }
 
   return (
     <html lang={locale}>

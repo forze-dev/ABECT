@@ -4,11 +4,12 @@ import { JSX, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ChevronDown } from 'lucide-react';
 import RichText from '@/client/components/RichText/RichText';
+import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical';
 import './FAQSection.scss';
 
 interface FAQItem {
 	question?: string | null;
-	answer?: any;
+	answer?: SerializedEditorState | null;
 }
 
 interface FAQSectionProps {

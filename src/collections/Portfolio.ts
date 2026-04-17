@@ -1,7 +1,14 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateTag } from 'next/cache'
+
+const revalidateAll = async () => { revalidateTag('all') }
 
 export const Portfolio: CollectionConfig = {
   slug: 'portfolio',
+  hooks: {
+    afterChange: [revalidateAll],
+    afterDelete: [revalidateAll],
+  },
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'client', 'service', 'status', 'createdAt'],
@@ -63,6 +70,10 @@ export const Portfolio: CollectionConfig = {
       name: 'projectUrl',
       type: 'text',
       label: 'Посилання на сайт',
+      validate: (val: string | null | undefined) => {
+        if (!val) return true;
+        try { new URL(val); return true; } catch { return 'Введіть коректний URL (наприклад https://example.com)'; }
+      },
       admin: {
         description: 'URL проекту (якщо є)',
       },

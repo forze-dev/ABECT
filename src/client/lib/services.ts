@@ -28,11 +28,13 @@ function sortByOrderAndDate(a: Service, b: Service): number {
  */
 export async function getFeaturedServices(locale: string = 'uk'): Promise<Service[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/services?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/services] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/services?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: ['services'] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 
@@ -69,11 +71,13 @@ export async function getFeaturedServices(locale: string = 'uk'): Promise<Servic
  */
 export async function getAllServices(locale: string = 'uk'): Promise<Service[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/services?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/services] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/services?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: ['services'] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 
@@ -101,11 +105,13 @@ export async function getAllServices(locale: string = 'uk'): Promise<Service[]> 
  */
 export async function getServiceBySlug(slug: string, locale: string = 'uk'): Promise<Service | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/services?where[slug][equals]=${slug}&where[status][equals]=published&locale=${locale}&limit=1&depth=2`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/services] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/services?where[slug][equals]=${slug}&where[status][equals]=published&locale=${locale}&limit=1&depth=2`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: [`service-${slug}`] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 
@@ -135,11 +141,13 @@ export async function getRelatedServices(
   limit: number = 3
 ): Promise<Service[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/services?where[status][equals]=published&where[serviceType][equals]=${serviceTypeId}&locale=${locale}&limit=100&depth=2`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/services] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/services?where[status][equals]=published&where[serviceType][equals]=${serviceTypeId}&locale=${locale}&limit=100&depth=2`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: ['services'] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 
@@ -152,14 +160,14 @@ export async function getRelatedServices(
     let services = data.docs ?? [];
 
     // Виключити поточний сервіс
-    services = services.filter(s => s.id !== currentServiceId);
+    services = services.filter(s => s.id != null && s.id !== currentServiceId);
 
     // Якщо менше ніж потрібно, додати сервіси з інших типів
     if (services.length < limit) {
-      const otherApiUrl = `${baseUrl}/api/services?where[status][equals]=published&where[serviceType][not_equals]=${serviceTypeId}&locale=${locale}&limit=100&depth=2`;
+      const otherApiUrl = `${resolvedUrl}/api/services?where[status][equals]=published&where[serviceType][not_equals]=${serviceTypeId}&locale=${locale}&limit=100&depth=2`;
 
       const otherResponse = await fetch(otherApiUrl, {
-        next: { revalidate: 300, tags: ['services'] },
+        next: { tags: ['all'] },
         cache: 'force-cache',
       });
 
@@ -193,11 +201,13 @@ export async function getRelatedServices(
  */
 export async function getAllServiceTypes(locale: string = 'uk'): Promise<ServiceType[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/service-types?locale=${locale}&limit=100&sort=order`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/services] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/service-types?locale=${locale}&limit=100&sort=order`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: ['service-types'] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 
@@ -219,11 +229,13 @@ export async function getAllServiceTypes(locale: string = 'uk'): Promise<Service
  */
 export async function getServiceTypeBySlug(slug: string, locale: string = 'uk'): Promise<ServiceType | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/service-types?where[slug][equals]=${slug}&locale=${locale}&limit=1`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/services] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/service-types?where[slug][equals]=${slug}&locale=${locale}&limit=1`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: [`service-type-${slug}`] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 
@@ -249,11 +261,13 @@ export async function getServicesByType(typeSlug: string, locale: string = 'uk')
     const serviceType = await getServiceTypeBySlug(typeSlug, locale);
     if (!serviceType) return [];
 
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/services?where[status][equals]=published&where[serviceType][equals]=${serviceType.id}&locale=${locale}&limit=100&depth=2`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/services] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/services?where[status][equals]=published&where[serviceType][equals]=${serviceType.id}&locale=${locale}&limit=100&depth=2`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: ['services', `service-type-${typeSlug}`] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 

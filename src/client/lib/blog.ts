@@ -25,11 +25,13 @@ function sortByFeaturedAndDate(a: Post, b: Post): number {
  */
 export async function getAllPosts(locale: string = 'uk'): Promise<Post[]> {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-		const apiUrl = `${baseUrl}/api/posts?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
+		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+		if (!baseUrl) console.warn('[lib/blog] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+		const resolvedUrl = baseUrl || 'http://localhost:3000';
+		const apiUrl = `${resolvedUrl}/api/posts?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 300, tags: ['posts'] },
+			next: { tags: ['all'] },
 			cache: 'force-cache',
 		});
 
@@ -53,11 +55,13 @@ export async function getAllPosts(locale: string = 'uk'): Promise<Post[]> {
  */
 export async function getFeaturedPosts(locale: string = 'uk'): Promise<Post[]> {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-		const apiUrl = `${baseUrl}/api/posts?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
+		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+		if (!baseUrl) console.warn('[lib/blog] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+		const resolvedUrl = baseUrl || 'http://localhost:3000';
+		const apiUrl = `${resolvedUrl}/api/posts?where[status][equals]=published&locale=${locale}&limit=100&depth=2`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 300, tags: ['posts'] },
+			next: { tags: ['all'] },
 			cache: 'force-cache',
 		});
 
@@ -94,11 +98,13 @@ export async function getFeaturedPosts(locale: string = 'uk'): Promise<Post[]> {
  */
 export async function getPostBySlug(slug: string, locale: string = 'uk'): Promise<Post | null> {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-		const apiUrl = `${baseUrl}/api/posts?where[slug][equals]=${slug}&where[status][equals]=published&locale=${locale}&limit=1&depth=2`;
+		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+		if (!baseUrl) console.warn('[lib/blog] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+		const resolvedUrl = baseUrl || 'http://localhost:3000';
+		const apiUrl = `${resolvedUrl}/api/posts?where[slug][equals]=${slug}&where[status][equals]=published&locale=${locale}&limit=1&depth=2`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 300, tags: [`post-${slug}`] },
+			next: { tags: ['all'] },
 			cache: 'force-cache',
 		});
 
@@ -128,11 +134,13 @@ export async function getRelatedPosts(
 	limit: number = 3
 ): Promise<Post[]> {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-		const apiUrl = `${baseUrl}/api/posts?where[status][equals]=published&where[category][equals]=${categoryId}&locale=${locale}&limit=100&depth=2`;
+		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+		if (!baseUrl) console.warn('[lib/blog] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+		const resolvedUrl = baseUrl || 'http://localhost:3000';
+		const apiUrl = `${resolvedUrl}/api/posts?where[status][equals]=published&where[category][equals]=${categoryId}&locale=${locale}&limit=100&depth=2`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 300, tags: ['posts'] },
+			next: { tags: ['all'] },
 			cache: 'force-cache',
 		});
 
@@ -145,14 +153,14 @@ export async function getRelatedPosts(
 		let posts = data.docs ?? [];
 
 		// Виключити поточну статтю
-		posts = posts.filter(p => p.id !== currentPostId);
+		posts = posts.filter(p => p.id != null && p.id !== currentPostId);
 
 		// Якщо менше ніж потрібно, додати статті з інших категорій
 		if (posts.length < limit) {
 			const otherApiUrl = `${baseUrl}/api/posts?where[status][equals]=published&where[category][not_equals]=${categoryId}&locale=${locale}&limit=100&depth=2`;
 
 			const otherResponse = await fetch(otherApiUrl, {
-				next: { revalidate: 300, tags: ['posts'] },
+				next: { tags: ['all'] },
 				cache: 'force-cache',
 			});
 
@@ -182,11 +190,13 @@ export async function getRelatedPosts(
  */
 export async function getAllCategories(locale: string = 'uk'): Promise<Category[]> {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-		const apiUrl = `${baseUrl}/api/categories?locale=${locale}&limit=100`;
+		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+		if (!baseUrl) console.warn('[lib/blog] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+		const resolvedUrl = baseUrl || 'http://localhost:3000';
+		const apiUrl = `${resolvedUrl}/api/categories?locale=${locale}&limit=100`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 300, tags: ['categories'] },
+			next: { tags: ['all'] },
 			cache: 'force-cache',
 		});
 
@@ -208,11 +218,13 @@ export async function getAllCategories(locale: string = 'uk'): Promise<Category[
  */
 export async function getCategoryBySlug(slug: string, locale: string = 'uk'): Promise<Category | null> {
 	try {
-		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-		const apiUrl = `${baseUrl}/api/categories?where[slug][equals]=${slug}&locale=${locale}&limit=1`;
+		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+		if (!baseUrl) console.warn('[lib/blog] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+		const resolvedUrl = baseUrl || 'http://localhost:3000';
+		const apiUrl = `${resolvedUrl}/api/categories?where[slug][equals]=${slug}&locale=${locale}&limit=1`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 300, tags: [`category-${slug}`] },
+			next: { tags: ['all'] },
 			cache: 'force-cache',
 		});
 
@@ -238,11 +250,13 @@ export async function getPostsByCategory(categorySlug: string, locale: string = 
 		const category = await getCategoryBySlug(categorySlug, locale);
 		if (!category) return [];
 
-		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-		const apiUrl = `${baseUrl}/api/posts?where[status][equals]=published&where[category][equals]=${category.id}&locale=${locale}&limit=100&depth=2`;
+		const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+		if (!baseUrl) console.warn('[lib/blog] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+		const resolvedUrl = baseUrl || 'http://localhost:3000';
+		const apiUrl = `${resolvedUrl}/api/posts?where[status][equals]=published&where[category][equals]=${category.id}&locale=${locale}&limit=100&depth=2`;
 
 		const response = await fetch(apiUrl, {
-			next: { revalidate: 300, tags: ['posts', `category-${categorySlug}`] },
+			next: { tags: ['all'] },
 			cache: 'force-cache',
 		});
 

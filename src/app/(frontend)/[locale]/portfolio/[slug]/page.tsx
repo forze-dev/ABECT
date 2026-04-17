@@ -1,12 +1,28 @@
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getPortfolioBySlug, getRelatedProjects, getAllPortfolio } from '@/client/lib/portfolio';
+import { getPortfolioBySlug, getRelatedProjects } from '@/client/lib/portfolio';
 import Project from '@/client/modules/project/Project';
 import type { Media } from '@/payload-types';
 
-// ISR - оновлення кожні 5 хвилин
-export const revalidate = 300;
+export const dynamicParams = true;
+
+export async function generateStaticParams({ params }: { params: { locale: string } }) {
+  try {
+    const { getPayload } = await import('payload');
+    const { default: config } = await import('@payload-config');
+    const payload = await getPayload({ config });
+    const { docs } = await payload.find({
+      collection: 'portfolio',
+      where: { status: { equals: 'published' } },
+      limit: 1000,
+      locale: params.locale as 'uk' | 'en',
+    });
+    return docs.filter(p => p.slug).map(p => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
+}
 
 type Params = {
 	params: Promise<{
@@ -14,25 +30,6 @@ type Params = {
 		slug: string;
 	}>;
 };
-
-// Generate static params для всіх проектів
-export async function generateStaticParams() {
-	const projects = await getAllPortfolio('uk');
-	const projectsEn = await getAllPortfolio('en');
-
-	const params = [
-		...projects.map((project) => ({
-			locale: 'ua',
-			slug: project.slug
-		})),
-		...projectsEn.map((project) => ({
-			locale: 'en',
-			slug: project.slug
-		}))
-	];
-
-	return params;
-}
 
 // SEO Metadata
 export async function generateMetadata({ params }: Params): Promise<Metadata> {

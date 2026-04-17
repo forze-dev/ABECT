@@ -1,7 +1,14 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateTag } from 'next/cache'
+
+const revalidateAll = async () => { revalidateTag('all') }
 
 export const ServiceTypes: CollectionConfig = {
   slug: 'service-types',
+  hooks: {
+    afterChange: [revalidateAll],
+    afterDelete: [revalidateAll],
+  },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'order', 'createdAt'],

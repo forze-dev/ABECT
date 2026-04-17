@@ -25,9 +25,9 @@ export default function Footer() {
 	];
 
 	const contactLinks = [
-		{ href: 'https://t.me/+380980275819', icon: <Send size={20} /> },
-		{ href: 'https://www.facebook.com', icon: <Facebook size={20} /> },
-		{ href: 'https://www.instagram.com', icon: <Instagram size={20} /> }
+		{ href: 'https://t.me/+380980275819', icon: <Send size={20} />, label: 'Telegram' },
+		{ href: 'https://www.facebook.com', icon: <Facebook size={20} />, label: 'Facebook' },
+		{ href: 'https://www.instagram.com', icon: <Instagram size={20} />, label: 'Instagram' }
 	];
 
 	const contactInfo = [
@@ -125,6 +125,7 @@ export default function Footer() {
 										target="_blank"
 										rel="noopener noreferrer"
 										className="footer__social-link"
+										aria-label={contact.label}
 									>
 										{contact.icon}
 									</a>

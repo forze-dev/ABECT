@@ -1,8 +1,14 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateTag } from 'next/cache'
+
+const revalidateAll = async () => { revalidateTag('all') }
 
 export const CalculatorConfig: GlobalConfig = {
   slug: 'calculator-config',
   label: 'Калькулятор',
+  hooks: {
+    afterChange: [revalidateAll],
+  },
   admin: {
     group: 'Налаштування',
   },

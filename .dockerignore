@@ -47,19 +47,12 @@ Dockerfile
 docker-compose*.yml
 .dockerignore
 
-# PostgreSQL data
-postgres_data
-
 # Backups
 backups
 
 # Documentation
 *.md
 !README.md
-
-# Scripts
-deploy.sh
-scripts
 
 # TypeScript
 *.tsbuildinfo

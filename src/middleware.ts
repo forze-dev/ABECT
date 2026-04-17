@@ -3,8 +3,7 @@ import { routing } from './client/i18n/routing';
 
 export default createMiddleware({
   ...routing,
-  // Это ключевая опция:
-  // автоматически подставляет defaultLocale (ua) для корня `/`
+  // Key option: auto-inserts defaultLocale (uk) for root `/` without a prefix
   localePrefix: 'as-needed'
 });
 

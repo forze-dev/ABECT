@@ -5,9 +5,32 @@ import { getServiceBySlug, getRelatedServices } from '@/client/lib/services';
 import ServiceDetail from '@/client/modules/service/ServiceDetail';
 import type { Media, ServiceType } from '@/payload-types';
 
-// ISR - сторінки генеруються динамічно і кешуються
 export const dynamicParams = true;
-export const revalidate = 300; // Оновлення кешу кожні 5 хвилин
+
+export async function generateStaticParams({ params }: { params: { locale: string; type: string } }) {
+  try {
+    const { getPayload } = await import('payload');
+    const { default: config } = await import('@payload-config');
+    const payload = await getPayload({ config });
+
+    const { docs: types } = await payload.find({
+      collection: 'service-types',
+      where: { slug: { equals: params.type } },
+      limit: 1,
+    });
+    if (types.length === 0) return [];
+
+    const { docs } = await payload.find({
+      collection: 'services',
+      where: { status: { equals: 'published' }, serviceType: { equals: types[0].id } },
+      limit: 1000,
+      locale: params.locale as 'uk' | 'en',
+    });
+    return docs.filter(s => s.slug).map(s => ({ slug: s.slug }));
+  } catch {
+    return [];
+  }
+}
 
 type Params = {
 	params: Promise<{

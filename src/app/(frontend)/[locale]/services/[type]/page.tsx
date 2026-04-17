@@ -5,9 +5,23 @@ import ServicesPage from '@/client/modules/services/ServicesPage/ServicesPage';
 import type { Metadata } from 'next';
 import type { Media } from '@/payload-types';
 
-// ISR - сторінки генеруються динамічно і кешуються
 export const dynamicParams = true;
-export const revalidate = 300; // Оновлення кешу кожні 5 хвилин
+
+export async function generateStaticParams({ params }: { params: { locale: string } }) {
+  try {
+    const { getPayload } = await import('payload');
+    const { default: config } = await import('@payload-config');
+    const payload = await getPayload({ config });
+    const { docs } = await payload.find({
+      collection: 'service-types',
+      limit: 1000,
+      locale: params.locale as 'uk' | 'en',
+    });
+    return docs.filter(t => t.slug).map(t => ({ type: t.slug }));
+  } catch {
+    return [];
+  }
+}
 
 type Params = {
 	params: Promise<{

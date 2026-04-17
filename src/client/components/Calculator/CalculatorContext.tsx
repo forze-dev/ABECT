@@ -370,7 +370,11 @@ export function CalculatorProvider({ children, initialConfig }: CalculatorProvid
       urgency: state.urgency,
     };
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+    } catch {
+      // localStorage may be unavailable in private mode
+    }
   }, [
     state.currentStep,
     state.projectType,

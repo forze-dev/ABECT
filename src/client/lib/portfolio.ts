@@ -24,11 +24,13 @@ function sortByOrderAndDate(a: Portfolio, b: Portfolio): number {
 
 export async function getFeaturedPortfolio(locale: string = 'uk'): Promise<Portfolio[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/portfolio?where[status][equals]=published&locale=${locale}&limit=100`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/portfolio] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/portfolio?where[status][equals]=published&locale=${locale}&limit=100`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: ['portfolio'] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 
@@ -66,11 +68,13 @@ export async function getFeaturedPortfolio(locale: string = 'uk'): Promise<Portf
  */
 export async function getAllPortfolio(locale: string = 'uk'): Promise<Portfolio[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/portfolio?where[status][equals]=published&locale=${locale}&limit=100`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/portfolio] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/portfolio?where[status][equals]=published&locale=${locale}&limit=100`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: ['portfolio'] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 
@@ -98,11 +102,13 @@ export async function getAllPortfolio(locale: string = 'uk'): Promise<Portfolio[
  */
 export async function getPortfolioBySlug(slug: string, locale: string = 'uk'): Promise<Portfolio | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/portfolio?where[slug][equals]=${slug}&where[status][equals]=published&locale=${locale}&limit=1`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/portfolio] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/portfolio?where[slug][equals]=${slug}&where[status][equals]=published&locale=${locale}&limit=1`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: [`portfolio-${slug}`] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 
@@ -132,11 +138,13 @@ export async function getRelatedProjects(
   limit: number = 3
 ): Promise<Portfolio[]> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/portfolio?where[status][equals]=published&where[service][equals]=${service}&locale=${locale}&limit=100`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/portfolio] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/portfolio?where[status][equals]=published&where[service][equals]=${service}&locale=${locale}&limit=100`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: ['portfolio'] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 
@@ -149,14 +157,14 @@ export async function getRelatedProjects(
     let projects = data.docs ?? [];
 
     // Виключити поточний проєкт
-    projects = projects.filter(p => p.id !== currentProjectId);
+    projects = projects.filter(p => p.id != null && p.id !== currentProjectId);
 
     // Якщо менше ніж потрібно, додати проєкти з інших категорій
     if (projects.length < limit) {
       const otherApiUrl = `${baseUrl}/api/portfolio?where[status][equals]=published&where[service][not_equals]=${service}&locale=${locale}&limit=100`;
 
       const otherResponse = await fetch(otherApiUrl, {
-        next: { revalidate: 300, tags: ['portfolio'] },
+        next: { tags: ['all'] },
         cache: 'force-cache',
       });
 

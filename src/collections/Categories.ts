@@ -1,7 +1,14 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateTag } from 'next/cache'
+
+const revalidateAll = async () => { revalidateTag('all') }
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
+  hooks: {
+    afterChange: [revalidateAll],
+    afterDelete: [revalidateAll],
+  },
   admin: {
     useAsTitle: 'name',
   },

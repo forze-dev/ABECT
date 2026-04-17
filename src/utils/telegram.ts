@@ -112,51 +112,44 @@ function escapeMarkdown(text: string): string {
 export async function sendTelegramNotification(lead: Lead): Promise<boolean> {
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
-  const threadId = process.env.TELEGRAM_THREAD_ID
+  const threadId = process.env.TELEGRAM_THREAD_ID;
 
-  if (!botToken || !chatId) {
-    console.error('Telegram credentials not configured');
-    return false;
-  }
+  if (!botToken) { console.error('Telegram: TELEGRAM_BOT_TOKEN not set'); return false; }
+  if (!chatId) { console.error('Telegram: TELEGRAM_CHAT_ID not set'); return false; }
 
   const message = lead.type === 'calculator'
     ? formatCalculatorMessage(lead as CalculatorLead)
     : formatSimpleMessage(lead as SimpleLead);
 
+  const body = JSON.stringify({
+    chat_id: chatId,
+    ...(threadId ? { message_thread_id: threadId } : {}),
+    text: message,
+    parse_mode: 'MarkdownV2',
+  });
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 10_000);
+
   try {
     const response = await fetch(
       `https://api.telegram.org/bot${botToken}/sendMessage`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          chat_id: chatId,
-          message_thread_id: threadId,
-          text: message,
-          parse_mode: 'MarkdownV2',
-        }),
-      }
+      { method: 'POST', headers: { 'Content-Type': 'application/json' }, body, signal: controller.signal }
     );
+
+    clearTimeout(timeout);
 
     if (!response.ok) {
       const error = await response.json();
       console.error('Telegram API error:', error);
 
-      // Спробувати без форматування якщо помилка парсингу
       if (error.description?.includes('parse')) {
         const plainResponse = await fetch(
           `https://api.telegram.org/bot${botToken}/sendMessage`,
           {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              chat_id: chatId,
-              text: message.replace(/[*_`]/g, ''),
-            }),
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: chatId, text: message.replace(/[*_`]/g, '') }),
           }
         );
         return plainResponse.ok;
@@ -167,6 +160,7 @@ export async function sendTelegramNotification(lead: Lead): Promise<boolean> {
 
     return true;
   } catch (error) {
+    clearTimeout(timeout);
     console.error('Failed to send Telegram notification:', error);
     return false;
   }

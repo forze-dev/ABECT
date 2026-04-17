@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import { getPayload } from 'payload'
+import type { DataFromCollectionSlug } from 'payload'
 import config from '../payload.config'
 
 const seedServices = async () => {
@@ -11,14 +12,14 @@ const seedServices = async () => {
 
     // Helper function to create localized service
     const createService = async (
-      ukData: any,
-      enData: any,
+      ukData: Record<string, unknown>,
+      enData: Record<string, unknown>,
     ) => {
       // Create with Ukrainian (default locale)
       const service = await payload.create({
         collection: 'services',
         locale: 'uk',
-        data: ukData,
+        data: ukData as unknown as DataFromCollectionSlug<'services'>,
       })
 
       // Update with English translations
@@ -26,7 +27,7 @@ const seedServices = async () => {
         collection: 'services',
         id: service.id,
         locale: 'en',
-        data: enData,
+        data: enData as unknown as DataFromCollectionSlug<'services'>,
       })
 
       return service

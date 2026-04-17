@@ -5,11 +5,13 @@ import type { CalculatorConfig } from '@/payload-types';
  */
 export async function getCalculatorConfig(locale: string = 'uk'): Promise<CalculatorConfig | null> {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000';
-    const apiUrl = `${baseUrl}/api/globals/calculator-config?locale=${locale}&depth=1`;
+    const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+    if (!baseUrl) console.warn('[lib/calculator] NEXT_PUBLIC_SERVER_URL not set, using localhost:3000');
+    const resolvedUrl = baseUrl || 'http://localhost:3000';
+    const apiUrl = `${resolvedUrl}/api/globals/calculator-config?locale=${locale}&depth=1`;
 
     const response = await fetch(apiUrl, {
-      next: { revalidate: 300, tags: ['calculator-config'] },
+      next: { tags: ['all'] },
       cache: 'force-cache',
     });
 

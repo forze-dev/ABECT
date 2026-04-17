@@ -1,6 +1,6 @@
 'use client';
 
-import { JSX, useEffect, useRef, useState, MouseEvent } from 'react';
+import { JSX, useEffect, useRef, useState } from 'react';
 import { Blocks, Code } from 'lucide-react';
 import type { Service, ServiceType as ServiceTypeModel } from '@/payload-types';
 import { Link } from '@/client/i18n/navigation';
@@ -33,7 +33,7 @@ export default function ServicesCard({ service, locale }: ServicesCardProps): JS
 			card.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.1)';
 		};
 
-		const handleMouseMove = (e: MouseEvent | globalThis.MouseEvent) => {
+		const handleMouseMove = (e: globalThis.MouseEvent) => {
 			const rect = card.getBoundingClientRect();
 			const x = e.clientX - rect.left;
 			const y = e.clientY - rect.top;
@@ -57,12 +57,12 @@ export default function ServicesCard({ service, locale }: ServicesCardProps): JS
 		};
 
 		card.addEventListener('mouseenter', handleMouseEnter);
-		card.addEventListener('mousemove', handleMouseMove as EventListener);
+		card.addEventListener('mousemove', handleMouseMove);
 		card.addEventListener('mouseleave', handleMouseLeave);
 
 		return () => {
 			card.removeEventListener('mouseenter', handleMouseEnter);
-			card.removeEventListener('mousemove', handleMouseMove as EventListener);
+			card.removeEventListener('mousemove', handleMouseMove);
 			card.removeEventListener('mouseleave', handleMouseLeave);
 		};
 	}, []);

@@ -19,8 +19,8 @@ export const Comments: CollectionConfig = {
       }
     },
     // Тільки адміни можуть оновлювати/видаляти
-    update: ({ req: { user } }) => !!user,
-    delete: ({ req: { user } }) => !!user,
+    update: ({ req: { user } }) => !!(user && (user.role === 'admin' || user.role === 'superadmin')),
+    delete: ({ req: { user } }) => !!(user && (user.role === 'admin' || user.role === 'superadmin')),
   },
   fields: [
     {

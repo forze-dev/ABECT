@@ -1,5 +1,5 @@
 // storage-adapter-import-placeholder
-import { postgresAdapter } from '@payloadcms/db-postgres'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -21,6 +21,13 @@ import { fullRichEditor } from './utils/editor';
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+if (!process.env.PAYLOAD_SECRET) {
+  throw new Error('PAYLOAD_SECRET environment variable is required')
+}
+if (!process.env.DATABASE_URI) {
+  throw new Error('DATABASE_URI environment variable is required')
+}
 
 export default buildConfig({
   admin: {
@@ -44,17 +51,12 @@ export default buildConfig({
     CalculatorConfig,
   ],
   editor: fullRichEditor,
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URI || '',
-    },
-    // Автоматично синхронізувати схему БД при старті (як в development)
-    // Це безпечно для production якщо зміни тільки додають нові поля/таблиці
-    push: true,
+  db: mongooseAdapter({
+    url: process.env.DATABASE_URI,
   }),
   // Локалізація для українська/англійська
   localization: {

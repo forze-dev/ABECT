@@ -1,7 +1,14 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateTag } from 'next/cache'
+
+const revalidateAll = async () => { revalidateTag('all') }
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  hooks: {
+    afterChange: [revalidateAll],
+    afterDelete: [revalidateAll],
+  },
   admin: {
     useAsTitle: 'filename',
   },

@@ -14,12 +14,15 @@ export default function RichTextHeadings({ content, title = "Table of Contents" 
 
     const headings: Array<{ id: string; text: string; }> = [];
 
-    content.root.children.forEach((node: any, index: number) => {
+    interface LexicalTextNode { type?: string; text?: string; }
+    interface LexicalNode { type?: string; tag?: string; children?: LexicalTextNode[]; }
+
+    content.root.children.forEach((node: LexicalNode) => {
         if (node.type === 'heading') {
             const level = Number(node.tag?.replace('h', '') || 0);
 
             if (level === 2) {
-                const text = node.children?.map((c: any) => c.text || '').join('').trim();
+                const text = node.children?.map((c: LexicalTextNode) => c.text || '').join('').trim();
                 if (!text) return;
 
                 const id = generateSlug(text)

@@ -95,12 +95,12 @@ function CalculatorContent({ config }: CalculatorContentProps): JSX.Element {
             <p>{tForm('successMessage')}</p>
             <div className="calculator__success-summary">
               <div className="calculator__success-price">
-                <span>Орієнтовна вартість:</span>
+                <span>{t('priceLabel')}:</span>
                 <strong>від {state.estimatedPrice.toLocaleString('uk-UA')} грн</strong>
               </div>
               {state.estimatedTimeline && (
                 <div className="calculator__success-timeline">
-                  <span>Орієнтовний термін:</span>
+                  <span>{t('timelineLabel')}:</span>
                   <strong>{state.estimatedTimeline}</strong>
                 </div>
               )}

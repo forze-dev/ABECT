@@ -1,8 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPayload } from 'payload';
+import type { DataFromCollectionSlug } from 'payload';
 import config from '@payload-config';
 import { sendTelegramNotification } from '@/utils/telegram';
 import type { Lead } from '@/utils/telegram';
+
+// In-memory rate limiter (5 requests / IP / 60s)
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_WINDOW = 60_000;
+const RATE_MAX = 5;
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || entry.resetAt < now) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
+    return true;
+  }
+  if (entry.count >= RATE_MAX) return false;
+  entry.count++;
+  return true;
+}
 
 interface SimpleLeadRequest {
   type: 'simple';
@@ -10,11 +28,7 @@ interface SimpleLeadRequest {
   contact: string;
   message?: string;
   source?: string;
-  utm?: {
-    source?: string;
-    medium?: string;
-    campaign?: string;
-  };
+  utm?: { source?: string; medium?: string; campaign?: string };
 }
 
 interface CalculatorLeadRequest {
@@ -23,11 +37,7 @@ interface CalculatorLeadRequest {
   contact: string;
   message?: string;
   source?: string;
-  utm?: {
-    source?: string;
-    medium?: string;
-    campaign?: string;
-  };
+  utm?: { source?: string; medium?: string; campaign?: string };
   calculatorData: {
     projectType: string;
     projectTypeName?: string;
@@ -44,39 +54,61 @@ interface CalculatorLeadRequest {
 
 type LeadRequest = SimpleLeadRequest | CalculatorLeadRequest;
 
-/**
- * Валідація email
- */
-function isValidEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+type LeadStatus = 'new' | 'in_progress' | 'done';
+
+interface LeadCreateData {
+  name: string;
+  contact: string;
+  message?: string;
+  type: 'simple' | 'calculator';
+  source?: string;
+  utm?: { source?: string; medium?: string; campaign?: string };
+  status: LeadStatus;
+  calculatorData?: {
+    projectType: string;
+    platform: 'weblium' | 'custom';
+    pagesCount: number;
+    additionalServices: string[];
+    urgency: string;
+    estimatedPrice: number;
+    estimatedTimeline?: string;
+  };
 }
 
-/**
- * Валідація телефону (український формат)
- */
+function isValidEmail(email: string): boolean {
+  const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(email) && email.length <= 320;
+}
+
 function isValidPhone(phone: string): boolean {
-  // Видаляємо всі не-цифри
   const digits = phone.replace(/\D/g, '');
-  // Український номер: 10-12 цифр (з кодом країни або без)
   return digits.length >= 10 && digits.length <= 13;
 }
 
-/**
- * Валідація контакту (email АБО телефон)
- */
 function isValidContact(contact: string): boolean {
   return isValidEmail(contact) || isValidPhone(contact);
 }
 
-/**
- * POST /api/leads - Створення нової заявки
- */
 export async function POST(request: NextRequest) {
+  // Origin check — allow only same-site requests
+  const origin = request.headers.get('origin');
+  const serverUrl = process.env.NEXT_PUBLIC_SERVER_URL;
+  if (origin && serverUrl && !origin.startsWith(serverUrl)) {
+    return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
+  }
+
+  // Rate limiting
+  const ip = request.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'unknown';
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json(
+      { success: false, error: 'Забагато запитів. Спробуйте через хвилину.' },
+      { status: 429 }
+    );
+  }
+
   try {
     const body: LeadRequest = await request.json();
 
-    // Базова валідація
     if (!body.name || body.name.trim().length < 2) {
       return NextResponse.json(
         { success: false, error: "Ім'я повинно містити мінімум 2 символи" },
@@ -98,7 +130,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Валідація даних калькулятора
     if (body.type === 'calculator') {
       const calcData = (body as CalculatorLeadRequest).calculatorData;
       if (!calcData || !calcData.projectType || !calcData.platform) {
@@ -109,11 +140,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Отримуємо Payload instance
-    const payload = await getPayload({ config });
-
-    // Створюємо запис в базі даних
-    const leadData: Record<string, unknown> = {
+    const leadData: LeadCreateData = {
       name: body.name.trim(),
       contact: body.contact.trim(),
       message: body.message?.trim() || undefined,
@@ -123,7 +150,6 @@ export async function POST(request: NextRequest) {
       status: 'new',
     };
 
-    // Додаємо дані калькулятора якщо є
     if (body.type === 'calculator') {
       const calcBody = body as CalculatorLeadRequest;
       leadData.calculatorData = {
@@ -137,13 +163,13 @@ export async function POST(request: NextRequest) {
       };
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const payload = await getPayload({ config });
+
     const lead = await payload.create({
       collection: 'leads',
-      data: leadData as any,
+      data: leadData as unknown as DataFromCollectionSlug<'leads'>,
     });
 
-    // Відправляємо повідомлення в Telegram
     const telegramData: Lead = body.type === 'calculator'
       ? {
           type: 'calculator',
@@ -161,7 +187,6 @@ export async function POST(request: NextRequest) {
           source: body.source,
         };
 
-    // Відправляємо в Telegram асинхронно (не блокуємо відповідь)
     sendTelegramNotification(telegramData).catch((err) => {
       console.error('Telegram notification failed:', err);
     });

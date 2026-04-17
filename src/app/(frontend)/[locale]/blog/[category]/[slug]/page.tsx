@@ -5,9 +5,32 @@ import { getPostBySlug, getRelatedPosts } from '@/client/lib/blog';
 import Article from '@/client/modules/article/Article';
 import type { Media, User, Category } from '@/payload-types';
 
-// ISR - сторінки генеруються динамічно і кешуються
 export const dynamicParams = true;
-export const revalidate = 300; // Оновлення кешу кожні 5 хвилин
+
+export async function generateStaticParams({ params }: { params: { locale: string; category: string } }) {
+  try {
+    const { getPayload } = await import('payload');
+    const { default: config } = await import('@payload-config');
+    const payload = await getPayload({ config });
+
+    const { docs: cats } = await payload.find({
+      collection: 'categories',
+      where: { slug: { equals: params.category } },
+      limit: 1,
+    });
+    if (cats.length === 0) return [];
+
+    const { docs } = await payload.find({
+      collection: 'posts',
+      where: { status: { equals: 'published' }, category: { equals: cats[0].id } },
+      limit: 1000,
+      locale: params.locale as 'uk' | 'en',
+    });
+    return docs.filter(p => p.slug).map(p => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
+}
 
 type Params = {
 	params: Promise<{
