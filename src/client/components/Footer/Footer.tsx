@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Link, usePathname } from '@/client/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { Send, Smartphone, Mail } from 'lucide-react';
-import ViberIcon from '../icons/ViberIcon';
+import { Send, Smartphone, Mail, Phone } from 'lucide-react';
 import './Footer.scss';
 
 export default function Footer() {
@@ -27,7 +26,7 @@ export default function Footer() {
 
 	const contactLinks = [
 		{ href: 'https://t.me/+380980275819', icon: <Send size={20} />, label: 'Telegram' },
-		{ href: 'viber://chat/?number=%2B380980275819', icon: <ViberIcon size={20} />, label: 'Viber' }
+		{ href: 'viber://chat/?number=%2B380980275819', icon: <Phone size={20} />, label: 'Viber' }
 	];
 
 	const contactInfo = [

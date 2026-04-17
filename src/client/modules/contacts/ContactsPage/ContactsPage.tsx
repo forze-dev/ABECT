@@ -4,7 +4,6 @@ import { JSX } from 'react';
 import { useTranslations } from 'next-intl';
 import Breadcrumbs from '@/client/components/Breadcrumbs/Breadcrumbs';
 import { Send, Mail, Phone, Clock } from 'lucide-react';
-import ViberIcon from '@/client/components/icons/ViberIcon';
 import './ContactsPage.scss';
 
 interface ContactsPageProps {
@@ -24,7 +23,7 @@ export default function ContactsPage({ locale }: ContactsPageProps): JSX.Element
 		{
 			name: 'Viber',
 			href: 'viber://chat/?number=%2B380980275819',
-			icon: <ViberIcon size={24} />,
+			icon: <Phone size={24} />,
 			username: '+38 (098) 027-58-19'
 		}
 	];
