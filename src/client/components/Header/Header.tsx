@@ -5,7 +5,8 @@ import { Link, usePathname } from '@/client/i18n/navigation';
 import { useTranslations } from 'next-intl';
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import './Header.scss';
-import { Send, Facebook, Instagram } from 'lucide-react';
+import { Send } from 'lucide-react';
+import ViberIcon from '../icons/ViberIcon';
 
 export default function Header() {
 	const t = useTranslations('Header');
@@ -44,8 +45,7 @@ export default function Header() {
 	const contactLinks = useMemo(
 		() => [
 			{ href: 'https://t.me/+380980275819', icon: <Send /> },
-			{ href: 'https://wa.me/380934638024', icon: <Facebook /> },
-			{ href: 'viber://chat/?number=%2B380980275819', icon: <Instagram /> }
+			{ href: 'viber://chat/?number=%2B380980275819', icon: <ViberIcon /> }
 		],
 		[]
 	);

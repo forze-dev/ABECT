@@ -5,6 +5,7 @@ const revalidateAll = async () => { revalidateTag('all') }
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
+  labels: { singular: 'Стаття', plural: 'Статті' },
   hooks: {
     afterChange: [revalidateAll],
     afterDelete: [revalidateAll],
@@ -12,6 +13,7 @@ export const Posts: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'status', 'author', 'category', 'createdAt'],
+    group: 'Блог',
   },
   access: {
     read: () => true,

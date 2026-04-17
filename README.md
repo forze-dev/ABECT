@@ -1,224 +1,167 @@
-# ABECT CMS
+# ABECT
 
-Content Management System для ABECT на базі Payload CMS 3 + Next.js 15.
+Корпоративний сайт веб-агентства з інтерактивним калькулятором вартості, портфоліо, блогом та CMS.
 
-## 🚀 Стек технологій
+## Стек
 
-- **Next.js 15.4.10** - React фреймворк
-- **Payload CMS 3.62.1** - Headless CMS
-- **React 19.1.4** - UI бібліотека
-- **PostgreSQL 17** - База даних
-- **Docker** - Контейнеризація
-- **Nginx** - Reverse proxy
-- **TypeScript** - Мова програмування
+- **Next.js 15** — React фреймворк, App Router, SSG + on-demand revalidation
+- **Payload CMS 3** — Headless CMS, адмін-панель
+- **React 19** — UI
+- **MongoDB** — база даних
+- **TypeScript** — мова програмування
+- **next-intl** — локалізація (UA / EN)
+- **Docker + Nginx** — деплой
 
-## 📋 Колекції
+## Що вміє сайт
 
-- **Services** - Послуги (з підтримкою Weblium/Custom pricing)
-- **Portfolio** - Портфоліо проектів
-- **Posts** - Блог пости
-- **Categories** - Категорії
-- **Media** - Медіа файли
-- **Comments** - Коментарі
-- **Users** - Користувачі
+- **Каталог послуг** з двома ціновими моделями: Weblium (конструктор) і Custom (індивідуальна розробка)
+- **Калькулятор вартості** — 6-крокова форма з динамічним розрахунком ціни
+- **Портфоліо** проектів
+- **Блог** з категоріями, тегами та коментарями (з модерацією)
+- **Збір заявок** з форм + автоматичні сповіщення в Telegram
+- **CMS** для управління всім контентом через адмін-панель
 
-## 🌍 Локалізація
+## Колекції Payload CMS
 
-Підтримка мов:
-- 🇺🇦 Українська (за замовчуванням)
-- 🇬🇧 English
+| Колекція | Призначення |
+|---|---|
+| Users | Адміністратори та модератори |
+| Media | Завантажені файли та зображення |
+| Posts | Статті блогу |
+| Categories | Категорії блогу |
+| Comments | Коментарі до статей (з модерацією) |
+| ServiceTypes | Категорії послуг |
+| Services | Послуги (Weblium / Custom ціноутворення) |
+| Portfolio | Портфоліо проектів |
+| Leads | Заявки з сайту (форма + калькулятор) |
 
-## 💻 Локальний розробка
+**Глобал:** `CalculatorConfig` — налаштування калькулятора (типи проектів, ціни, опції).
+
+## Локальна розробка
 
 ### Вимоги
 
 - Node.js 18.20.2+ або 20.9.0+
-- pnpm 9+
-- PostgreSQL 17 (локально або через Docker)
+- npm 10+
+- MongoDB Atlas (хмарний) або локальний MongoDB
 
 ### Встановлення
 
 ```bash
-# Встановлення залежностей
-pnpm install
+npm install
 
-# Копіювання .env
 cp .env.example .env
+# Заповніть DATABASE_URI, PAYLOAD_SECRET тощо
 
-# Налаштування DATABASE_URI в .env
-# DATABASE_URI=postgresql://user:password@localhost:5432/payload
-
-# Генерація типів Payload
-pnpm generate:types
-
-# Запуск dev сервера
-pnpm dev
+npm run dev
 ```
 
-Відкрийте http://localhost:3000
+Відкрийте http://localhost:3000 — сайт, http://localhost:3000/admin — CMS.
 
-### Корисні команди
+### Команди
 
 ```bash
-# Розробка
-pnpm dev                    # Запуск dev сервера
-pnpm build                  # Збірка для production
-pnpm start                  # Запуск production сервера
+npm run dev              # Dev сервер
+npm run build            # Production білд
+npm run start            # Production сервер
 
-# Генерація
-pnpm generate:types         # Генерація TypeScript типів
-pnpm generate:importmap     # Генерація import map
+npm run generate:types   # TypeScript типи Payload
+npm run generate:importmap
 
-# Тестування
-pnpm test                   # Всі тести
-pnpm test:int               # Інтеграційні тести
-pnpm test:e2e               # E2E тести
+npm run test             # Всі тести (unit + e2e)
+npm run test:int         # Unit/integration тести (Vitest)
+npm run test:e2e         # E2E тести (Playwright)
+npm run lint             # ESLint
 
-# Лінтинг
-pnpm lint                   # ESLint
-
-# Payload CLI
-pnpm pl                     # Payload CLI команди
-
-# Seed дані
-pnpm seed:services          # Seed базових послуг
-pnpm seed:services:extra    # Seed додаткових послуг
+npm run seed:services        # Seed базових послуг
+npm run seed:services:extra  # Seed додаткових послуг
 ```
 
-## 🚀 Production Deployment
+## Деплой на VPS
 
-### Швидкий старт
+Інструкція деплою: [`../docs/VPS.md`](../docs/VPS.md)
 
-Дивіться [QUICK_START.md](./QUICK_START.md) для швидкого deployment (5 хвилин).
+Nginx конфіг: [`../docs/abect.com.conf`](../docs/abect.com.conf)
 
-### Детальна інструкція
-
-Дивіться [DEPLOYMENT.md](./DEPLOYMENT.md) для повної інструкції з deployment на VPS Ubuntu 24.04.
-
-### Основні кроки
-
-1. Оновіть залежності: `pnpm install`
-2. Налаштуйте VPS з Docker, Nginx
-3. Налаштуйте DNS для домену
-4. Створіть `.env` з production налаштуваннями
-5. Отримайте SSL сертифікат
-6. Запустіть: `docker compose up -d`
-
-## 🔄 CI/CD
-
-### Автоматичний deployment
-
-Налаштуйте CI/CD для автоматичного deployment при кожному push:
-
-**Швидке налаштування (10 хвилин):**
-- [docs/QUICK-CICD.md](./docs/QUICK-CICD.md)
-
-**Детальна документація:**
-- [docs/CI-CD-SETUP.md](./docs/CI-CD-SETUP.md)
-
-**Як це працює:**
-```bash
-git push origin main
-     ↓
-GitHub Actions запускається
-     ↓
-Підключення до VPS через SSH
-     ↓
-Виконання cicd.sh
-     ↓
-✅ Сайт автоматично оновлено!
-```
-
-### Документація
-
-Повна документація доступна в папці [docs/](./docs/):
-- [Архітектура системи](./docs/ARCHITECTURE.md)
-- [CI/CD Setup](./docs/CI-CD-SETUP.md)
-- [Quick CI/CD](./docs/QUICK-CICD.md)
-
-## 🔒 Безпека
-
-### Оновлення безпеки
-
-Проект включає виправлення критичних уразливостей:
-- ✅ **CVE-2025-55182** - React RCE (CVSS 10.0)
-- ✅ **CVE-2025-66478** - Next.js RCE (CVSS 10.0)
-- ✅ **CVE-2025-55184** - React DoS (CVSS 7.5)
-- ✅ **CVE-2025-67779** - React DoS (CVSS 7.5)
-- ✅ **CVE-2025-55183** - Source Code Exposure
-
-### Рекомендації
-
-1. Використовуйте сильні паролі в `.env`
-2. Налаштуйте firewall (UFW)
-3. Регулярно оновлюйте залежності
-4. Налаштуйте автоматичні backups бази даних
-5. Використовуйте SSL/TLS (Let's Encrypt)
-
-## 📦 Docker
-
-### Запуск через Docker
+### Швидкий редеплой
 
 ```bash
-# Створення необхідних директорій
-mkdir -p postgres_data backups media
-
-# Копіювання та налаштування .env
-cp .env.production .env
-nano .env
-
-# Запуск
-docker compose up -d
-
-# Логи
-docker compose logs -f
-
-# Зупинка
-docker compose down
+/home/admin/www/abect/scripts/restart.sh
 ```
 
-### Backup бази даних
+Скрипт: `git pull` → зупинка контейнера → збірка → запуск. Білд займає ~5 хв.
+
+### Структура на сервері
+
+```
+/home/admin/www/abect/
+├── .env.db           # MongoDB credentials
+├── .env.frontend     # App env vars
+├── frontend/         # git clone цього репо
+├── mongodb/          # Docker Compose для MongoDB
+└── scripts/          # restart.sh, backup.sh
+```
+
+### Бекап MongoDB
 
 ```bash
-# Створення backup
-docker exec abect-postgres pg_dump -U payload payload > backups/backup_$(date +%Y%m%d).sql
-
-# Стиснутий backup
-docker exec abect-postgres pg_dump -U payload payload | gzip > backups/backup_$(date +%Y%m%d).sql.gz
-
-# Відновлення
-docker exec -i abect-postgres psql -U payload payload < backups/backup.sql
+/home/admin/www/abect/scripts/backup.sh
+# Зберігає: /home/admin/www/abect/mongodb/backups/abect_YYYYMMDD_HHMMSS.gz
 ```
 
-## 🏗️ Структура проекту
+## Змінні оточення
+
+### `.env` (локально, з `.env.example`)
 
 ```
-cms/
+DATABASE_URI=mongodb+srv://user:password@cluster.mongodb.net/abect
+PAYLOAD_SECRET=згенеруй_openssl_rand_-base64_32
+NEXT_PUBLIC_SERVER_URL=http://localhost:3000
+NEXT_TELEMETRY_DISABLED=1
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+TELEGRAM_THREAD_ID=
+```
+
+### На VPS — два файли
+
+**`.env.db`**
+```
+MONGO_ROOT_USER=
+MONGO_ROOT_PASSWORD=
+DATABASE_URI=mongodb://user:password@abect-mongo:27017/abect?authSource=admin
+```
+
+**`.env.frontend`**
+```
+PAYLOAD_SECRET=
+NEXT_PUBLIC_SERVER_URL=https://abect.com
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=
+TELEGRAM_THREAD_ID=
+NEXT_TELEMETRY_DISABLED=1
+```
+
+## Структура проекту
+
+```
+frontend/
 ├── src/
-│   ├── app/                    # Next.js App Router
-│   │   ├── (frontend)/         # Frontend сторінки
-│   │   └── (payload)/          # Payload адмін панель
-│   ├── client/                 # Клієнтські компоненти
-│   │   ├── components/         # Переиспользуємі компоненти
-│   │   ├── modules/            # Модулі сторінок
-│   │   └── lib/                # Утиліти
-│   ├── collections/            # Payload колекції
-│   ├── scripts/                # Скрипти (seed, міграції)
-│   └── payload.config.ts       # Payload конфігурація
-├── messages/                   # i18n переклади
-├── nginx/                      # Nginx конфігурація
-├── backups/                    # Backup бази даних
-├── media/                      # Медіа файли (uploads)
-├── docker-compose.yml          # Docker конфігурація
-├── Dockerfile                  # Docker образ
-├── .env.production             # Production env шаблон
-└── deploy.sh                   # Deployment скрипт
+│   ├── app/
+│   │   ├── (frontend)/[locale]/   # Публічні сторінки
+│   │   └── (payload)/admin/       # Payload адмін-панель
+│   ├── client/
+│   │   ├── components/            # Header, Footer, Calculator тощо
+│   │   ├── modules/               # Модулі сторінок
+│   │   └── lib/                   # Запити до Payload API
+│   ├── collections/               # Конфігурація колекцій Payload
+│   ├── globals/                   # CalculatorConfig
+│   ├── scripts/                   # Seed-скрипти
+│   └── payload.config.ts
+├── messages/
+│   ├── ua.json                    # Українські переклади
+│   └── en.json                    # Англійські переклади
+├── Dockerfile
+├── docker-compose.yml
+└── .env.example
 ```
-
-## 📝 Ліцензія
-
-MIT
-
-## 🤝 Підтримка
-
-Для питань та підтримки звертайтесь до команди ABECT.

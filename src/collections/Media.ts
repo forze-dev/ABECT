@@ -5,12 +5,14 @@ const revalidateAll = async () => { revalidateTag('all') }
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  labels: { singular: 'Медіа', plural: 'Медіа' },
   hooks: {
     afterChange: [revalidateAll],
     afterDelete: [revalidateAll],
   },
   admin: {
     useAsTitle: 'filename',
+    group: 'Технічні',
   },
   access: {
     read: () => true,

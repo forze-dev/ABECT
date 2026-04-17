@@ -3,7 +3,8 @@
 import { JSX } from 'react';
 import { useTranslations } from 'next-intl';
 import Breadcrumbs from '@/client/components/Breadcrumbs/Breadcrumbs';
-import { Send, Facebook, Instagram, Mail, Phone, Clock } from 'lucide-react';
+import { Send, Mail, Phone, Clock } from 'lucide-react';
+import ViberIcon from '@/client/components/icons/ViberIcon';
 import './ContactsPage.scss';
 
 interface ContactsPageProps {
@@ -21,28 +22,10 @@ export default function ContactsPage({ locale }: ContactsPageProps): JSX.Element
 			username: '@abect_agency'
 		},
 		{
-			name: 'WhatsApp',
-			href: 'https://wa.me/380934638024',
-			icon: <Phone size={24} />,
-			username: '+38 (093) 463-80-24'
-		},
-		{
 			name: 'Viber',
 			href: 'viber://chat/?number=%2B380980275819',
-			icon: <Phone size={24} />,
+			icon: <ViberIcon size={24} />,
 			username: '+38 (098) 027-58-19'
-		},
-		{
-			name: 'Facebook',
-			href: 'https://www.facebook.com',
-			icon: <Facebook size={24} />,
-			username: 'ABECT Agency'
-		},
-		{
-			name: 'Instagram',
-			href: 'https://www.instagram.com',
-			icon: <Instagram size={24} />,
-			username: '@abect.agency'
 		}
 	];
 
@@ -53,13 +36,6 @@ export default function ContactsPage({ locale }: ContactsPageProps): JSX.Element
 			value: 'support@abect.com',
 			href: 'mailto:support@abect.com',
 			type: 'email'
-		},
-		{
-			icon: <Phone size={28} />,
-			label: t('phone'),
-			value: '+38 (093) 463-80-24',
-			href: 'tel:+380934638024',
-			type: 'telephone'
 		},
 		{
 			icon: <Phone size={28} />,

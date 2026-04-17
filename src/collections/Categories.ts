@@ -5,12 +5,14 @@ const revalidateAll = async () => { revalidateTag('all') }
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
+  labels: { singular: 'Категорія', plural: 'Категорії' },
   hooks: {
     afterChange: [revalidateAll],
     afterDelete: [revalidateAll],
   },
   admin: {
     useAsTitle: 'name',
+    group: 'Блог',
   },
   access: {
     read: () => true,

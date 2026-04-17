@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Link, usePathname } from '@/client/i18n/navigation';
 import { useTranslations } from 'next-intl';
-import { Send, Facebook, Instagram, Smartphone, Mail } from 'lucide-react';
+import { Send, Smartphone, Mail } from 'lucide-react';
+import ViberIcon from '../icons/ViberIcon';
 import './Footer.scss';
 
 export default function Footer() {
@@ -26,8 +27,7 @@ export default function Footer() {
 
 	const contactLinks = [
 		{ href: 'https://t.me/+380980275819', icon: <Send size={20} />, label: 'Telegram' },
-		{ href: 'https://www.facebook.com', icon: <Facebook size={20} />, label: 'Facebook' },
-		{ href: 'https://www.instagram.com', icon: <Instagram size={20} />, label: 'Instagram' }
+		{ href: 'viber://chat/?number=%2B380980275819', icon: <ViberIcon size={20} />, label: 'Viber' }
 	];
 
 	const contactInfo = [
@@ -36,12 +36,6 @@ export default function Footer() {
 			href: 'mailto:support@abect.com',
 			text: 'support@abect.com',
 			type: 'email'
-		},
-		{
-			icon: <Smartphone />,
-			href: 'tel:+380934638024',
-			text: '+38 (093) 463-80-24',
-			type: 'telephone'
 		},
 		{
 			icon: <Smartphone />,

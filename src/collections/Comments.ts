@@ -2,9 +2,11 @@ import type { CollectionConfig } from 'payload'
 
 export const Comments: CollectionConfig = {
   slug: 'comments',
+  labels: { singular: 'Коментар', plural: 'Коментарі' },
   admin: {
     useAsTitle: 'content',
     defaultColumns: ['author', 'post', 'status', 'createdAt'],
+    group: 'Блог',
   },
   access: {
     // Тільки залогінені користувачі можуть створювати коментарі

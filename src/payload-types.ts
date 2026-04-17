@@ -98,7 +98,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('uk' | 'en') | ('uk' | 'en')[];
   globals: {
@@ -139,7 +139,7 @@ export interface UserAuthOperations {
  * via the `definition` "services".
  */
 export interface Service {
-  id: number;
+  id: string;
   /**
    * Наприклад: "Розробка Landing Page"
    */
@@ -155,15 +155,15 @@ export interface Service {
   /**
    * Іконка для картки послуги
    */
-  icon?: (number | null) | Media;
+  icon?: (string | null) | Media;
   /**
    * Головне зображення для сторінки послуги
    */
-  heroImage?: (number | null) | Media;
+  heroImage?: (string | null) | Media;
   /**
    * Тип послуги для фільтрації та групування
    */
-  serviceType: number | ServiceType;
+  serviceType: string | ServiceType;
   /**
    * Порядок відображення (менше число = вище)
    */
@@ -283,11 +283,11 @@ export interface Service {
   /**
    * Проекти з портфоліо для цієї послуги
    */
-  relatedPortfolioProjects?: (number | Portfolio)[] | null;
+  relatedPortfolioProjects?: (string | Portfolio)[] | null;
   /**
    * Інші послуги які можуть зацікавити клієнта
    */
-  relatedServices?: (number | Service)[] | null;
+  relatedServices?: (string | Service)[] | null;
   faq?:
     | {
         question?: string | null;
@@ -336,7 +336,7 @@ export interface Service {
     /**
      * Зображення для соціальних мереж
      */
-    ogImage?: (number | null) | Media;
+    ogImage?: (string | null) | Media;
   };
   /**
    * Лічильник переглядів сторінки послуги
@@ -355,7 +355,7 @@ export interface Service {
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
+  id: string;
   /**
    * Опис зображення для SEO та доступності
    */
@@ -385,7 +385,7 @@ export interface Media {
  * via the `definition` "service-types".
  */
 export interface ServiceType {
-  id: number;
+  id: string;
   /**
    * Наприклад: "Веб-розробка", "Маркетинг", "Дизайн"
    */
@@ -401,11 +401,11 @@ export interface ServiceType {
   /**
    * Іконка для відображення в фільтрі
    */
-  icon?: (number | null) | Media;
+  icon?: (string | null) | Media;
   /**
    * Зображення для OG та заголовка сторінки
    */
-  cover?: (number | null) | Media;
+  cover?: (string | null) | Media;
   /**
    * Акцентний колір для категорії, наприклад: #3B82F6
    */
@@ -427,7 +427,7 @@ export interface ServiceType {
  * via the `definition` "portfolio".
  */
 export interface Portfolio {
-  id: number;
+  id: string;
   title: string;
   /**
    * Опис для картки проекту
@@ -473,7 +473,7 @@ export interface Portfolio {
     /**
      * Зображення для соціальних мереж
      */
-    ogImage?: (number | null) | Media;
+    ogImage?: (string | null) | Media;
   };
   viewCount?: number | null;
   status: 'draft' | 'published' | 'archived';
@@ -493,7 +493,7 @@ export interface Portfolio {
  * via the `definition` "posts".
  */
 export interface Post {
-  id: number;
+  id: string;
   title: string;
   /**
    * URL-friendly назва для посилань
@@ -518,8 +518,8 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  author: number | User;
-  category: number | Category;
+  author: string | User;
+  category: string | Category;
   tags?:
     | {
         tag: string;
@@ -527,7 +527,7 @@ export interface Post {
       }[]
     | null;
   date: string;
-  cover: number | Media;
+  cover: string | Media;
   seo: {
     metaTitle: string;
     metaDescription: string;
@@ -551,7 +551,7 @@ export interface Post {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   /**
@@ -581,7 +581,7 @@ export interface User {
  * via the `definition` "categories".
  */
 export interface Category {
-  id: number;
+  id: string;
   name: string;
   /**
    * URL-friendly назва для посилань
@@ -592,7 +592,7 @@ export interface Category {
    * Наприклад: #3B82F6
    */
   color?: string | null;
-  cover?: (number | null) | Media;
+  cover?: (string | null) | Media;
   seo: {
     metaTitle: string;
     metaDescription: string;
@@ -606,12 +606,12 @@ export interface Category {
  * via the `definition` "comments".
  */
 export interface Comment {
-  id: number;
-  author: number | User;
+  id: string;
+  author: string | User;
   /**
    * До якої статті відноситься коментар
    */
-  post: number | Post;
+  post: string | Post;
   content: string;
   /**
    * Модерація коментарів адміністратором
@@ -620,7 +620,7 @@ export interface Comment {
   /**
    * Для вкладених відповідей (необов'язково)
    */
-  parent?: (number | null) | Comment;
+  parent?: (string | null) | Comment;
   updatedAt: string;
   createdAt: string;
 }
@@ -629,7 +629,7 @@ export interface Comment {
  * via the `definition` "leads".
  */
 export interface Lead {
-  id: number;
+  id: string;
   name: string;
   contact: string;
   message?: string | null;
@@ -667,7 +667,7 @@ export interface Lead {
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: number;
+  id: string;
   key: string;
   data:
     | {
@@ -684,48 +684,48 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'services';
-        value: number | Service;
+        value: string | Service;
       } | null)
     | ({
         relationTo: 'service-types';
-        value: number | ServiceType;
+        value: string | ServiceType;
       } | null)
     | ({
         relationTo: 'portfolio';
-        value: number | Portfolio;
+        value: string | Portfolio;
       } | null)
     | ({
         relationTo: 'posts';
-        value: number | Post;
+        value: string | Post;
       } | null)
     | ({
         relationTo: 'categories';
-        value: number | Category;
+        value: string | Category;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'comments';
-        value: number | Comment;
+        value: string | Comment;
       } | null)
     | ({
         relationTo: 'leads';
-        value: number | Lead;
+        value: string | Lead;
       } | null)
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -735,10 +735,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -758,7 +758,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -1086,7 +1086,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  * via the `definition` "calculator-config".
  */
 export interface CalculatorConfig {
-  id: number;
+  id: string;
   projectTypes?:
     | {
         /**

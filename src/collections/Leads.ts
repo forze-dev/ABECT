@@ -2,10 +2,11 @@ import type { CollectionConfig } from 'payload'
 
 export const Leads: CollectionConfig = {
   slug: 'leads',
+  labels: { singular: 'Заявка', plural: 'Заявки з сайту' },
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'contact', 'type', 'status', 'createdAt'],
-    group: 'Заявки',
+    group: 'Ліди',
   },
   access: {
     read: () => true,
