@@ -2,6 +2,7 @@
 import { JSX } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/client/i18n/navigation';
 import './Hero.scss';
 
 export default function Hero(): JSX.Element {
@@ -26,13 +27,13 @@ export default function Hero(): JSX.Element {
 							>
 								{t('orderButton')}
 							</button>
-							<button
-								type="button"
+							<Link
+								href="/portfolio"
 								className="cta cta-secondary"
 								aria-label={t('portfolioButtonAriaLabel')}
 							>
 								{t('portfolioButton')}
-							</button>
+							</Link>
 						</div>
 					</div>
 					<div className="entry__right">

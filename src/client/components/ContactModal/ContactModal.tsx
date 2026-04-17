@@ -49,12 +49,18 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps): JS
       }
     };
 
-    document.addEventListener('keydown', handleEsc);
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty('--scrollbar-compensation', `${scrollbarWidth}px`);
     document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
+
+    document.addEventListener('keydown', handleEsc);
 
     return () => {
       document.removeEventListener('keydown', handleEsc);
       document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      document.documentElement.style.removeProperty('--scrollbar-compensation');
     };
   }, [isOpen, onClose]);
 
