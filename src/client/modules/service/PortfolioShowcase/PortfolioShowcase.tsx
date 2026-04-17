@@ -6,7 +6,7 @@ import type { Portfolio } from '@/payload-types';
 import './PortfolioShowcase.scss';
 
 interface PortfolioShowcaseProps {
-	projects: (number | Portfolio)[];
+	projects: (string | number | Portfolio)[];
 	locale: string;
 }
 

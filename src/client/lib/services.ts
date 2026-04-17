@@ -135,8 +135,8 @@ export async function getServiceBySlug(slug: string, locale: string = 'uk'): Pro
  * Логіка: той самий serviceType → featured → order → createdAt
  */
 export async function getRelatedServices(
-  currentServiceId: number,
-  serviceTypeId: number,
+  currentServiceId: string | number,
+  serviceTypeId: string | number,
   locale: string = 'uk',
   limit: number = 3
 ): Promise<Service[]> {

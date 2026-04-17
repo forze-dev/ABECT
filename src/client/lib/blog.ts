@@ -128,8 +128,8 @@ export async function getPostBySlug(slug: string, locale: string = 'uk'): Promis
  * Логіка: та сама категорія → featured → date
  */
 export async function getRelatedPosts(
-	currentPostId: number,
-	categoryId: number,
+	currentPostId: string | number,
+	categoryId: string | number,
 	locale: string = 'uk',
 	limit: number = 3
 ): Promise<Post[]> {

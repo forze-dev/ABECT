@@ -132,7 +132,7 @@ export async function getPortfolioBySlug(slug: string, locale: string = 'uk'): P
  * Логіка: той самий service → featured → order → createdAt
  */
 export async function getRelatedProjects(
-  currentProjectId: number,
+  currentProjectId: string | number,
   service: Portfolio['service'],
   locale: string = 'uk',
   limit: number = 3
