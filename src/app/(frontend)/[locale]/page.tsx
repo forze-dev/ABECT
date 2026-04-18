@@ -2,6 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/client/i18n/routing';
 import Home from '@/client/modules/home/Home';
 import { Metadata } from 'next';
+import { Fragment } from 'react';
 
 type Params = {
 	params: Promise<{
@@ -37,6 +38,10 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 		metadataBase: new URL('https://abect.com'),
 		alternates: {
 			canonical: fullUrl,
+			languages: {
+				'uk-UA': 'https://abect.com',
+				'en-US': 'https://abect.com/en',
+			},
 		},
 		authors: [{ name: 'Abect', url: 'https://abect.com' }],
 		robots: {
@@ -78,8 +83,44 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function HomePage({ params }: Params) {
 	const { locale } = await params;
+	const isUa = locale === 'ua';
 
 	setRequestLocale(locale);
 
-	return <Home locale={locale} />;
+	const orgJsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'Organization',
+		name: 'ABECT',
+		url: 'https://abect.com',
+		logo: 'https://abect.com/seo/og.jpg',
+		email: 'support@abect.com',
+		telephone: '+380980275819',
+		contactPoint: {
+			'@type': 'ContactPoint',
+			telephone: '+380980275819',
+			contactType: 'customer service',
+			availableLanguage: ['Ukrainian', 'English'],
+		},
+		address: { '@type': 'PostalAddress', addressCountry: 'UA' },
+		sameAs: ['https://t.me/abect_agency'],
+	};
+
+	const websiteJsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'WebSite',
+		name: 'ABECT',
+		url: 'https://abect.com',
+		description: isUa
+			? 'Професійна розробка сайтів для бізнесу'
+			: 'Professional website development for business',
+		inLanguage: isUa ? 'uk-UA' : 'en-US',
+	};
+
+	return (
+		<Fragment>
+			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
+			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+			<Home locale={locale} />
+		</Fragment>
+	);
 }

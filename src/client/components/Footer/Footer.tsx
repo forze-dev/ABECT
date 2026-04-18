@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { Link, usePathname } from '@/client/i18n/navigation';
 import { useTranslations } from 'next-intl';
@@ -10,11 +10,7 @@ import './Footer.scss';
 export default function Footer() {
 	const t = useTranslations('Footer');
 	const pathname = usePathname();
-	const [currentYear, setCurrentYear] = useState(2025);
-
-	useEffect(() => {
-		setCurrentYear(new Date().getFullYear());
-	}, []);
+	const [currentYear] = useState(() => new Date().getFullYear());
 
 	const navItems = [
 		{ href: '/services', section: 'services' },
