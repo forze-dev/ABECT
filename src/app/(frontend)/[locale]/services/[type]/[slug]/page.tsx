@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 	}
 
 	const ogImage = service.seo.ogImage as Media | null;
-	const imageUrl = ogImage?.url || 'https://abect.com/og-services.jpg';
+	const imageUrl = ogImage?.url || (locale === 'ua' ? 'https://abect.com/seo/service-og.jpg' : 'https://abect.com/seo/en-service-og.jpg');
 
 	const fullUrl =
 		locale === 'ua'
@@ -106,12 +106,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 		},
 		icons: {
 			icon: [
-				{ url: '/seo/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-				{ url: '/seo/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
+				{ url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+				{ url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
 			],
-			apple: '/seo/apple-touch-icon.png'
+			apple: '/apple-touch-icon.png'
 		},
-		manifest: '/seo/site.webmanifest'
+		manifest: '/site.webmanifest'
 	};
 }
 
@@ -148,7 +148,7 @@ export default async function ServicePage({ params }: Params) {
 						'@type': 'Service',
 						name: service.title,
 						description: service.shortDescription,
-						image: (service.seo.ogImage as Media | null)?.url || 'https://abect.com/og-services.jpg',
+						image: (service.seo.ogImage as Media | null)?.url || (locale === 'ua' ? 'https://abect.com/seo/service-og.jpg' : 'https://abect.com/seo/en-service-og.jpg'),
 						provider: {
 							'@type': 'Organization',
 							name: 'ABECT',

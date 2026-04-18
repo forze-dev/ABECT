@@ -210,11 +210,37 @@
     }
   }
 
-  &__privacy {
-    margin-top: var(--spacing-md);
+  &__privacy-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
     font-size: var(--font-size-xs);
-    color: var(--color-text-tertiary);
-    text-align: center;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    line-height: 1.5;
+
+    input[type='checkbox'] {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin-top: 1px;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    &--error {
+      color: #ef4444;
+    }
+  }
+
+  &__privacy-link {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: var(--color-primary-hover);
+    }
   }
 
   // Success state

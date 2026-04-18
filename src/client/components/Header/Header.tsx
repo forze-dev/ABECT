@@ -154,7 +154,7 @@ export default function Header() {
 			<div className="container">
 				<div className="header__wrapper">
 					<Link href="/" className="header__logo logo">
-						<Image src="/icons/logo.svg" alt="Company name logo" width={36} height={36} />
+						<Image src="/icons/logo.svg" alt="ABECT логотип" width={36} height={36} />
 						<span>{t('logo')}</span>
 					</Link>
 

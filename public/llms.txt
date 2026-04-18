@@ -1,0 +1,52 @@
+# ABECT — Ukrainian Web Studio
+
+ABECT is a Ukrainian web development agency specializing in custom websites, landing pages, and e-commerce solutions for businesses in Ukraine and Europe (Poland, Germany, Czech Republic).
+
+## Contact
+
+- Website: https://abect.com
+- Email: support@abect.com
+- Telegram: https://t.me/abect_agency
+- Phone: +380 98 027 5819
+
+## Services & Pricing
+
+- **Landing page**: from ₴10,000 (7–10 days, custom development)
+- **Corporate website**: from ₴25,000 (14–21 days)
+- **E-commerce / online store**: from ₴40,000 (30–45 days)
+- **Weblium-based website**: from ₴6,000 (3–7 days, budget option)
+- **Google Ads / contextual advertising**: from ₴8,000/month
+- **SEO optimization**: from ₴5,000/month
+
+Additional services: copywriting, design, CRM integration, multilingual support.
+
+## Technologies
+
+- Next.js 15, React 19, TypeScript
+- Payload CMS 3 (headless)
+- Custom SCSS, no UI libraries
+- Deployed on VPS with nginx
+
+## Geographic Coverage
+
+Primary: Ukraine (Kyiv, Lviv, Kharkiv, Odesa, Dnipro)
+International: Poland, Germany, Czech Republic, other EU countries
+
+## Languages
+
+- Ukrainian (primary)
+- English
+
+## About
+
+ABECT builds fast, SEO-optimized websites with clean code and no WordPress bloat. All projects are built from scratch with attention to performance, accessibility, and conversion.
+
+## Key Pages
+
+- Homepage: https://abect.com
+- Services: https://abect.com/services
+- Portfolio: https://abect.com/portfolio
+- Blog: https://abect.com/blog
+- Cost calculator: https://abect.com/calculator
+- Contacts: https://abect.com/contacts
+- Privacy Policy: https://abect.com/privacy-policy

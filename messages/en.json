@@ -8,7 +8,7 @@
 			"portfolioButton": "Our portfolio",
 			"orderButtonAriaLabel": "Open contact form",
 			"portfolioButtonAriaLabel": "Open contact form",
-			"imageAlt": "Some Illustration"
+			"imageAlt": "Illustration — team developing a web project"
 		},
 		"Services": {
 			"title": "Popular services and prices",
@@ -528,10 +528,13 @@
 		"successMessage": "Your request has been successfully submitted. We will contact you shortly.",
 		"errorMessage": "Something went wrong. Please try again.",
 		"privacyNote": "By clicking the button, you agree to the processing of personal data",
+		"privacyCheckbox": "I agree to the",
+		"privacyLink": "Privacy Policy",
 		"validation": {
 			"nameRequired": "Enter your name (at least 2 characters)",
 			"contactRequired": "Enter phone or email",
-			"contactInvalid": "Enter a valid phone or email"
+			"contactInvalid": "Enter a valid phone or email",
+			"privacyRequired": "Please agree to the Privacy Policy"
 		}
 	},
 	"Calculator": {

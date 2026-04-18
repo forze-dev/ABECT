@@ -8,7 +8,7 @@
 			"portfolioButton": "Наше портфоліо",
 			"orderButtonAriaLabel": "Відкрити форму зв'язку",
 			"portfolioButtonAriaLabel": "Відкрити форму зв'язку",
-			"imageAlt": "Some Illustration"
+			"imageAlt": "Ілюстрація — команда розробляє веб-проєкт"
 		},
 		"Services": {
 			"title": "Послуги та ціни",
@@ -528,10 +528,13 @@
 		"successMessage": "Ваша заявка успішно відправлена. Ми зв'яжемося з вами найближчим часом.",
 		"errorMessage": "Щось пішло не так. Спробуйте ще раз.",
 		"privacyNote": "Натискаючи кнопку, ви погоджуєтесь з обробкою персональних даних",
+		"privacyCheckbox": "Я погоджуюсь з",
+		"privacyLink": "Політикою конфіденційності",
 		"validation": {
 			"nameRequired": "Введіть ваше ім'я (мінімум 2 символи)",
 			"contactRequired": "Введіть телефон або email",
-			"contactInvalid": "Введіть коректний телефон або email"
+			"contactInvalid": "Введіть коректний телефон або email",
+			"privacyRequired": "Будь ласка, погодьтесь з політикою конфіденційності"
 		}
 	},
 	"Calculator": {

@@ -53,7 +53,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 	}
 
 	const cover = post.cover as Media | null;
-	const imageUrl = cover?.url || 'https://abect.com/og-blog.jpg';
+	const imageUrl = cover?.url || (locale === 'ua' ? 'https://abect.com/seo/blog-og.jpg' : 'https://abect.com/seo/en-blog-og.jpg');
 
 	const category = post.category as Category | null;
 	const categorySlug = category?.slug || 'uncategorized';
@@ -112,12 +112,12 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 		},
 		icons: {
 			icon: [
-				{ url: '/seo/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-				{ url: '/seo/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
+				{ url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+				{ url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
 			],
-			apple: '/seo/apple-touch-icon.png'
+			apple: '/apple-touch-icon.png'
 		},
-		manifest: '/seo/site.webmanifest'
+		manifest: '/site.webmanifest'
 	};
 }
 
@@ -168,7 +168,7 @@ export default async function ArticlePage({ params }: Params) {
 						'@type': 'BlogPosting',
 						headline: post.title,
 						description: post.description,
-						image: cover?.url || 'https://abect.com/og-blog.jpg',
+						image: cover?.url || (locale === 'ua' ? 'https://abect.com/seo/blog-og.jpg' : 'https://abect.com/seo/en-blog-og.jpg'),
 						author: {
 							'@type': 'Person',
 							name: authorName

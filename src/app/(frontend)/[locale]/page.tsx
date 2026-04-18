@@ -31,6 +31,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 		: 'website, Next.js, web development, website creation, web design, SEO optimization, business website, corporate website, online store, landing page, WordPress, React';
 
 	const fullUrl = locale === "ua" ? `https://abect.com` : `https://abect.com/${locale}`;
+	const ogImage = locale === 'ua' ? 'https://abect.com/seo/og.jpg' : 'https://abect.com/seo/en-og.jpg';
 
 	return {
 		title,
@@ -41,6 +42,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			languages: {
 				'uk-UA': 'https://abect.com',
 				'en-US': 'https://abect.com/en',
+				'x-default': 'https://abect.com',
 			},
 		},
 		authors: [{ name: 'Abect', url: 'https://abect.com' }],
@@ -56,28 +58,28 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			siteName: 'Abect',
 			images: [
 				{
-					url: 'https://abect.com/og.jpg',
+					url: ogImage,
 					width: 1200,
 					height: 630,
 				},
 			],
-			locale,
+			locale: locale === 'ua' ? 'uk_UA' : 'en_US',
 			type: 'website',
 		},
 		twitter: {
 			card: 'summary_large_image',
 			title,
 			description,
-			images: ['https://abect.com/seo/og.jpg'],
+			images: [ogImage],
 		},
 		icons: {
 			icon: [
-				{ url: '/seo/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-				{ url: '/seo/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+				{ url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+				{ url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
 			],
-			apple: '/seo/apple-touch-icon.png',
+			apple: '/apple-touch-icon.png',
 		},
-		manifest: '/seo/site.webmanifest',
+		manifest: '/site.webmanifest',
 	};
 }
 
@@ -89,12 +91,15 @@ export default async function HomePage({ params }: Params) {
 
 	const orgJsonLd = {
 		'@context': 'https://schema.org',
-		'@type': 'Organization',
+		'@type': ['Organization', 'ProfessionalService'],
 		name: 'ABECT',
 		url: 'https://abect.com',
 		logo: 'https://abect.com/seo/og.jpg',
 		email: 'support@abect.com',
 		telephone: '+380980275819',
+		priceRange: '₴₴',
+		serviceType: 'Web Development',
+		areaServed: ['UA', 'PL', 'DE', 'CZ'],
 		contactPoint: {
 			'@type': 'ContactPoint',
 			telephone: '+380980275819',

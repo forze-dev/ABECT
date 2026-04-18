@@ -18,6 +18,8 @@ export default function StarsBackground({
   const lastBreakpointRef = useRef<string>("");
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 

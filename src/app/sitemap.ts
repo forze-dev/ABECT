@@ -14,20 +14,50 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Static routes — no lastModified (Google ignores unreliable always-changing timestamps)
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${BASE_URL}`, changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${BASE_URL}/en`, changeFrequency: 'weekly', priority: 1.0 },
+    {
+      url: `${BASE_URL}`,
+      changeFrequency: 'weekly',
+      priority: 1.0,
+      alternates: { languages: { 'uk-UA': `${BASE_URL}`, 'en-US': `${BASE_URL}/en`, 'x-default': `${BASE_URL}` } },
+    },
+    {
+      url: `${BASE_URL}/en`,
+      changeFrequency: 'weekly',
+      priority: 1.0,
+      alternates: { languages: { 'uk-UA': `${BASE_URL}`, 'en-US': `${BASE_URL}/en`, 'x-default': `${BASE_URL}` } },
+    },
     ...['services', 'about', 'portfolio', 'blog', 'contacts'].flatMap(route =>
       locales.map(locale => ({
         url: url(`/${route}`, locale),
         changeFrequency: 'weekly' as const,
         priority: 0.8,
+        alternates: {
+          languages: {
+            'uk-UA': `${BASE_URL}/${route}`,
+            'en-US': `${BASE_URL}/en/${route}`,
+            'x-default': `${BASE_URL}/${route}`,
+          },
+        },
       }))
     ),
-    // Calculator is a tool page — lower priority, no lastModified
+    // Calculator — lead generation tool
     ...locales.map(locale => ({
       url: url('/calculator', locale),
-      changeFrequency: 'monthly' as const,
-      priority: 0.3,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+      alternates: {
+        languages: {
+          'uk-UA': `${BASE_URL}/calculator`,
+          'en-US': `${BASE_URL}/en/calculator`,
+          'x-default': `${BASE_URL}/calculator`,
+        },
+      },
+    })),
+    // Legal pages
+    ...locales.map(locale => ({
+      url: url('/privacy-policy', locale),
+      changeFrequency: 'yearly' as const,
+      priority: 0.2,
     })),
   ]
 

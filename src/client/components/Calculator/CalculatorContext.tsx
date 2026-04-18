@@ -71,6 +71,7 @@ export interface CalculatorState {
   name: string;
   contact: string;
   message: string;
+  privacyAccepted: boolean;
 
   // Calculated values
   estimatedPrice: number;
@@ -97,6 +98,7 @@ type CalculatorAction =
   | { type: 'SET_NAME'; payload: string }
   | { type: 'SET_CONTACT'; payload: string }
   | { type: 'SET_MESSAGE'; payload: string }
+  | { type: 'SET_PRIVACY_ACCEPTED'; payload: boolean }
   | { type: 'SET_SUBMITTING'; payload: boolean }
   | { type: 'SET_SUBMIT_ERROR'; payload: string | null }
   | { type: 'SET_SUBMIT_SUCCESS'; payload: boolean }
@@ -118,6 +120,7 @@ const initialState: CalculatorState = {
   name: '',
   contact: '',
   message: '',
+  privacyAccepted: false,
   estimatedPrice: 0,
   estimatedTimeline: '',
   isSubmitting: false,
@@ -260,6 +263,10 @@ function calculatorReducer(state: CalculatorState, action: CalculatorAction): Ca
       newState = { ...state, message: action.payload };
       break;
 
+    case 'SET_PRIVACY_ACCEPTED':
+      newState = { ...state, privacyAccepted: action.payload };
+      break;
+
     case 'SET_SUBMITTING':
       newState = { ...state, isSubmitting: action.payload };
       break;
@@ -311,6 +318,7 @@ interface CalculatorContextType {
   setName: (name: string) => void;
   setContact: (contact: string) => void;
   setMessage: (message: string) => void;
+  setPrivacyAccepted: (accepted: boolean) => void;
   reset: () => void;
   canProceed: () => boolean;
   getSelectedProjectType: () => ProjectType | undefined;
@@ -397,6 +405,8 @@ export function CalculatorProvider({ children, initialConfig }: CalculatorProvid
   const setName = (name: string) => dispatch({ type: 'SET_NAME', payload: name });
   const setContact = (contact: string) => dispatch({ type: 'SET_CONTACT', payload: contact });
   const setMessage = (message: string) => dispatch({ type: 'SET_MESSAGE', payload: message });
+  const setPrivacyAccepted = (accepted: boolean) =>
+    dispatch({ type: 'SET_PRIVACY_ACCEPTED', payload: accepted });
   const reset = () => dispatch({ type: 'RESET' });
 
   const canProceed = (): boolean => {
@@ -412,7 +422,11 @@ export function CalculatorProvider({ children, initialConfig }: CalculatorProvid
       case 4: // Urgency
         return !!state.urgency;
       case 5: // Contact
-        return state.name.trim().length >= 2 && state.contact.trim().length > 0;
+        return (
+          state.name.trim().length >= 2 &&
+          state.contact.trim().length > 0 &&
+          state.privacyAccepted
+        );
       default:
         return false;
     }
@@ -439,6 +453,7 @@ export function CalculatorProvider({ children, initialConfig }: CalculatorProvid
         setName,
         setContact,
         setMessage,
+        setPrivacyAccepted,
         reset,
         canProceed,
         getSelectedProjectType,

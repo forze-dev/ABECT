@@ -7,6 +7,8 @@ import { Victor_Mono } from "next/font/google";
 import Header from "@/client/components/Header/Header";
 import Footer from "@/client/components/Footer/Footer";
 import StarsBackground from "@/client/components/StarsBackground/StarsBackground";
+import CookieBanner from "@/client/components/CookieBanner";
+import Analytics from "@/client/components/Analytics/Analytics";
 import { ModalProvider } from "@/client/providers/ModalProvider";
 
 import "./globals.scss";
@@ -44,8 +46,10 @@ export default async function LocaleLayout({
     console.error(`[layout] Missing messages for locale: ${locale}, falling back to empty`);
   }
 
+  const langCode = locale === 'ua' ? 'uk' : locale;
+
   return (
-    <html lang={locale}>
+    <html lang={langCode}>
       <body className={victorMono.variable}>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ModalProvider>
@@ -53,6 +57,8 @@ export default async function LocaleLayout({
             {children}
             <Footer />
             <StarsBackground />
+            <CookieBanner locale={locale} />
+            <Analytics />
           </ModalProvider>
         </NextIntlClientProvider>
       </body>

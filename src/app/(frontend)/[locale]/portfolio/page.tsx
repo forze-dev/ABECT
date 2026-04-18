@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import { routing } from '@/client/i18n/routing';
 import { getAllPortfolio } from '@/client/lib/portfolio';
 import PortfolioPage from '@/client/modules/portfolio/PortfolioPage/PortfolioPage';
+import { Fragment } from 'react';
 import type { Metadata } from 'next';
 
 type Params = {
@@ -39,7 +40,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			canonical: fullUrl,
 			languages: {
 				'uk-UA': 'https://abect.com/portfolio',
-				'en-US': 'https://abect.com/en/portfolio'
+				'en-US': 'https://abect.com/en/portfolio',
+				'x-default': 'https://abect.com/portfolio'
 			}
 		},
 		authors: [{ name: 'ABECT', url: 'https://abect.com' }],
@@ -56,7 +58,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			siteName: 'ABECT',
 			images: [
 				{
-					url: 'https://abect.com/og-portfolio.jpg',
+					url: locale === 'ua' ? 'https://abect.com/seo/portfolio-og.jpg' : 'https://abect.com/seo/en-portfolio-og.jpg',
 					width: 1200,
 					height: 630,
 					alt: title
@@ -69,16 +71,16 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			card: 'summary_large_image',
 			title,
 			description,
-			images: ['https://abect.com/og-portfolio.jpg']
+			images: [locale === 'ua' ? 'https://abect.com/seo/portfolio-og.jpg' : 'https://abect.com/seo/en-portfolio-og.jpg']
 		},
 		icons: {
 			icon: [
-				{ url: '/seo/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-				{ url: '/seo/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
+				{ url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+				{ url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
 			],
-			apple: '/seo/apple-touch-icon.png'
+			apple: '/apple-touch-icon.png'
 		},
-		manifest: '/seo/site.webmanifest'
+		manifest: '/site.webmanifest'
 	};
 }
 
@@ -91,5 +93,20 @@ export default async function PortfolioServerPage({ params }: Params) {
 	// Получаем все проекты через ISR
 	const projects = await getAllPortfolio(locale);
 
-	return <PortfolioPage locale={locale} initialProjects={projects} />;
+	const pageUrl = locale === 'ua' ? 'https://abect.com/portfolio' : 'https://abect.com/en/portfolio';
+	const breadcrumbJsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: locale === 'ua' ? 'Головна' : 'Home', item: 'https://abect.com' },
+			{ '@type': 'ListItem', position: 2, name: locale === 'ua' ? 'Портфоліо' : 'Portfolio', item: pageUrl },
+		],
+	};
+
+	return (
+		<Fragment>
+			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+			<PortfolioPage locale={locale} initialProjects={projects} />
+		</Fragment>
+	);
 }

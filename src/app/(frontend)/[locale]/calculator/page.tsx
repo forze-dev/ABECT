@@ -40,6 +40,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       languages: {
         'uk-UA': 'https://abect.com/calculator',
         'en-US': 'https://abect.com/en/calculator',
+        'x-default': 'https://abect.com/calculator',
       },
     },
     authors: [{ name: 'ABECT', url: 'https://abect.com' }],
@@ -56,7 +57,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       siteName: 'ABECT',
       images: [
         {
-          url: 'https://abect.com/og-calculator.jpg',
+          url: locale === 'ua' ? 'https://abect.com/seo/calculator-og.jpg' : 'https://abect.com/seo/en-calculator-og.jpg',
           width: 1200,
           height: 630,
           alt: title,
@@ -69,16 +70,16 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       card: 'summary_large_image',
       title,
       description,
-      images: ['https://abect.com/og-calculator.jpg'],
+      images: [locale === 'ua' ? 'https://abect.com/seo/calculator-og.jpg' : 'https://abect.com/seo/en-calculator-og.jpg'],
     },
     icons: {
       icon: [
-        { url: '/seo/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-        { url: '/seo/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+        { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+        { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       ],
-      apple: '/seo/apple-touch-icon.png',
+      apple: '/apple-touch-icon.png',
     },
-    manifest: '/seo/site.webmanifest',
+    manifest: '/site.webmanifest',
   };
 }
 

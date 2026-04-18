@@ -2,6 +2,7 @@
 
 import { JSX } from 'react';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/client/i18n/navigation';
 import { useCalculator } from '../CalculatorContext';
 import { isValidContact } from '@/client/lib/leads';
 import './Steps.scss';
@@ -9,7 +10,7 @@ import './Steps.scss';
 export default function ContactStep(): JSX.Element {
   const t = useTranslations('Calculator.steps.contact');
   const tForm = useTranslations('ContactForm');
-  const { state, setName, setContact, setMessage } = useCalculator();
+  const { state, setName, setContact, setMessage, setPrivacyAccepted } = useCalculator();
 
   const nameError = state.name.length > 0 && state.name.length < 2;
   const contactError = state.contact.length > 0 && !isValidContact(state.contact);
@@ -104,6 +105,20 @@ export default function ContactStep(): JSX.Element {
             rows={3}
           />
         </div>
+
+        <label className={`contact-modal__privacy-check ${!state.privacyAccepted && state.name.length > 0 ? 'contact-modal__privacy-check--error' : ''}`}>
+          <input
+            type="checkbox"
+            checked={state.privacyAccepted}
+            onChange={(e) => setPrivacyAccepted(e.target.checked)}
+          />
+          <span>
+            {tForm('privacyCheckbox')}{' '}
+            <Link href="/privacy-policy" target="_blank" className="contact-modal__privacy-link">
+              {tForm('privacyLink')}
+            </Link>
+          </span>
+        </label>
       </div>
     </div>
   );

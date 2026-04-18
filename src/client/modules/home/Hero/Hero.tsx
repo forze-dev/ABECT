@@ -43,6 +43,7 @@ export default function Hero(): JSX.Element {
 							width={600}
 							height={600}
 							priority
+							sizes="(max-width: 1024px) 90vw, 35vw"
 						/>
 					</div>
 				</div>

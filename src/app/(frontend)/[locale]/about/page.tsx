@@ -2,6 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
 import { routing } from '@/client/i18n/routing';
 import AboutPage from '@/client/modules/about/AboutPage/AboutPage';
+import { Fragment } from 'react';
 import type { Metadata } from 'next';
 
 type Params = {
@@ -38,7 +39,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			canonical: fullUrl,
 			languages: {
 				'uk-UA': 'https://abect.com/about',
-				'en-US': 'https://abect.com/en/about'
+				'en-US': 'https://abect.com/en/about',
+				'x-default': 'https://abect.com/about'
 			}
 		},
 		authors: [{ name: 'ABECT', url: 'https://abect.com' }],
@@ -55,7 +57,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			siteName: 'ABECT',
 			images: [
 				{
-					url: 'https://abect.com/og-about.jpg',
+					url: locale === 'ua' ? 'https://abect.com/seo/about-og.jpg' : 'https://abect.com/seo/en-about-og.jpg',
 					width: 1200,
 					height: 630,
 					alt: title
@@ -68,16 +70,16 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			card: 'summary_large_image',
 			title,
 			description,
-			images: ['https://abect.com/og-about.jpg']
+			images: [locale === 'ua' ? 'https://abect.com/seo/about-og.jpg' : 'https://abect.com/seo/en-about-og.jpg']
 		},
 		icons: {
 			icon: [
-				{ url: '/seo/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-				{ url: '/seo/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
+				{ url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+				{ url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
 			],
-			apple: '/seo/apple-touch-icon.png'
+			apple: '/apple-touch-icon.png'
 		},
-		manifest: '/seo/site.webmanifest'
+		manifest: '/site.webmanifest'
 	};
 }
 
@@ -87,5 +89,20 @@ export default async function AboutServerPage({ params }: Params) {
 
 	setRequestLocale(locale);
 
-	return <AboutPage locale={locale} />;
+	const pageUrl = locale === 'ua' ? 'https://abect.com/about' : 'https://abect.com/en/about';
+	const breadcrumbJsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: locale === 'ua' ? 'Головна' : 'Home', item: 'https://abect.com' },
+			{ '@type': 'ListItem', position: 2, name: locale === 'ua' ? 'Про нас' : 'About', item: pageUrl },
+		],
+	};
+
+	return (
+		<Fragment>
+			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+			<AboutPage locale={locale} />
+		</Fragment>
+	);
 }

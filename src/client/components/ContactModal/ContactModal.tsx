@@ -3,7 +3,7 @@
 import { JSX, useState, useEffect, useRef, FormEvent } from 'react';
 import { X, Loader2, AlertCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useRouter } from '@/client/i18n/navigation';
+import { useRouter, Link } from '@/client/i18n/navigation';
 import { submitLead, isValidContact } from '@/client/lib/leads';
 import './ContactModal.scss';
 
@@ -27,10 +27,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps): JS
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');
   const [message, setMessage] = useState('');
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
   // Validation errors
   const [nameError, setNameError] = useState('');
   const [contactError, setContactError] = useState('');
+  const [privacyError, setPrivacyError] = useState('');
 
   // Focus first input when opened
   useEffect(() => {
@@ -78,8 +80,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps): JS
     setName('');
     setContact('');
     setMessage('');
+    setPrivacyAccepted(false);
     setNameError('');
     setContactError('');
+    setPrivacyError('');
     setFormState('idle');
     setErrorMessage('');
   };
@@ -107,6 +111,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps): JS
       isValid = false;
     } else {
       setContactError('');
+    }
+
+    if (!privacyAccepted) {
+      setPrivacyError(t('validation.privacyRequired'));
+      isValid = false;
+    } else {
+      setPrivacyError('');
     }
 
     return isValid;
@@ -220,6 +231,22 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps): JS
             />
           </div>
 
+          <label className={`contact-modal__privacy-check ${privacyError ? 'contact-modal__privacy-check--error' : ''}`}>
+            <input
+              type="checkbox"
+              checked={privacyAccepted}
+              onChange={(e) => setPrivacyAccepted(e.target.checked)}
+              disabled={formState === 'loading'}
+            />
+            <span>
+              {t('privacyCheckbox')}{' '}
+              <Link href="/privacy-policy" target="_blank" className="contact-modal__privacy-link">
+                {t('privacyLink')}
+              </Link>
+            </span>
+          </label>
+          {privacyError && <span className="contact-modal__field-error">{privacyError}</span>}
+
           <button
             type="submit"
             className="contact-modal__submit cta"
@@ -235,9 +262,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps): JS
             )}
           </button>
         </form>
-
-        {/* Privacy note */}
-        <p className="contact-modal__privacy">{t('privacyNote')}</p>
       </div>
     </div>
   );

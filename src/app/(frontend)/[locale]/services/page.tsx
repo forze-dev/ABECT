@@ -39,7 +39,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			canonical: fullUrl,
 			languages: {
 				'uk-UA': 'https://abect.com/services',
-				'en-US': 'https://abect.com/en/services'
+				'en-US': 'https://abect.com/en/services',
+				'x-default': 'https://abect.com/services'
 			}
 		},
 		authors: [{ name: 'ABECT', url: 'https://abect.com' }],
@@ -56,7 +57,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			siteName: 'ABECT',
 			images: [
 				{
-					url: 'https://abect.com/og-services.jpg',
+					url: locale === 'ua' ? 'https://abect.com/seo/service-og.jpg' : 'https://abect.com/seo/en-service-og.jpg',
 					width: 1200,
 					height: 630,
 					alt: title
@@ -69,16 +70,16 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 			card: 'summary_large_image',
 			title,
 			description,
-			images: ['https://abect.com/og-services.jpg']
+			images: [locale === 'ua' ? 'https://abect.com/seo/service-og.jpg' : 'https://abect.com/seo/en-service-og.jpg']
 		},
 		icons: {
 			icon: [
-				{ url: '/seo/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-				{ url: '/seo/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
+				{ url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+				{ url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' }
 			],
-			apple: '/seo/apple-touch-icon.png'
+			apple: '/apple-touch-icon.png'
 		},
-		manifest: '/seo/site.webmanifest'
+		manifest: '/site.webmanifest'
 	};
 }
 
@@ -94,8 +95,19 @@ export default async function ServicesServerPage({ params }: Params) {
 		getAllServiceTypes(locale)
 	]);
 
+	const pageUrl = locale === 'ua' ? 'https://abect.com/services' : 'https://abect.com/en/services';
+	const breadcrumbJsonLd = {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: locale === 'ua' ? 'Головна' : 'Home', item: 'https://abect.com' },
+			{ '@type': 'ListItem', position: 2, name: locale === 'ua' ? 'Послуги' : 'Services', item: pageUrl },
+		],
+	};
+
 	return (
 		<>
+			<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
 			{/* JSON-LD Schema.org CollectionPage */}
 			<script
 				type="application/ld+json"
