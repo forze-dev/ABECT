@@ -588,6 +588,18 @@
 			"keywords": "website cost calculator, calculate website price, web development cost, landing page price, online store cost"
 		}
 	},
+	"ThxPage": {
+		"badge": "Request Submitted",
+		"title": "Thank you!",
+		"subtitleSimple": "Your request has been successfully submitted. We will contact you shortly.",
+		"subtitleCalculator": "Quote received! Our manager will contact you to clarify the project details.",
+		"home": "Go home",
+		"services": "Our services",
+		"seo": {
+			"title": "Thank you for your request | ABECT",
+			"description": "Your request has been successfully submitted. We will contact you shortly."
+		}
+	},
 	"ContactsPage": {
 		"title": "Contacts",
 		"subtitle": "Contact us in any way convenient for you. We are always happy to answer your questions!",

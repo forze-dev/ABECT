@@ -2,7 +2,8 @@
 
 import { JSX } from 'react';
 import { useTranslations } from 'next-intl';
-import { RotateCcw, CheckCircle } from 'lucide-react';
+import { RotateCcw } from 'lucide-react';
+import { useRouter } from '@/client/i18n/navigation';
 import { useCalculator, CalculatorConfig } from './CalculatorContext';
 import { submitLead } from '@/client/lib/leads';
 import ProgressBar from './components/ProgressBar';
@@ -23,6 +24,7 @@ interface CalculatorContentProps {
 function CalculatorContent({ config }: CalculatorContentProps): JSX.Element {
   const t = useTranslations('Calculator');
   const tForm = useTranslations('ContactForm');
+  const router = useRouter();
   const { state, dispatch, reset } = useCalculator();
 
   // Submit handler
@@ -53,7 +55,7 @@ function CalculatorContent({ config }: CalculatorContentProps): JSX.Element {
       });
 
       if (result.success) {
-        dispatch({ type: 'SET_SUBMIT_SUCCESS', payload: true });
+        router.push(`/thx?form=calculator&timestamp=${Date.now()}`);
       } else {
         dispatch({ type: 'SET_SUBMIT_ERROR', payload: result.error || tForm('errorMessage') });
       }
@@ -83,37 +85,6 @@ function CalculatorContent({ config }: CalculatorContentProps): JSX.Element {
         return null;
     }
   };
-
-  // Success state
-  if (state.submitSuccess) {
-    return (
-      <div className="calculator">
-        <div className="calculator__container">
-          <div className="calculator__success">
-            <CheckCircle size={80} className="calculator__success-icon" />
-            <h2>{tForm('successTitle')}</h2>
-            <p>{tForm('successMessage')}</p>
-            <div className="calculator__success-summary">
-              <div className="calculator__success-price">
-                <span>{t('priceLabel')}:</span>
-                <strong>від {state.estimatedPrice.toLocaleString('uk-UA')} грн</strong>
-              </div>
-              {state.estimatedTimeline && (
-                <div className="calculator__success-timeline">
-                  <span>{t('timelineLabel')}:</span>
-                  <strong>{state.estimatedTimeline}</strong>
-                </div>
-              )}
-            </div>
-            <button type="button" className="cta" onClick={reset}>
-              <RotateCcw size={20} />
-              {t('resetButton')}
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="calculator">

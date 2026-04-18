@@ -1,8 +1,9 @@
 'use client';
 
 import { JSX, useState, useEffect, useRef, FormEvent } from 'react';
-import { X, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { X, Loader2, AlertCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from '@/client/i18n/navigation';
 import { submitLead, isValidContact } from '@/client/lib/leads';
 import './ContactModal.scss';
 
@@ -11,10 +12,11 @@ interface ContactModalProps {
   onClose: () => void;
 }
 
-type FormState = 'idle' | 'loading' | 'success' | 'error';
+type FormState = 'idle' | 'loading' | 'error';
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps): JSX.Element | null {
   const t = useTranslations('ContactForm');
+  const router = useRouter();
   const modalRef = useRef<HTMLDivElement>(null);
   const firstInputRef = useRef<HTMLInputElement>(null);
 
@@ -82,11 +84,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps): JS
     setErrorMessage('');
   };
 
-  // Handle close with reset
   const handleClose = () => {
-    if (formState === 'success') {
-      resetForm();
-    }
     onClose();
   };
 
@@ -131,7 +129,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps): JS
     });
 
     if (result.success) {
-      setFormState('success');
+      onClose();
+      router.push(`/thx?form=simple&timestamp=${Date.now()}`);
     } else {
       setFormState('error');
       setErrorMessage(result.error || t('errorMessage'));
@@ -160,103 +159,85 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps): JS
           <X size={24} />
         </button>
 
-        {/* Success state */}
-        {formState === 'success' ? (
-          <div className="contact-modal__success">
-            <CheckCircle size={64} className="contact-modal__success-icon" />
-            <h2>{t('successTitle')}</h2>
-            <p>{t('successMessage')}</p>
-            <button type="button" className="cta" onClick={handleClose}>
-              {t('closeButton')}
-            </button>
+        {/* Header */}
+        <header className="contact-modal__header">
+          <h2 id="contact-modal-title">{t('title')}</h2>
+          <p>{t('subtitle')}</p>
+        </header>
+
+        {/* Error message */}
+        {formState === 'error' && (
+          <div className="contact-modal__error">
+            <AlertCircle size={20} />
+            <span>{errorMessage}</span>
           </div>
-        ) : (
-          <>
-            {/* Header */}
-            <header className="contact-modal__header">
-              <h2 id="contact-modal-title">{t('title')}</h2>
-              <p>{t('subtitle')}</p>
-            </header>
-
-            {/* Error message */}
-            {formState === 'error' && (
-              <div className="contact-modal__error">
-                <AlertCircle size={20} />
-                <span>{errorMessage}</span>
-              </div>
-            )}
-
-            {/* Form */}
-            <form className="contact-modal__form" onSubmit={handleSubmit}>
-              {/* Name field */}
-              <div className={`contact-modal__field ${nameError ? 'contact-modal__field--error' : ''}`}>
-                <label htmlFor="contact-name">{t('nameLabel')}</label>
-                <input
-                  ref={firstInputRef}
-                  type="text"
-                  id="contact-name"
-                  name="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder={t('namePlaceholder')}
-                  disabled={formState === 'loading'}
-                  autoComplete="name"
-                />
-                {nameError && <span className="contact-modal__field-error">{nameError}</span>}
-              </div>
-
-              {/* Contact field */}
-              <div className={`contact-modal__field ${contactError ? 'contact-modal__field--error' : ''}`}>
-                <label htmlFor="contact-contact">{t('contactLabel')}</label>
-                <input
-                  type="text"
-                  id="contact-contact"
-                  name="contact"
-                  value={contact}
-                  onChange={(e) => setContact(e.target.value)}
-                  placeholder={t('contactPlaceholder')}
-                  disabled={formState === 'loading'}
-                  autoComplete="tel email"
-                />
-                {contactError && <span className="contact-modal__field-error">{contactError}</span>}
-              </div>
-
-              {/* Message field */}
-              <div className="contact-modal__field">
-                <label htmlFor="contact-message">{t('messageLabel')}</label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder={t('messagePlaceholder')}
-                  disabled={formState === 'loading'}
-                  rows={4}
-                  maxLength={500}
-                />
-              </div>
-
-              {/* Submit button */}
-              <button
-                type="submit"
-                className="contact-modal__submit cta"
-                disabled={formState === 'loading'}
-              >
-                {formState === 'loading' ? (
-                  <>
-                    <Loader2 size={20} className="contact-modal__spinner" />
-                    {t('loadingButton')}
-                  </>
-                ) : (
-                  t('submitButton')
-                )}
-              </button>
-            </form>
-
-            {/* Privacy note */}
-            <p className="contact-modal__privacy">{t('privacyNote')}</p>
-          </>
         )}
+
+        {/* Form */}
+        <form className="contact-modal__form" onSubmit={handleSubmit}>
+          <div className={`contact-modal__field ${nameError ? 'contact-modal__field--error' : ''}`}>
+            <label htmlFor="contact-name">{t('nameLabel')}</label>
+            <input
+              ref={firstInputRef}
+              type="text"
+              id="contact-name"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder={t('namePlaceholder')}
+              disabled={formState === 'loading'}
+              autoComplete="name"
+            />
+            {nameError && <span className="contact-modal__field-error">{nameError}</span>}
+          </div>
+
+          <div className={`contact-modal__field ${contactError ? 'contact-modal__field--error' : ''}`}>
+            <label htmlFor="contact-contact">{t('contactLabel')}</label>
+            <input
+              type="text"
+              id="contact-contact"
+              name="contact"
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+              placeholder={t('contactPlaceholder')}
+              disabled={formState === 'loading'}
+              autoComplete="tel email"
+            />
+            {contactError && <span className="contact-modal__field-error">{contactError}</span>}
+          </div>
+
+          <div className="contact-modal__field">
+            <label htmlFor="contact-message">{t('messageLabel')}</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder={t('messagePlaceholder')}
+              disabled={formState === 'loading'}
+              rows={4}
+              maxLength={500}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="contact-modal__submit cta"
+            disabled={formState === 'loading'}
+          >
+            {formState === 'loading' ? (
+              <>
+                <Loader2 size={20} className="contact-modal__spinner" />
+                {t('loadingButton')}
+              </>
+            ) : (
+              t('submitButton')
+            )}
+          </button>
+        </form>
+
+        {/* Privacy note */}
+        <p className="contact-modal__privacy">{t('privacyNote')}</p>
       </div>
     </div>
   );
