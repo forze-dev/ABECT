@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       languages: {
         'uk-UA': 'https://abect.com/calculator',
         'en-US': 'https://abect.com/en/calculator',
-        'x-default': 'https://abect.com/calculator',
+        'x-default': 'https://abect.com/en/calculator',
       },
     },
     authors: [{ name: 'ABECT', url: 'https://abect.com' }],

@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
       languages: {
         'uk-UA': 'https://abect.com/privacy-policy',
         'en-US': 'https://abect.com/en/privacy-policy',
-        'x-default': 'https://abect.com/privacy-policy',
+        'x-default': 'https://abect.com/en/privacy-policy',
       },
     },
     openGraph: {

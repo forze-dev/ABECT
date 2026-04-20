@@ -18,13 +18,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${BASE_URL}`,
       changeFrequency: 'weekly',
       priority: 1.0,
-      alternates: { languages: { 'uk-UA': `${BASE_URL}`, 'en-US': `${BASE_URL}/en`, 'x-default': `${BASE_URL}` } },
+      alternates: { languages: { 'uk-UA': `${BASE_URL}`, 'en-US': `${BASE_URL}/en`, 'x-default': `${BASE_URL}/en` } },
     },
     {
       url: `${BASE_URL}/en`,
       changeFrequency: 'weekly',
       priority: 1.0,
-      alternates: { languages: { 'uk-UA': `${BASE_URL}`, 'en-US': `${BASE_URL}/en`, 'x-default': `${BASE_URL}` } },
+      alternates: { languages: { 'uk-UA': `${BASE_URL}`, 'en-US': `${BASE_URL}/en`, 'x-default': `${BASE_URL}/en` } },
     },
     ...['services', 'about', 'portfolio', 'blog', 'contacts'].flatMap(route =>
       locales.map(locale => ({
@@ -35,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           languages: {
             'uk-UA': `${BASE_URL}/${route}`,
             'en-US': `${BASE_URL}/en/${route}`,
-            'x-default': `${BASE_URL}/${route}`,
+            'x-default': `${BASE_URL}/en/${route}`,
           },
         },
       }))
@@ -49,7 +49,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         languages: {
           'uk-UA': `${BASE_URL}/calculator`,
           'en-US': `${BASE_URL}/en/calculator`,
-          'x-default': `${BASE_URL}/calculator`,
+          'x-default': `${BASE_URL}/en/calculator`,
         },
       },
     })),
@@ -75,18 +75,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ])
 
     const postUrls: MetadataRoute.Sitemap = [
-      ...postsUa.docs.filter(p => p.slug && p.category).map(p => ({
-        url: url(`/blog/${typeof p.category === 'object' ? p.category?.slug : p.category}/${p.slug}`, 'ua'),
-        lastModified: p.updatedAt ? new Date(p.updatedAt) : undefined,
-        changeFrequency: 'monthly' as const,
-        priority: 0.6,
-      })),
-      ...postsEn.docs.filter(p => p.slug && p.category).map(p => ({
-        url: url(`/blog/${typeof p.category === 'object' ? p.category?.slug : p.category}/${p.slug}`, 'en'),
-        lastModified: p.updatedAt ? new Date(p.updatedAt) : undefined,
-        changeFrequency: 'monthly' as const,
-        priority: 0.6,
-      })),
+      ...postsUa.docs.filter(p => p.slug && p.category).map(p => {
+        const catSlug = typeof p.category === 'object' ? p.category?.slug : p.category
+        return {
+          url: url(`/blog/${catSlug}/${p.slug}`, 'ua'),
+          lastModified: p.updatedAt ? new Date(p.updatedAt) : undefined,
+          changeFrequency: 'monthly' as const,
+          priority: 0.6,
+          alternates: {
+            languages: {
+              'uk-UA': `${BASE_URL}/blog/${catSlug}/${p.slug}`,
+              'en-US': `${BASE_URL}/en/blog/${catSlug}/${p.slug}`,
+              'x-default': `${BASE_URL}/en/blog/${catSlug}/${p.slug}`,
+            },
+          },
+        }
+      }),
+      ...postsEn.docs.filter(p => p.slug && p.category).map(p => {
+        const catSlug = typeof p.category === 'object' ? p.category?.slug : p.category
+        return {
+          url: url(`/blog/${catSlug}/${p.slug}`, 'en'),
+          lastModified: p.updatedAt ? new Date(p.updatedAt) : undefined,
+          changeFrequency: 'monthly' as const,
+          priority: 0.6,
+          alternates: {
+            languages: {
+              'uk-UA': `${BASE_URL}/blog/${catSlug}/${p.slug}`,
+              'en-US': `${BASE_URL}/en/blog/${catSlug}/${p.slug}`,
+              'x-default': `${BASE_URL}/en/blog/${catSlug}/${p.slug}`,
+            },
+          },
+        }
+      }),
     ]
 
     const portfolioUrls: MetadataRoute.Sitemap = [
@@ -95,28 +115,62 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: p.updatedAt ? new Date(p.updatedAt) : undefined,
         changeFrequency: 'monthly' as const,
         priority: 0.7,
+        alternates: {
+          languages: {
+            'uk-UA': `${BASE_URL}/portfolio/${p.slug}`,
+            'en-US': `${BASE_URL}/en/portfolio/${p.slug}`,
+            'x-default': `${BASE_URL}/en/portfolio/${p.slug}`,
+          },
+        },
       })),
       ...portfolioEn.docs.filter(p => p.slug).map(p => ({
         url: url(`/portfolio/${p.slug}`, 'en'),
         lastModified: p.updatedAt ? new Date(p.updatedAt) : undefined,
         changeFrequency: 'monthly' as const,
         priority: 0.7,
+        alternates: {
+          languages: {
+            'uk-UA': `${BASE_URL}/portfolio/${p.slug}`,
+            'en-US': `${BASE_URL}/en/portfolio/${p.slug}`,
+            'x-default': `${BASE_URL}/en/portfolio/${p.slug}`,
+          },
+        },
       })),
     ]
 
     const serviceUrls: MetadataRoute.Sitemap = [
-      ...servicesUa.docs.filter(s => s.slug && s.serviceType).map(s => ({
-        url: url(`/services/${typeof s.serviceType === 'object' ? s.serviceType?.slug : s.serviceType}/${s.slug}`, 'ua'),
-        lastModified: s.updatedAt ? new Date(s.updatedAt) : undefined,
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      })),
-      ...servicesEn.docs.filter(s => s.slug && s.serviceType).map(s => ({
-        url: url(`/services/${typeof s.serviceType === 'object' ? s.serviceType?.slug : s.serviceType}/${s.slug}`, 'en'),
-        lastModified: s.updatedAt ? new Date(s.updatedAt) : undefined,
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-      })),
+      ...servicesUa.docs.filter(s => s.slug && s.serviceType).map(s => {
+        const typeSlug = typeof s.serviceType === 'object' ? s.serviceType?.slug : s.serviceType
+        return {
+          url: url(`/services/${typeSlug}/${s.slug}`, 'ua'),
+          lastModified: s.updatedAt ? new Date(s.updatedAt) : undefined,
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+          alternates: {
+            languages: {
+              'uk-UA': `${BASE_URL}/services/${typeSlug}/${s.slug}`,
+              'en-US': `${BASE_URL}/en/services/${typeSlug}/${s.slug}`,
+              'x-default': `${BASE_URL}/en/services/${typeSlug}/${s.slug}`,
+            },
+          },
+        }
+      }),
+      ...servicesEn.docs.filter(s => s.slug && s.serviceType).map(s => {
+        const typeSlug = typeof s.serviceType === 'object' ? s.serviceType?.slug : s.serviceType
+        return {
+          url: url(`/services/${typeSlug}/${s.slug}`, 'en'),
+          lastModified: s.updatedAt ? new Date(s.updatedAt) : undefined,
+          changeFrequency: 'monthly' as const,
+          priority: 0.7,
+          alternates: {
+            languages: {
+              'uk-UA': `${BASE_URL}/services/${typeSlug}/${s.slug}`,
+              'en-US': `${BASE_URL}/en/services/${typeSlug}/${s.slug}`,
+              'x-default': `${BASE_URL}/en/services/${typeSlug}/${s.slug}`,
+            },
+          },
+        }
+      }),
     ]
 
     return [...staticRoutes, ...postUrls, ...portfolioUrls, ...serviceUrls]
